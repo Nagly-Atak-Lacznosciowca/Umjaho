@@ -24,7 +24,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char* argv[]) {
     }
     
     SDL_Log("nwm");
-    image = SDL_LoadBMP("/home/oskar/Pictures/cup.bmp");
+    image = SDL_LoadBMP("/home/oskar/Pictures/cup.bmp"); // Your own image
     texture = SDL_CreateTextureFromSurface(renderer, image);
     screen = SDL_GetWindowSurface(window);
 
