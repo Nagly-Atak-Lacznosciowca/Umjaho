@@ -12,7 +12,7 @@ Game *game = new Game();
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
+    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "pl.krakow.tl.umjaho");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
