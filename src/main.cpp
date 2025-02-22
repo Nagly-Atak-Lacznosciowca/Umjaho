@@ -3,8 +3,11 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include "engine/Renderer.h"
+#include "game/Game.h"
+#include "game/Event.h"
 
 Renderer *renderer = new Renderer();
+Game *game = new Game();
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
@@ -36,6 +39,8 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     /* clear the window to the draw color. */
     SDL_RenderClear(renderer->renderer);
 
+//    while(SDL_P)
+
     /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer->renderer);
 
@@ -44,13 +49,43 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
-    if (event->type == SDL_EVENT_QUIT) {
-        return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
+    switch (event->type) {
+        case (SDL_EVENT_QUIT):
+            return SDL_APP_SUCCESS;
+        case (SDL_EVENT_KEY_DOWN):
+            SDL_Log("Key Down");
+            break;
+        case (SDL_EVENT_KEY_UP):
+            SDL_Log("Key Up");
+            break;
+        case (SDL_EVENT_MOUSE_BUTTON_DOWN):
+            SDL_Log("Pressed %d", event->button.button);
+            switch (event->button.button) {
+                case SDL_BUTTON_LEFT: {
+                    auto custom_event = SDL_Event{Event::CUSTOM_EVENT};
+                    SDL_PushEvent(&custom_event);
+                    break;
+                }
+                case SDL_BUTTON_RIGHT: {
+                    auto custom_event = SDL_Event{Event::CUSTOM_EVENT_ZWEI};
+                    SDL_PushEvent(&custom_event);
+                    break;
+                }
+            }
+            break;
+        case (Event::CUSTOM_EVENT):
+            SDL_Log("Custom event");
+            break;
+        case (Event::CUSTOM_EVENT_ZWEI):
+            SDL_Log("Custom event da");
+            break;
     }
+
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
     /* SDL will clean up the window/renderer for us. */
+    SDL_Log("cycki");
 }

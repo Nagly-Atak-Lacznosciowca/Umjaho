@@ -11,7 +11,8 @@ add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 file(GLOB_RECURSE HEADERS "include/*.h")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
+add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS}
+        include/game/Event.h)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
 
