@@ -8,7 +8,7 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Init(int width, int height) {
-
+    
 }
 
 void Renderer::Clear() {
