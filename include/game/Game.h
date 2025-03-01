@@ -9,7 +9,12 @@
 #include <functional>
 
 class Game {
+private:
     std::queue<std::function<void()>> gameQueue;
+
+    // *Scene currentScene;
+
+    
 };
 
 #endif //UMJAHO_GAME_H
