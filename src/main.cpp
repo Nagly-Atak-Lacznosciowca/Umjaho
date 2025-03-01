@@ -31,20 +31,8 @@ Game *game = new Game();
 [[maybe_unused]] SDL_AppResult SDL_AppIterate(void *appstate)
 {
     const double now = ((double)SDL_GetTicks()) / 1000.0;  /* convert from milliseconds to seconds. */
-    /* choose the color for the frame we will draw. The sine wave trick makes it fade between colors smoothly. */
-    const auto red = (float) (0.5 + 0.5 * SDL_sin(now));
-    const auto green = (float) (0.5 + 0.5 * SDL_sin(now + SDL_PI_D * 2 / 3));
-    const auto blue = (float) (0.5 + 0.5 * SDL_sin(now + SDL_PI_D * 4 / 3));
-    SDL_SetRenderDrawColorFloat(renderer->renderer, red, green, blue, SDL_ALPHA_OPAQUE_FLOAT);  /* new color, full alpha. */
 
-    // game.tick();
-
-    /* clear the window to the draw color. */
     SDL_RenderClear(renderer->renderer);
-
-//    while(SDL_P)
-
-    /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer->renderer);
 
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -57,6 +45,7 @@ Game *game = new Game();
             return SDL_APP_SUCCESS;
         case (SDL_EVENT_KEY_DOWN):
             SDL_Log("Key Down");
+
             break;
         case (SDL_EVENT_KEY_UP):
             SDL_Log("Key Up");

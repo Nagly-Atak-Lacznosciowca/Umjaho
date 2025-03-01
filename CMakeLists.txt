@@ -12,7 +12,7 @@ file(GLOB_RECURSE HEADERS "include/*.h")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS}
-        include/game/Event.h)
+        include/game/entity/Car.h)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
 

@@ -12,6 +12,7 @@ class Game {
 private:
     std::queue<std::function<void()>> gameQueue;
 
+
     // *Scene currentScene;
 
     
