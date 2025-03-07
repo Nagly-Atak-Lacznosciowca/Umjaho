@@ -1,10 +1,10 @@
 #include "engine/Renderer.h"
 
-Renderer::Renderer() : window(nullptr), renderer(nullptr), sceneManager(new SceneManager()) {}
+Renderer::Renderer() : SDLWindow(nullptr), SDLRenderer(nullptr), sceneManager(new SceneManager()) {}
 
 Renderer::~Renderer() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(SDLRenderer);
+    SDL_DestroyWindow(SDLWindow);
 }
 
 void Renderer::Init(int width, int height) {
@@ -12,9 +12,9 @@ void Renderer::Init(int width, int height) {
 }
 
 void Renderer::Clear() {
-    SDL_RenderClear(renderer);
+    SDL_RenderClear(SDLRenderer);
 }
 
 void Renderer::Present() {
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(SDLRenderer);
 }

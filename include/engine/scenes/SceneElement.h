@@ -4,7 +4,6 @@
 class SceneElement {
 public:
     int zIndex;
-
 };
 
 #endif //UMJAHO_SCENEELEMENT_H

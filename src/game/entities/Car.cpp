@@ -14,7 +14,7 @@ Car::Car(double x, double y, double z) : x(x), y(y), z(z) {}
 
 void Car::render(Renderer* renderer) {
     auto car = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->length), static_cast<float>(this->width) };
-    SDL_RenderRect(renderer->renderer, &car);
+    SDL_RenderRect(renderer->SDLRenderer, &car);
 }
 
 /// Given car's position, size and angle, computes its vertices if it was rotated by that angle

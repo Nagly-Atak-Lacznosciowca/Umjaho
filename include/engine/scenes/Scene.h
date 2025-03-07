@@ -4,6 +4,7 @@
 #include "vector"
 #include "SceneElement.h"
 
+// should only be used as an abstract class that itself doesn't do anything skibidi
 class Scene {
 public:
     std::vector<SceneElement> contents;

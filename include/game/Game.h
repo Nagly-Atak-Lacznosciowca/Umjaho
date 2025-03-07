@@ -8,14 +8,18 @@
 #include <queue>
 #include <functional>
 
+#include "engine/Renderer.h"
+
 class Game {
+public:
+    Game();
+    ~Game();
+    // both values in ns
+    unsigned long long lastTick = 0;
+    unsigned long long deltaTime = 0;
+    Renderer renderer;
+    std::queue<void(*)()> gameQueue;
 private:
-    std::queue<std::function<void()>> gameQueue;
-
-
-    // *Scene currentScene;
-
-    
 };
 
 #endif //UMJAHO_GAME_H

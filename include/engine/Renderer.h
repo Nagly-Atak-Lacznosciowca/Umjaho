@@ -13,8 +13,8 @@ public:
     void Clear();
     void Present();
 
-    SDL_Renderer* renderer;
-    SDL_Window* window;
+    SDL_Renderer* SDLRenderer;
+    SDL_Window* SDLWindow;
     SceneManager* sceneManager;
 private:
 
