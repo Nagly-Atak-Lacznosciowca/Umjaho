@@ -2,6 +2,8 @@
 #define UMJAHO_RENDERER_H
 
 #include "SDL3/SDL.h"
+#include "scenes/SceneManager.h"
+#include "array"
 
 class Renderer {
 public:
@@ -11,8 +13,9 @@ public:
     void Clear();
     void Present();
 
-    SDL_Renderer* renderer;
-    SDL_Window* window;
+    SDL_Renderer* SDLRenderer;
+    SDL_Window* SDLWindow;
+    SceneManager* sceneManager;
 private:
 
 };
