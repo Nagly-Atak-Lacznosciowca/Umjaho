@@ -15,7 +15,6 @@ Soboty przed 04.01:
 jak mi się nie chce tego robić <br>
 zróbmy w canvasie
 
-
 ```
 SceneElement
     Circuit?
@@ -29,7 +28,6 @@ SceneElement
         Opponent
 ```
 
-
 ### 1) Sceny `(SceneManager)`
 - Sceny półprzezroczyste (np. by mieć Level, menu z escape, potem ustawienia itp). Do tego w SceneManager musiałby być Vector ze scenami
 - Przechodzenie między scenami, w jakikolwiek sposób
@@ -39,7 +37,10 @@ SceneElement
 
 ### 3) Auto i fizyka, sterowanie
 - Żeby w ogóle wyświetlić auto
-- sterowanie autem 
+- sterowanie autem
+  - dodać pola speed, maxSpeed, acceleration, itp. do Car, niech się liczy samo
+  - np. za każdym checkiem klawisza (co ileś czasu) `if (speed < maxSpeed-acceleration) speed += acceleration`
+  - podejrzanie proste, ale się zobaczy
 - fizyka
 
 ### 4) Poziomy

@@ -15,28 +15,26 @@
 auto game = new Game();
 auto car = new Car(100, 100, 1);
 
+
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "pl.krakow.pl.umjaho");
+    SDL_SetAppMetadata("Umjaho", "1.0", "tl.krakow.pl.umjaho");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", 800, 540, SDL_WINDOW_RESIZABLE,
-                                     &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
+    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 800, 540,
+        SDL_WINDOW_RESIZABLE, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    return SDL_APP_CONTINUE; /* carry on with the program! */
+    return SDL_APP_CONTINUE;    // Carry on with the program
 }
 
-void function() {
-    SDL_Log("Hello World!");
-}
 
 [[maybe_unused]] SDL_AppResult SDL_AppIterate(void* appstate) {
     const Uint64 now = SDL_GetTicksNS();
@@ -48,9 +46,7 @@ void function() {
         game->gameQueue.front()();
     }
 
-
     // if (game->deltaTime != 0) SDL_Log("%s", std::to_string(1000000000.0f / game->deltaTime).c_str());    // logs FPS
-
 
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
     SDL_RenderClear(game->renderer.SDLRenderer);
@@ -84,84 +80,67 @@ void function() {
     car->render(&game->renderer);
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
-
     // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, std::to_string(1000.0 / game->deltaTime).c_str());
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }
 
+
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
-    // Quick dirty check used to check if car can turn
-    // Gotta handle engine braking and acceleration later
-    bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
+    // Quick dirty check used to check if the car can turn
+    // FIX: Gotta handle engine braking and acceleration later
+    bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]
+                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN]
+                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]
+                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
     double speedMultiplier = 1;
     double rotationSpeedMultiplier = 0.01;
 
     switch (event->type) {
-    case SDL_EVENT_QUIT:
-        return SDL_APP_SUCCESS;
+        case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
+            if (carIsMoving) {
+                car->angle += rotationSpeedMultiplier;
+            }
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
+            if (carIsMoving) {
+                car->angle -= rotationSpeedMultiplier;
+            }
+            break;
+        }
 
-    case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        SDL_Log("Pressed %d", event->button.button);
-        switch (event->button.button) {
-        case SDL_BUTTON_LEFT: {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT};
-            SDL_PushEvent(&custom_event);
+        case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
+            // Move car in the direction it's facing
+            double forwardVector[] = {
+                car->x + speedMultiplier * SDL_cos(-car->angle),    // Formula for vector rotation or something
+                car->y + speedMultiplier * SDL_sin(-car->angle),    // Beware of the minus sign :(((
+                car->z
+            };
+            car->move(forwardVector);
             break;
         }
-        case SDL_BUTTON_RIGHT: {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_ZWEI};
-            SDL_PushEvent(&custom_event);
+        case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
+            double backwardVector[] = {
+                car->x - speedMultiplier * SDL_cos(-car->angle),
+                car->y - speedMultiplier * SDL_sin(-car->angle),
+                car->z
+            };
+            car->move(backwardVector);
             break;
         }
+
+        case SDL_EVENT_QUIT:
+            return SDL_APP_SUCCESS;
+
         default: {
             break;
         }
-        }
-        break;
-    case Event::CUSTOM_EVENT: {
-        SDL_Log("Custom event");
-        break;
-    }
-    case Event::CUSTOM_EVENT_ZWEI: {
-        SDL_Log("Custom event ga");
-        break;
-    }
-
-    case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-        if (carIsMoving) {
-            car->angle += rotationSpeedMultiplier;
-        }
-        break;
-    }
-    case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-        if (carIsMoving) {
-            car->angle -= rotationSpeedMultiplier;
-        }
-        break;
-    }
-
-    case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
-        // Move car in the direction it's facing
-        double forwardVector[] = {car->x + speedMultiplier * SDL_cos(-car->angle), car->y + speedMultiplier * SDL_sin(-car->angle), car->z};  // Formula for vector rotation or something
-        car->move(forwardVector);
-        break;
-    }
-    case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-        double backwardVector[] = {car->x - speedMultiplier * SDL_cos(-car->angle), car->y - speedMultiplier * SDL_sin(-car->angle), car->z}; // Beware of the minus sign :(((
-        car->move(backwardVector);
-        break;
-    }
-
-    default: {
-        break;
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Aplikacja zostanie roztrzaskana");
-        SDL_Quit();
-    }
     }
 
     return SDL_APP_CONTINUE;
 }
+
 
 [[maybe_unused]] void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     SDL_Log("cycki");
