@@ -15,8 +15,6 @@ Car::Car(double x, double y, double z) : x(x), y(y), z(z) {}
 void Car::render(Renderer* renderer) {
     auto car = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->length), static_cast<float>(this->width) };
 
-
-    this->angle = 0.78;
     const auto points = getRotatedPoints();
 
     // SDL_RenderRect(renderer->SDLRenderer, &car);
@@ -42,7 +40,6 @@ std::array<SDL_FPoint, 5> Car::getRotatedPoints() {
         );
     }
     result[4] =  result[0];
-
 
     return result;
 }

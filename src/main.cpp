@@ -13,6 +13,7 @@
 #include "game/entity/Car.h"
 
 auto game = new Game();
+auto car = new Car(100, 100, 1);
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
@@ -44,17 +45,16 @@ void function() {
     game->lastTick = now;
 
     for (; !game->gameQueue.empty(); game->gameQueue.pop()) {
-        (game->gameQueue.front())();
+        game->gameQueue.front()();
     }
 
 
-    if (game->deltaTime != 0) SDL_Log("%s", std::to_string(1000000000.0f / game->deltaTime).c_str());
+    // if (game->deltaTime != 0) SDL_Log("%s", std::to_string(1000000000.0f / game->deltaTime).c_str());    // logs FPS
 
 
-    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 255, 1);
+    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
     SDL_RenderClear(game->renderer.SDLRenderer);
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
-    auto car = new Car(100, 100, 1);
 
     car->render(&game->renderer);
     SDL_RenderPresent(game->renderer.SDLRenderer);
@@ -67,16 +67,32 @@ void function() {
 
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
     switch (event->type) {
-    case (SDL_EVENT_QUIT):
+    case SDL_EVENT_QUIT:
         return SDL_APP_SUCCESS;
-    case (SDL_EVENT_KEY_DOWN):
-        SDL_Log("Key Down");
 
+    case SDL_EVENT_KEY_DOWN:
+    case SDL_EVENT_KEY_UP:
+        // Temporary car steering, TO DO make it smoooooth
+        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
+            SDL_PushEvent(&custom_event);
+        }
+        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
+            SDL_PushEvent(&custom_event);
+        }
+
+        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
+            SDL_PushEvent(&custom_event);
+        }
+        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
+            SDL_PushEvent(&custom_event);
+        }
         break;
-    case (SDL_EVENT_KEY_UP):
-        SDL_Log("Key Up");
-        break;
-    case (SDL_EVENT_MOUSE_BUTTON_DOWN):
+
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
         SDL_Log("Pressed %d", event->button.button);
         switch (event->button.button) {
         case SDL_BUTTON_LEFT: {
@@ -94,12 +110,36 @@ void function() {
         }
         }
         break;
-    case (Event::CUSTOM_EVENT):
+    case Event::CUSTOM_EVENT: {
         SDL_Log("Custom event");
         break;
-    case (Event::CUSTOM_EVENT_ZWEI):
+    }
+    case Event::CUSTOM_EVENT_ZWEI: {
         SDL_Log("Custom event ga");
         break;
+    }
+
+    case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
+        car->angle += 0.1;
+        break;
+    }
+    case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
+        car->angle -= 0.1;
+        break;
+    }
+
+    case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
+        // Move car in the direction it's facing
+        double forwardVector[] = {car->x + 10 * SDL_cos(-car->angle), car->y + 10 * SDL_sin(-car->angle), car->z};  // Formula for vector rotation or something
+        car->move(forwardVector);
+        break;
+    }
+    case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
+        double backwardVector[] = {car->x - 10 * SDL_cos(-car->angle), car->y - 10 * SDL_sin(-car->angle), car->z}; // Beware of the minus sign :(((
+        car->move(backwardVector);
+        break;
+    }
+
     default: {
         break;
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Aplikacja zostanie roztrzaskana");
