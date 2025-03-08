@@ -1,3 +1,3 @@
 #include "engine/scenes/SceneManager.h"
 
-SceneManager::SceneManager() = default;
+// SceneManager::SceneManager() = default;

@@ -16,7 +16,7 @@ public:
     Car(double x, double y, double z);
     void move(const double deltas[]);
     void render(Renderer* renderer);
-    std::array<SDL_FPoint, 4> rotate();
+    std::array<SDL_FPoint, 5> getRotatedPoints();
 };
 
 #endif //UMJAHO_CAR_H
