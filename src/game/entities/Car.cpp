@@ -22,6 +22,7 @@ void Car::render(Renderer* renderer) {
 }
 
 /// Given car's position, size and angle, computes its vertices if it was rotated by that angle
+/// FIX: Would be better to rotate from wheels' position instead of center
 std::array<SDL_FPoint, 5> Car::getRotatedPoints() {
     // If car's angle is 0, it's rotated sideways, facing right.
     // Thus, length and not width is added to x-es, same with y-s, but with width instead

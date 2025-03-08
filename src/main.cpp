@@ -56,23 +56,10 @@ void function() {
     SDL_RenderClear(game->renderer.SDLRenderer);
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
 
-    car->render(&game->renderer);
-    SDL_RenderPresent(game->renderer.SDLRenderer);
+    static Uint64 lastActionTime = 0;
+    const Uint64 actionInterval = 10000000; // 10ms interval
 
-
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, std::to_string(1000.0 / game->deltaTime).c_str());
-
-    return SDL_APP_CONTINUE; /* carry on with the program! */
-}
-
-[[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
-    switch (event->type) {
-    case SDL_EVENT_QUIT:
-        return SDL_APP_SUCCESS;
-
-    case SDL_EVENT_KEY_DOWN:
-    case SDL_EVENT_KEY_UP:
-        // Temporary car steering, TO DO make it smoooooth
+    if (now - lastActionTime > actionInterval) {
         if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
             auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
             SDL_PushEvent(&custom_event);
@@ -90,7 +77,29 @@ void function() {
             auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
             SDL_PushEvent(&custom_event);
         }
-        break;
+
+        lastActionTime = now;
+    }
+
+    car->render(&game->renderer);
+    SDL_RenderPresent(game->renderer.SDLRenderer);
+
+
+    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, std::to_string(1000.0 / game->deltaTime).c_str());
+
+    return SDL_APP_CONTINUE; /* carry on with the program! */
+}
+
+[[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
+    // Quick dirty check used to check if car can turn
+    // Gotta handle engine braking and acceleration later
+    bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
+    double speedMultiplier = 1;
+    double rotationSpeedMultiplier = 0.01;
+
+    switch (event->type) {
+    case SDL_EVENT_QUIT:
+        return SDL_APP_SUCCESS;
 
     case SDL_EVENT_MOUSE_BUTTON_DOWN:
         SDL_Log("Pressed %d", event->button.button);
@@ -120,22 +129,26 @@ void function() {
     }
 
     case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-        car->angle += 0.1;
+        if (carIsMoving) {
+            car->angle += rotationSpeedMultiplier;
+        }
         break;
     }
     case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-        car->angle -= 0.1;
+        if (carIsMoving) {
+            car->angle -= rotationSpeedMultiplier;
+        }
         break;
     }
 
     case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
         // Move car in the direction it's facing
-        double forwardVector[] = {car->x + 10 * SDL_cos(-car->angle), car->y + 10 * SDL_sin(-car->angle), car->z};  // Formula for vector rotation or something
+        double forwardVector[] = {car->x + speedMultiplier * SDL_cos(-car->angle), car->y + speedMultiplier * SDL_sin(-car->angle), car->z};  // Formula for vector rotation or something
         car->move(forwardVector);
         break;
     }
     case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-        double backwardVector[] = {car->x - 10 * SDL_cos(-car->angle), car->y - 10 * SDL_sin(-car->angle), car->z}; // Beware of the minus sign :(((
+        double backwardVector[] = {car->x - speedMultiplier * SDL_cos(-car->angle), car->y - speedMultiplier * SDL_sin(-car->angle), car->z}; // Beware of the minus sign :(((
         car->move(backwardVector);
         break;
     }
