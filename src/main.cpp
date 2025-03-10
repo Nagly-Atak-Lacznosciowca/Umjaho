@@ -46,8 +46,6 @@ auto car = new Car(100, 100, 1);
         game->gameQueue.front()();
     }
 
-    // if (game->deltaTime != 0) SDL_Log("%s", std::to_string(1000000000.0f / game->deltaTime).c_str());    // logs FPS
-
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
     SDL_RenderClear(game->renderer.SDLRenderer);
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
@@ -78,9 +76,12 @@ auto car = new Car(100, 100, 1);
     }
 
     car->render(&game->renderer);
-    SDL_RenderPresent(game->renderer.SDLRenderer);
 
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, std::to_string(1000.0 / game->deltaTime).c_str());
+    // draws FPS
+    const float fps = 1000000000.0f / game->deltaTime;
+    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+    SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }
