@@ -89,12 +89,12 @@ auto car = new Car(100, 100, 1);
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
     // Quick dirty check used to check if the car can turn
     // FIX: Gotta handle engine braking and acceleration later
-    bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]
+    const bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]
                     || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN]
                     || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]
                     || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
-    double speedMultiplier = 1;
-    double rotationSpeedMultiplier = 0.01;
+    const double speedMultiplier = 1;
+    const double rotationSpeedMultiplier = 0.01;
 
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {

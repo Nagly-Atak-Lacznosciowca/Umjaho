@@ -18,18 +18,18 @@ void Car::render(Renderer* renderer) {
     const auto points = getRotatedPoints();
 
     // SDL_RenderRect(renderer->SDLRenderer, &car);
-    SDL_RenderLines(renderer->SDLRenderer, points.data(), 5);
+    SDL_RenderLines(renderer->SDLRenderer, points, 5);
 }
 
 /// Given car's position, size and angle, computes its vertices if it was rotated by that angle
 /// FIX: Would be better to rotate from wheels' position instead of center
-std::array<SDL_FPoint, 5> Car::getRotatedPoints() {
+SDL_FPoint *Car::getRotatedPoints() const {
     // If car's angle is 0, it's rotated sideways, facing right.
     // Thus, length and not width is added to x-es, same with y-s, but with width instead
 
     SDL_FPoint center = SDL_FPoint((x + x + length) / 2, (y + y + width) / 2);
-    std::array<SDL_FPoint, 4> points = { SDL_FPoint(x, y), SDL_FPoint(x + length, y), SDL_FPoint(x + length, y + width), SDL_FPoint(x, y + width) };
-    std::array<SDL_FPoint, 5> result = std::array<SDL_FPoint, 5>();
+    SDL_FPoint points[] = { SDL_FPoint(x, y), SDL_FPoint(x + length, y), SDL_FPoint(x + length, y + width), SDL_FPoint(x, y + width) };
+    SDL_FPoint* result = new SDL_FPoint[5];
 
     const float sin = SDL_sin(-angle);
     const float cos = SDL_cos(-angle);
