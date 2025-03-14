@@ -10,12 +10,13 @@ public:
     double y = 0;
     double z = 0;
     double angle = 0; // In radians
-    int width = 50;
-    int length = 100;
+    int width = 250;
+    int length = 500;
+    SDL_Texture* texture = nullptr;
 
-    Car(double x, double y, double z);
+    Car(double x, double y, double z, SDL_Texture* texture);
     void move(const double deltas[]);
-    void render(Renderer* renderer);
+    void render(Renderer* renderer) const;
     SDL_FPoint *getRotatedPoints() const;
 };
 

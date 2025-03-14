@@ -15,5 +15,5 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS}
         include/game/entity/Car.h)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
-
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SDL3::SDL3)

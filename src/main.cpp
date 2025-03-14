@@ -5,16 +5,16 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_render.h>
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_hints.h>
 
 #include "engine/Renderer.h"
 #include "game/Game.h"
 #include "game/Event.h"
 #include "game/entity/Car.h"
 
-auto game = new Game();
-auto car = new Car(100, 100, 1);
 
+auto game = new Game();
+Car *car = nullptr;
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
@@ -31,6 +31,14 @@ auto car = new Car(100, 100, 1);
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+
+
+    SDL_Surface* surface = SDL_LoadBMP("..\\assets\\car-red-regular.bmp");
+    SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, surface);
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+    car = new Car(10, 10, 1, texture);
+
 
     return SDL_APP_CONTINUE;    // Carry on with the program
 }

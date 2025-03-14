@@ -10,15 +10,19 @@ void Car::move(const double deltas[]) {
     this->z = deltas[2];
 }
 
-Car::Car(double x, double y, double z) : x(x), y(y), z(z) {}
+Car::Car(const double x, const double y, const double z, SDL_Texture* texture) : SceneElement(), x(x), y(y), z(z), texture(texture) {}
 
-void Car::render(Renderer* renderer) {
+void Car::render(Renderer* renderer) const {
     auto car = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->length), static_cast<float>(this->width) };
 
     const auto points = getRotatedPoints();
+    const SDL_FPoint center = { (points[1].x + points[3].x) / 2, (points[1].y + points[3].y) / 2 };
+    SDL_RenderTextureRotated(renderer->SDLRenderer, texture, nullptr, &car, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);
 
     // SDL_RenderRect(renderer->SDLRenderer, &car);
     SDL_RenderLines(renderer->SDLRenderer, points, 5);
+
+    delete points;
 }
 
 /// Given car's position, size and angle, computes its vertices if it was rotated by that angle
@@ -28,8 +32,8 @@ SDL_FPoint *Car::getRotatedPoints() const {
     // Thus, length and not width is added to x-es, same with y-s, but with width instead
 
     SDL_FPoint center = SDL_FPoint((x + x + length) / 2, (y + y + width) / 2);
-    SDL_FPoint points[] = { SDL_FPoint(x, y), SDL_FPoint(x + length, y), SDL_FPoint(x + length, y + width), SDL_FPoint(x, y + width) };
-    SDL_FPoint* result = new SDL_FPoint[5];
+    const SDL_FPoint points[] = { SDL_FPoint(x, y), SDL_FPoint(x + length, y), SDL_FPoint(x + length, y + width), SDL_FPoint(x, y + width) };
+    auto* result = new SDL_FPoint[5];
 
     const float sin = SDL_sin(-angle);
     const float cos = SDL_cos(-angle);
