@@ -81,6 +81,7 @@ Car *car = nullptr;
         }
 
         lastActionTime = now;
+        car->move();
     }
 
     car->render(&game->renderer);
@@ -121,21 +122,11 @@ Car *car = nullptr;
 
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
             // Move car in the direction it's facing
-            double forwardVector[] = {
-                car->x + speedMultiplier * SDL_cos(-car->angle),    // Formula for vector rotation or something
-                car->y + speedMultiplier * SDL_sin(-car->angle),    // Beware of the minus sign :(((
-                car->z
-            };
-            car->move(forwardVector);
+            car->accelerate();
             break;
         }
         case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-            double backwardVector[] = {
-                car->x - speedMultiplier * SDL_cos(-car->angle),
-                car->y - speedMultiplier * SDL_sin(-car->angle),
-                car->z
-            };
-            car->move(backwardVector);
+            car->reverse();
             break;
         }
 
@@ -145,6 +136,9 @@ Car *car = nullptr;
         default: {
             break;
         }
+    }
+    if (!carIsMoving) {
+        car->decelerate();
     }
 
     return SDL_APP_CONTINUE;
