@@ -67,13 +67,30 @@ void Car::decelerate() {
 }
 
 void Car::accelerate() {
-    speed += acceleration;
+    if (speed + acceleration < maxSpeed) {
+        speed += acceleration;
+    }
+    else speed = maxSpeed;
 }
 
 void Car::brake() {
-    speed -= acceleration * 2;
+    speed -= brakeStrength;
 }
 
 void Car::reverse() {
-    speed -= acceleration / 2;
+    if (speed - acceleration/1.4 > -maxSpeed/2) {
+        speed -= acceleration / 1.4;
+    }
+    else speed = -maxSpeed / 2;
+}
+
+// To do progressive radius
+void Car::turnLeft() {
+    if (speed > 0) angle += turnRadius;
+    else if (speed < 0) angle -= turnRadius;
+}
+
+void Car::turnRight() {
+    if (speed > 0) angle -= turnRadius;
+    else if (speed < 0) angle += turnRadius;
 }

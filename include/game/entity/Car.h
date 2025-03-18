@@ -15,6 +15,10 @@ public:
     SDL_Texture* texture = nullptr;
     double acceleration = 0.05;
     double speed = 0.0;
+    double maxSpeed = 6;
+    double brakeStrength = 0.1;
+    double turnRadius = 0.02;   // In future like with speed, 0.00
+    double maxTurnRadius = 0.03;    // Unused for now
 
     Car(double x, double y, double z, SDL_Texture* texture);
     void move();
@@ -22,6 +26,8 @@ public:
     void accelerate();
     void brake();
     void reverse();
+    void turnLeft();
+    void turnRight();
     void render(Renderer* renderer) const;
     SDL_FPoint *getRotatedPoints() const;
 };

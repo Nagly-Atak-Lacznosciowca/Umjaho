@@ -94,6 +94,7 @@ Car *car = nullptr;
     const float fps = 1000000000.0f / game->deltaTime;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(car->speed)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
@@ -105,26 +106,15 @@ Car *car = nullptr;
 
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-            if (car->speed > 0) {
-                car->angle += rotationSpeedMultiplier;
-            }
-            else if (car->speed < 0) {
-                car->angle -= rotationSpeedMultiplier;
-            }
+            car->turnLeft();
             break;
         }
         case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-            if (car->speed > 0) {
-                car->angle -= rotationSpeedMultiplier;
-            }
-            else if (car->speed < 0) {
-                car->angle += rotationSpeedMultiplier;
-            }
+            car->turnRight();
             break;
         }
 
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
-            // Move car in the direction it's facing
             car->accelerate();
             break;
         }
