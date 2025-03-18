@@ -13,13 +13,14 @@ public:
     int width = 50;
     int length = 100;
     SDL_Texture* texture = nullptr;
-    float acceleration = 0.1f;
-    float speed = 0.0f;
+    double acceleration = 0.05;
+    double speed = 0.0;
 
     Car(double x, double y, double z, SDL_Texture* texture);
     void move();
     void decelerate();
     void accelerate();
+    void brake();
     void reverse();
     void render(Renderer* renderer) const;
     SDL_FPoint *getRotatedPoints() const;

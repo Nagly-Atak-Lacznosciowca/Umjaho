@@ -5,14 +5,14 @@
 
 // length 3 array [dx, dy, dz]
 void Car::move() {
-    double forwardVector[] = {
+    double vector[] = {
         this->x + this->speed * SDL_cos(-this->angle),    // Formula for vector rotation or something
         this->y + this->speed * SDL_sin(-this->angle),    // Beware of the minus sign :(((
         this->z
     };
-    this->x = forwardVector[0];
-    this->y = forwardVector[1];
-    this->z = forwardVector[2];
+    this->x = vector[0];
+    this->y = vector[1];
+    this->z = vector[2];
 }
 
 Car::Car(const double x, const double y, const double z, SDL_Texture* texture) : SceneElement(), x(x), y(y), z(z), texture(texture) {}
@@ -56,20 +56,24 @@ SDL_FPoint *Car::getRotatedPoints() const {
 
 void Car::decelerate() {
     if (speed > 0) {
-        speed-=acceleration;
+        speed -= acceleration / 1.5;
     }
     else if (speed < 0) {
-        speed+=acceleration;
+        speed += acceleration / 1.5;
     }
-    if (speed > -this->acceleration*2 && speed < this->acceleration*2) {
-        SDL_Log("chuj");
+    if (speed > -this->acceleration && speed < this->acceleration) {
         speed = 0;
     }
 }
+
 void Car::accelerate() {
-    speed+=acceleration;
+    speed += acceleration;
+}
+
+void Car::brake() {
+    speed -= acceleration * 2;
 }
 
 void Car::reverse() {
-    speed-=acceleration/2;
+    speed -= acceleration / 2;
 }

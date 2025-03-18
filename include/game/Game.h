@@ -19,6 +19,8 @@ public:
     unsigned long long deltaTime = 0;
     Renderer renderer;
     std::queue<void(*)()> gameQueue;
+
+    static bool checkSteering();
 private:
 };
 

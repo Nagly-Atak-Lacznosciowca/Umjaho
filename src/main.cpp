@@ -80,6 +80,10 @@ Car *car = nullptr;
             SDL_PushEvent(&custom_event);
         }
 
+        if (!Game::checkSteering()) {
+            car->decelerate();
+        }
+
         lastActionTime = now;
         car->move();
     }
@@ -97,25 +101,24 @@ Car *car = nullptr;
 
 
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
-    // Quick dirty check used to check if the car can turn
-    // FIX: Gotta handle engine braking and acceleration later
-    const bool carIsMoving = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]
-                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN]
-                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]
-                    || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
-    const double speedMultiplier = 1;
-    const double rotationSpeedMultiplier = 0.01;
+   const double rotationSpeedMultiplier = 0.01;
 
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-            if (carIsMoving) {
+            if (car->speed > 0) {
                 car->angle += rotationSpeedMultiplier;
+            }
+            else if (car->speed < 0) {
+                car->angle -= rotationSpeedMultiplier;
             }
             break;
         }
         case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-            if (carIsMoving) {
+            if (car->speed > 0) {
                 car->angle -= rotationSpeedMultiplier;
+            }
+            else if (car->speed < 0) {
+                car->angle += rotationSpeedMultiplier;
             }
             break;
         }
@@ -126,7 +129,8 @@ Car *car = nullptr;
             break;
         }
         case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-            car->reverse();
+            if (car->speed > 0) car->brake();
+            else car->reverse();
             break;
         }
 
@@ -136,9 +140,6 @@ Car *car = nullptr;
         default: {
             break;
         }
-    }
-    if (!carIsMoving) {
-        car->decelerate();
     }
 
     return SDL_APP_CONTINUE;
