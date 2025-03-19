@@ -20,7 +20,8 @@ public:
     Renderer renderer;
     std::queue<void(*)()> gameQueue;
 
-    static bool checkSteering();
+    static bool checkSpeedControls();
+    static bool checkTurnControls();
 private:
 };
 

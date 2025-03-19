@@ -84,13 +84,53 @@ void Car::reverse() {
     else speed = -maxSpeed / 2;
 }
 
-// To do progressive radius
 void Car::turnLeft() {
-    if (speed > 0) angle += turnRadius;
-    else if (speed < 0) angle -= turnRadius;
+    if (speed > 0) {
+        if (turnAngle + turnGain < maxTurnAngle) {
+            turnAngle += turnGain;
+        }
+        else turnAngle = maxTurnAngle;
+        angle += turnAngle;
+    }
+    else if (speed < 0) {
+        if (turnAngle - turnGain > -maxTurnAngle) {
+            turnAngle -= turnGain;
+        }
+        else turnAngle = -maxTurnAngle;
+        angle += turnAngle;
+    }
 }
 
 void Car::turnRight() {
-    if (speed > 0) angle -= turnRadius;
-    else if (speed < 0) angle += turnRadius;
+    if (speed > 0) {
+        if (turnAngle - turnGain > -maxTurnAngle) {
+            turnAngle -= turnGain;
+        }
+        else turnAngle = -maxTurnAngle;
+        angle += turnAngle;
+    }
+    else if (speed < 0) {
+        if (turnAngle + turnGain < maxTurnAngle) {
+            turnAngle += turnGain;
+        }
+        else turnAngle = maxTurnAngle;
+        angle += turnAngle;
+    }
+}
+
+void Car::straighten() {
+    if (turnAngle > 0) {
+        if (turnAngle - turnGain > 0) {
+            turnAngle -= turnGain;
+        }
+        else turnAngle = 0;
+        angle += turnAngle;
+    }
+    else if (turnAngle < 0) {
+        if (turnAngle + turnGain < 0) {
+            turnAngle += turnGain;
+        }
+        else turnAngle = 0;
+        angle += turnAngle;
+    }
 }

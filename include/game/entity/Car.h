@@ -17,8 +17,9 @@ public:
     double speed = 0.0;
     double maxSpeed = 6;
     double brakeStrength = 0.1;
-    double turnRadius = 0.02;   // In future like with speed, 0.00
-    double maxTurnRadius = 0.03;    // Unused for now
+    double turnAngle = 0.0;     // Current angle of the wheels in radians
+    double turnGain = 0.001;    // Angle gain per frame
+    double maxTurnAngle = 0.03; // Max angle of the wheels
 
     Car(double x, double y, double z, SDL_Texture* texture);
     void move();
@@ -28,6 +29,7 @@ public:
     void reverse();
     void turnLeft();
     void turnRight();
+    void straighten();
     void render(Renderer* renderer) const;
     SDL_FPoint *getRotatedPoints() const;
 };

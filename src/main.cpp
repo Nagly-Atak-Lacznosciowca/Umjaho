@@ -80,8 +80,11 @@ Car *car = nullptr;
             SDL_PushEvent(&custom_event);
         }
 
-        if (!Game::checkSteering()) {
+        if (!Game::checkSpeedControls()) {
             car->decelerate();
+        }
+        if (!Game::checkTurnControls()) {
+            car->straighten();
         }
 
         lastActionTime = now;
@@ -95,6 +98,8 @@ Car *car = nullptr;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(car->speed)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(car->angle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(car->turnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
@@ -102,7 +107,6 @@ Car *car = nullptr;
 
 
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
-   const double rotationSpeedMultiplier = 0.01;
 
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
