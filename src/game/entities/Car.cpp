@@ -99,6 +99,9 @@ void Car::turnLeft() {
         else turnAngle = -maxTurnAngle;
         angle += turnAngle;
     }
+    else {
+        turnAngle = 0;
+    }
 }
 
 void Car::turnRight() {
@@ -115,6 +118,9 @@ void Car::turnRight() {
         }
         else turnAngle = maxTurnAngle;
         angle += turnAngle;
+    }
+    else {
+        turnAngle = 0;
     }
 }
 

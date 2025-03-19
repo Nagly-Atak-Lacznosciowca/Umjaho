@@ -33,7 +33,7 @@ Car *car = nullptr;
     }
 
 
-    SDL_Surface* surface = SDL_LoadBMP("..\\assets\\car-red-regular.bmp");
+    SDL_Surface* surface = SDL_LoadBMP("../assets/car-red-regular.bmp");
     SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
     SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, surface);
     SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
