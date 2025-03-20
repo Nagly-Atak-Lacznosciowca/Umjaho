@@ -85,6 +85,10 @@ void Car::reverse() {
 }
 
 void Car::turnLeft() {
+    if (speed < maxSpeed/2) {
+        maxTurnAngle = (SDL_fabs(speed) / (maxSpeed/2)) * 0.03;     // why tf is fabs double
+    }
+    else maxTurnAngle = 0.03;
     if (speed > 0) {
         if (turnAngle + turnGain < maxTurnAngle) {
             turnAngle += turnGain;
@@ -105,6 +109,10 @@ void Car::turnLeft() {
 }
 
 void Car::turnRight() {
+    if (speed < maxSpeed/2) {
+        maxTurnAngle = (SDL_fabs(speed) / (maxSpeed/2)) * 0.03;
+    }
+    else maxTurnAngle = 0.03;
     if (speed > 0) {
         if (turnAngle - turnGain > -maxTurnAngle) {
             turnAngle -= turnGain;

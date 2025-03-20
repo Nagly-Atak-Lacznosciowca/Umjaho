@@ -100,6 +100,7 @@ Car *car = nullptr;
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(car->speed)).c_str());
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(car->angle)).c_str());
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(car->turnAngle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(car->maxTurnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
