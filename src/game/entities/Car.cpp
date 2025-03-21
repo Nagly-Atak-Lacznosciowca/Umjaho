@@ -19,6 +19,7 @@ Car::Car(const double x, const double y, const double z, SDL_Texture* texture) :
 
 void Car::render(Renderer* renderer) const {
     auto car = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->length), static_cast<float>(this->width) };
+    SDL_RenderRect(renderer->SDLRenderer, &car);    // Non-rotated hitbox, comment out when collisions are done
 
     const auto points = getRotatedPoints();
     const SDL_FPoint center = { (points[1].x + points[3].x) / 2, (points[1].y + points[3].y) / 2 };

@@ -98,6 +98,10 @@ Opponent *opponent = nullptr;
 
         lastActionTime = now;
         player->move();
+
+        if (Game::checkCarCollision(player, opponent)) {
+            SDL_Log("Car collision detected on %d", now);
+        }
     }
 
     player->render(&game->renderer);
