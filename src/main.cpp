@@ -5,36 +5,44 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL_render.h>
-#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_hints.h>
 
 #include "engine/Renderer.h"
 #include "game/Game.h"
 #include "game/Event.h"
+#include "game/entity/Car.h"
+
 
 auto game = new Game();
+Car *car = nullptr;
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-    SDL_SetAppMetadata("Example Renderer Clear", "1.0", "pl.krakow.pl.umjaho");
+    SDL_SetAppMetadata("Umjaho", "1.0", "tl.krakow.pl.umjaho");
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("examples/renderer/clear", 800, 540, SDL_WINDOW_RESIZABLE,
-                                     &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
+    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 800, 540,
+        SDL_WINDOW_RESIZABLE, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
 
-    return SDL_APP_CONTINUE; /* carry on with the program! */
+
+    SDL_Surface* surface = SDL_LoadBMP("../assets/car-red-regular.bmp");
+    SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, surface);
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+    car = new Car(10, 10, 1, texture);
+
+
+    return SDL_APP_CONTINUE;    // Carry on with the program
 }
 
-void function() {
-    SDL_Log("Hello World!");
-}
 
 [[maybe_unused]] SDL_AppResult SDL_AppIterate(void* appstate) {
     const Uint64 now = SDL_GetTicksNS();
@@ -43,63 +51,95 @@ void function() {
     game->lastTick = now;
 
     for (; !game->gameQueue.empty(); game->gameQueue.pop()) {
-        (game->gameQueue.front())();
+        game->gameQueue.front()();
     }
 
-
-    if (game->deltaTime != 0) SDL_Log("%s", std::to_string(1000000000.0f / game->deltaTime).c_str());
-
+    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
     SDL_RenderClear(game->renderer.SDLRenderer);
+    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
+
+    static Uint64 lastActionTime = 0;
+    const Uint64 actionInterval = 10000000; // 10ms interval
+
+    if (now - lastActionTime > actionInterval) {
+        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
+            SDL_PushEvent(&custom_event);
+        }
+        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
+            SDL_PushEvent(&custom_event);
+        }
+
+        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
+            SDL_PushEvent(&custom_event);
+        }
+        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
+            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
+            SDL_PushEvent(&custom_event);
+        }
+
+        if (!Game::checkSpeedControls()) {
+            car->decelerate();
+        }
+        if (!Game::checkTurnControls()) {
+            car->straighten();
+        }
+
+        lastActionTime = now;
+        car->move();
+    }
+
+    car->render(&game->renderer);
+
+    // draws FPS
+    const float fps = 1000000000.0f / game->deltaTime;
+    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(car->speed)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(car->angle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(car->turnAngle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(car->maxTurnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, std::to_string(1000.0 / game->deltaTime).c_str());
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }
 
-[[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
-    switch (event->type) {
-    case (SDL_EVENT_QUIT):
-        return SDL_APP_SUCCESS;
-    case (SDL_EVENT_KEY_DOWN):
-        SDL_Log("Key Down");
 
-        break;
-    case (SDL_EVENT_KEY_UP):
-        SDL_Log("Key Up");
-        break;
-    case (SDL_EVENT_MOUSE_BUTTON_DOWN):
-        SDL_Log("Pressed %d", event->button.button);
-        switch (event->button.button) {
-        case SDL_BUTTON_LEFT: {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT};
-            SDL_PushEvent(&custom_event);
+[[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
+
+    switch (event->type) {
+        case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
+            car->turnLeft();
             break;
         }
-        case SDL_BUTTON_RIGHT: {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_ZWEI};
-            SDL_PushEvent(&custom_event);
+        case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
+            car->turnRight();
             break;
         }
+
+        case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
+            car->accelerate();
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
+            if (car->speed > 0) car->brake();
+            else car->reverse();
+            break;
+        }
+
+        case SDL_EVENT_QUIT:
+            return SDL_APP_SUCCESS;
+
         default: {
             break;
         }
-        }
-        break;
-    case (Event::CUSTOM_EVENT):
-        SDL_Log("Custom event");
-        break;
-    case (Event::CUSTOM_EVENT_ZWEI):
-        SDL_Log("Custom event ga");
-        break;
-    default: {
-        break;
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Aplikacja zostanie roztrzaskana");
-        SDL_Quit();
-    }
     }
 
     return SDL_APP_CONTINUE;
 }
+
 
 [[maybe_unused]] void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     SDL_Log("cycki");

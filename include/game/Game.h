@@ -19,6 +19,9 @@ public:
     unsigned long long deltaTime = 0;
     Renderer renderer;
     std::queue<void(*)()> gameQueue;
+
+    static bool checkSpeedControls();
+    static bool checkTurnControls();
 private:
 };
 
