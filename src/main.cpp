@@ -11,10 +11,13 @@
 #include "game/Game.h"
 #include "game/Event.h"
 #include "game/entity/Car.h"
+#include "game/entity/Opponent.h"
+#include "game/entity/Player.h"
 
 
 auto game = new Game();
-Car *car = nullptr;
+Player *player = nullptr;
+Opponent *opponent = nullptr;
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
@@ -33,11 +36,17 @@ Car *car = nullptr;
     }
 
 
-    SDL_Surface* surface = SDL_LoadBMP("../assets/car-red-regular.bmp");
+    SDL_Surface* playerSurface = SDL_LoadBMP("../assets/car-blue-regular.bmp");
     SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, surface);
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
-    car = new Car(10, 10, 1, texture);
+    SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, playerSurface);
+    SDL_SetTextureScaleMode(playerTexture, SDL_SCALEMODE_NEAREST);
+    player = new Player(10, 10, 1, playerTexture);
+
+    SDL_Surface* opponentSurface = SDL_LoadBMP("../assets/car-red-regular.bmp");
+    SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
+    SDL_Texture* opponentTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, opponentSurface);
+    SDL_SetTextureScaleMode(opponentTexture, SDL_SCALEMODE_NEAREST);
+    opponent = new Opponent(300, 200, 1, opponentTexture);
 
 
     return SDL_APP_CONTINUE;    // Carry on with the program
@@ -81,26 +90,27 @@ Car *car = nullptr;
         }
 
         if (!Game::checkSpeedControls()) {
-            car->decelerate();
+            player->decelerate();
         }
         if (!Game::checkTurnControls()) {
-            car->straighten();
+            player->straighten();
         }
 
         lastActionTime = now;
-        car->move();
+        player->move();
     }
 
-    car->render(&game->renderer);
+    player->render(&game->renderer);
+    opponent->render(&game->renderer);
 
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(car->speed)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(car->angle)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(car->turnAngle)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(car->maxTurnAngle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
@@ -111,21 +121,21 @@ Car *car = nullptr;
 
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-            car->turnLeft();
+            player->turnLeft();
             break;
         }
         case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-            car->turnRight();
+            player->turnRight();
             break;
         }
 
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
-            car->accelerate();
+            player->accelerate();
             break;
         }
         case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-            if (car->speed > 0) car->brake();
-            else car->reverse();
+            if (player->speed > 0) player->brake();
+            else player->reverse();
             break;
         }
 

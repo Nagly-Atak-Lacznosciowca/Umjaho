@@ -11,8 +11,7 @@ add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 file(GLOB_RECURSE HEADERS "include/*.h")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS}
-        include/game/entity/Car.h)
+add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
