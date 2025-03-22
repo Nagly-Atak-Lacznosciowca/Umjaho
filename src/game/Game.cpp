@@ -2,8 +2,7 @@
 
 #include "game/Game.h"
 
-Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer())
-{}
+Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()) {}
 
 bool Game::checkSpeedControls()
 {
@@ -35,14 +34,13 @@ SDL_FPoint *getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_
 	
 	// math from https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Formulas
 	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-	const float
-	u = -1 * ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+	const float u = -1 * ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
 	
 	if (!((t >= 0 && t <= 1) && (u >= 0 && u <= 1)))
 		return nullptr;
 	
 	const float intersectionX = x1 + t * (x2 - x1);
-	const float intersectionY = x1 + t * (y2 - y1);
+	const float intersectionY = y1 + t * (y2 - y1);
 	
 	return new SDL_FPoint {intersectionX, intersectionY};
 }
