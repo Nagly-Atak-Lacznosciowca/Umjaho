@@ -4,24 +4,22 @@
 #include "engine/scenes/SceneElement.h"
 #include "engine/Renderer.h"
 
-class Car : SceneElement {
+class Car : public SceneElement {
 public:
-    double x = 0;
-    double y = 0;
-    double z = 0;
-    double angle = 0; // In radians
-    int width = 50;
-    int length = 100;
-    SDL_Texture* texture = nullptr;
+	static const double WIDTH;
+	static const double LENGTH;
+	
+	const double brakeStrength = 0.1;
+	const double turnGain = 0.001;    // Angle gain per frame
+	
+	const double maxSpeed = 6;
+		
     double acceleration = 0.05;
     double speed = 0.0;
-    double maxSpeed = 6;
-    double brakeStrength = 0.1;
     double turnAngle = 0.0;     // Current angle of the wheels in radians
-    double turnGain = 0.001;    // Angle gain per frame
-    double maxTurnAngle = 0.03; // Max angle of the wheels
+	double maxTurnAngle = 0.03; // Max angle of the wheels
 
-    Car(double x, double y, double z, SDL_Texture* texture);
+    Car(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
     void move();
     void decelerate();
     void accelerate();
@@ -30,8 +28,6 @@ public:
     void turnLeft();
     void turnRight();
     void straighten();
-    void render(Renderer* renderer) const;
-    SDL_FPoint *getRotatedPoints() const;
 };
 
 #endif //UMJAHO_CAR_H

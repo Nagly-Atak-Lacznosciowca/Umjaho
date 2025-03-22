@@ -48,8 +48,8 @@ SDL_FPoint *getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_
 // TO DO support rotated cars
 bool Game::checkCarCollision(Car *car1, Car *car2)
 {
-	auto car1Points = car1->getRotatedPoints();
-	auto car2Points = car2->getRotatedPoints();
+	auto car1Points = car1->getPoints();
+	auto car2Points = car2->getPoints();
 	
 	SDL_FPoint car1Lines[][4] = {
 		{

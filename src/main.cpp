@@ -40,13 +40,15 @@ Opponent *opponent = nullptr;
     SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
     SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, playerSurface);
     SDL_SetTextureScaleMode(playerTexture, SDL_SCALEMODE_NEAREST);
-    player = new Player(10, 10, 1, playerTexture);
+    player = new Player(10, 10);
+	player->texture = playerTexture;
 
     SDL_Surface* opponentSurface = SDL_LoadBMP("../assets/car-red-regular.bmp");
     SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
     SDL_Texture* opponentTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, opponentSurface);
     SDL_SetTextureScaleMode(opponentTexture, SDL_SCALEMODE_NEAREST);
-    opponent = new Opponent(300, 200, 1, opponentTexture);
+    opponent = new Opponent(300, 200);
+	opponent->texture = opponentTexture;
 
 
     return SDL_APP_CONTINUE;    // Carry on with the program
@@ -104,8 +106,8 @@ Opponent *opponent = nullptr;
         }
     }
 
-    player->render(&game->renderer);
-    opponent->render(&game->renderer);
+    player->render(game->renderer);
+    opponent->render(game->renderer);
 
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
