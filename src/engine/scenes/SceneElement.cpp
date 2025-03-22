@@ -29,8 +29,7 @@ SDL_FPoint *SceneElement::getPoints() const {
 void SceneElement::render(Renderer &renderer) const
 {
 	auto rect = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->height), static_cast<float>(this->width) };
-	SDL_RenderRect(renderer.SDLRenderer, &rect);    // Non-rotated hitbox, comment out when collisions are done
-	
+
 	const auto points = getPoints();
 	const SDL_FPoint center = { (points[1].x + points[3].x) / 2, (points[1].y + points[3].y) / 2 };
 	SDL_RenderTextureRotated(renderer.SDLRenderer, texture, nullptr, &rect, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);

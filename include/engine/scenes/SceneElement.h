@@ -20,7 +20,7 @@ public:
 	
 	SDL_FPoint *getPoints() const;
 	
-	void render(Renderer& renderer) const;
+	void render(Renderer &renderer) const;
 };
 
 #endif //UMJAHO_SCENEELEMENT_H

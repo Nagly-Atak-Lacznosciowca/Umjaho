@@ -3,7 +3,6 @@
 
 #include "SDL3/SDL.h"
 
-class SceneManager;
 
 class Renderer {
 public:
@@ -15,7 +14,7 @@ public:
 
     SDL_Renderer* SDLRenderer;
     SDL_Window* SDLWindow;
-    SceneManager* sceneManager;
+    // SceneManager* sceneManager;
 private:
 
 };

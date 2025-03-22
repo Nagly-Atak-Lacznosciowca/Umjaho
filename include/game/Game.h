@@ -7,9 +7,12 @@
 
 #include <queue>
 #include <functional>
+#include <map>
+#include <string>
 
 #include "engine/Renderer.h"
 #include "entity/Car.h"
+#include "engine/scenes/SceneManager.h"
 
 class Game {
 public:
@@ -24,7 +27,14 @@ public:
     static bool checkSpeedControls();
     static bool checkTurnControls();
 
-    static bool checkCarCollision(Car *car1, Car *car2);
+    static bool checkElementCollision(SceneElement *car1, SceneElement *car2);
+
+    static std::map<std::string, SDL_Texture*> textures;
+
+    SceneManager sceneManager;
+
+    void init();
+
 private:
 };
 

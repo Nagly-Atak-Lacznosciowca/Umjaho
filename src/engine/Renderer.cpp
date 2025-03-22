@@ -1,7 +1,6 @@
 #include "engine/Renderer.h"
-#include "engine/scenes/SceneManager.h"
 
-Renderer::Renderer() : SDLRenderer(nullptr), SDLWindow(nullptr), sceneManager(new SceneManager()) {}
+Renderer::Renderer() : SDLRenderer(nullptr), SDLWindow(nullptr) {}
 
 Renderer::~Renderer() {
     SDL_DestroyRenderer(SDLRenderer);

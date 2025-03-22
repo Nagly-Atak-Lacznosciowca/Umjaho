@@ -19,6 +19,8 @@ public:
     double turnAngle = 0.0;     // Current angle of the wheels in radians
 	double maxTurnAngle = 0.03; // Max angle of the wheels
 
+	bool canMove = true;
+
     Car(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
     void move();
     void decelerate();

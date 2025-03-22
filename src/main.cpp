@@ -16,8 +16,7 @@
 
 
 auto game = new Game();
-Player *player = nullptr;
-Opponent *opponent = nullptr;
+
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
@@ -34,22 +33,7 @@ Opponent *opponent = nullptr;
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-
-
-    SDL_Surface* playerSurface = SDL_LoadBMP("../assets/car-blue-regular.bmp");
-    SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
-    SDL_Texture* playerTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, playerSurface);
-    SDL_SetTextureScaleMode(playerTexture, SDL_SCALEMODE_NEAREST);
-    player = new Player(10, 10);
-	player->texture = playerTexture;
-
-    SDL_Surface* opponentSurface = SDL_LoadBMP("../assets/car-red-regular.bmp");
-    SDL_Log("SDL_CreateTextureFromSurface: %s", SDL_GetError());
-    SDL_Texture* opponentTexture = SDL_CreateTextureFromSurface(game->renderer.SDLRenderer, opponentSurface);
-    SDL_SetTextureScaleMode(opponentTexture, SDL_SCALEMODE_NEAREST);
-    opponent = new Opponent(300, 200);
-	opponent->texture = opponentTexture;
-
+    game->init();
 
     return SDL_APP_CONTINUE;    // Carry on with the program
 }
@@ -73,50 +57,27 @@ Opponent *opponent = nullptr;
     const Uint64 actionInterval = 10000000; // 10ms interval
 
     if (now - lastActionTime > actionInterval) {
-        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
-            SDL_PushEvent(&custom_event);
-        }
-        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
-            SDL_PushEvent(&custom_event);
-        }
-
-        if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
-            SDL_PushEvent(&custom_event);
-        }
-        else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
-            auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
-            SDL_PushEvent(&custom_event);
-        }
-
-        if (!Game::checkSpeedControls()) {
-            player->decelerate();
-        }
-        if (!Game::checkTurnControls()) {
-            player->straighten();
-        }
+        //cuurent scene game tick
+        game->sceneManager.currentScene()->logic();
 
         lastActionTime = now;
-        player->move();
 
-        if (Game::checkCarCollision(player, opponent)) {
-            SDL_Log("Car collision detected on %d", now);
-        }
     }
 
-    player->render(game->renderer);
-    opponent->render(game->renderer);
+
+    //scene render
+
+    game->sceneManager.currentScene()->render(game->renderer);
+
 
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
     SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
@@ -126,24 +87,6 @@ Opponent *opponent = nullptr;
 [[maybe_unused]] SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 
     switch (event->type) {
-        case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
-            player->turnLeft();
-            break;
-        }
-        case Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT: {
-            player->turnRight();
-            break;
-        }
-
-        case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
-            player->accelerate();
-            break;
-        }
-        case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
-            if (player->speed > 0) player->brake();
-            else player->reverse();
-            break;
-        }
 
         case SDL_EVENT_QUIT:
             return SDL_APP_SUCCESS;
@@ -152,6 +95,7 @@ Opponent *opponent = nullptr;
             break;
         }
     }
+    game->sceneManager.currentScene()->handleEvent(event);
 
     return SDL_APP_CONTINUE;
 }
