@@ -11,7 +11,7 @@ Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(Scen
 
 void Game::init() {
 	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
-		SDL_Surface *surface = SDL_LoadBMP(entry.path().c_str());
+		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
 		if (surface == nullptr) {
 			SDL_Log("Błąd bmp %s", SDL_GetError());
 		}
