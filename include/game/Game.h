@@ -9,6 +9,7 @@
 #include <functional>
 
 #include "engine/Renderer.h"
+#include "entity/Car.h"
 
 class Game {
 public:
@@ -22,6 +23,8 @@ public:
 
     static bool checkSpeedControls();
     static bool checkTurnControls();
+
+    static bool checkCarCollision(Car *car1, Car *car2);
 private:
 };
 
