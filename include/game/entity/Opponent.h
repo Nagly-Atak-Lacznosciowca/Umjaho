@@ -6,7 +6,7 @@
 
 class Opponent : public Car {
     public:
-        Opponent(double x, double y, double z, SDL_Texture* texture);
+        Opponent(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 };
 
 #endif //UMJAHO_OPPONENT_H

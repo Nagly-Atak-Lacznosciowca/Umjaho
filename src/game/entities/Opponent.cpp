@@ -1,4 +1,4 @@
 #include "game/entity/Opponent.h"
 #include "SDL3/SDL.h"
 
-Opponent::Opponent(double x, double y, double z, SDL_Texture* texture) : Car(x, y, z, texture) {}
+Opponent::Opponent(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : Car(x, y, width, length, angle, zIndex, texture) {}

@@ -1,8 +1,30 @@
-#include <algorithm>
 
 #include "game/Game.h"
+#include "engine/scenes/scenes/Level1.h"
+#include <filesystem>
 
-Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()) {}
+std::map<std::string, SDL_Texture*> Game::textures = {};
+
+Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {
+
+}
+
+void Game::init() {
+	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
+		SDL_Surface *surface = SDL_LoadBMP(entry.path().c_str());
+		if (surface == nullptr) {
+			SDL_Log("Błąd bmp %s", SDL_GetError());
+		}
+		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
+		if (texture == nullptr) {
+			SDL_Log("Błąd tekstura %s", SDL_GetError());
+		}
+		textures.insert({entry.path().filename().string(), texture});
+		SDL_Log("Loading %s", entry.path().c_str());
+	}
+	auto level = new Level1();
+	sceneManager.addScene(level);
+}
 
 bool Game::checkSpeedControls()
 {
@@ -46,53 +68,60 @@ SDL_FPoint *getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_
 }
 
 // TO DO support rotated cars
-bool Game::checkCarCollision(Car *car1, Car *car2)
+bool Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
 {
-	auto car1Points = car1->getRotatedPoints();
-	auto car2Points = car2->getRotatedPoints();
+	auto elem1Points = elem1->getPoints();
+	auto elem2Points = elem2->getPoints();
 	
-	SDL_FPoint car1Lines[][4] = {
+	SDL_FPoint elem1Lines[][4] = {
 		{
-			car1Points[0],
-			car1Points[1]
+			elem1Points[0],
+			elem1Points[1]
 		},
 		{
-			car1Points[1],
-			car1Points[2]
+			elem1Points[1],
+			elem1Points[2]
 		},
 		{
-			car1Points[2],
-			car1Points[3]
+			elem1Points[2],
+			elem1Points[3]
 		},
 		{
-			car1Points[3],
-			car1Points[4]
+			elem1Points[3],
+			elem1Points[4]
 		},
 	};
 	
-	SDL_FPoint car2Lines[][4] = {
+	SDL_FPoint elem2Lines[][4] = {
 		{
-			car2Points[0],
-			car2Points[1]
+			elem2Points[0],
+			elem2Points[1]
 		},
 		{
-			car2Points[1],
-			car2Points[2]
+			elem2Points[1],
+			elem2Points[2]
 		},
 		{
-			car2Points[2],
-			car2Points[3]
+			elem2Points[2],
+			elem2Points[3]
 		},
 		{
-			car2Points[3],
-			car2Points[4]
+			elem2Points[3],
+			elem2Points[4]
 		},
 	};
 	
-	for (auto & car1Line : car1Lines)
-		for (auto & car2Line : car2Lines)
-			if (getIntersection(car1Line[0], car1Line[1], car2Line[0], car2Line[1]))
+	for (auto & elem1Line : elem1Lines)
+		for (auto & elem2Line : elem2Lines)
+			if (getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1])) {
+				delete elem1Points;
+				delete elem2Points;
 				return true;
+			}
+
+	delete elem1Points;
+	delete elem2Points;
 	
 	return false;
 }
+
