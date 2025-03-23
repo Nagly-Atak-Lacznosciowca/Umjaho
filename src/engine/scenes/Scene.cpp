@@ -1,11 +1,8 @@
 #include "engine/scenes/Scene.h"
 #include <stdexcept>
 
-Scene::Scene() {
-    this->contents = {};
-}
-
 void Scene::render(Renderer& renderer) {
+    SDL_RenderTexture(renderer.SDLRenderer, this->background, nullptr, nullptr);
     for (auto& sceneElement : this->contents) {
         sceneElement->render(renderer);
     }
@@ -17,4 +14,10 @@ void Scene::logic() {
 
 void Scene::handleEvent(SDL_Event* event) {
     throw std::runtime_error("Not implemented");
+}
+
+Scene::~Scene() {
+    for (const auto &item: this->contents) {
+        delete item;
+    }
 }

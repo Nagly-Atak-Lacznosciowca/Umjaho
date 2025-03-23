@@ -11,6 +11,7 @@ public:
     void addScene(Scene *scene);
     void popScene();
     Scene* currentScene();
+
 private:
     std::queue<Scene*> scenes;
 };

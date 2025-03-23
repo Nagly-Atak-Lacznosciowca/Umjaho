@@ -45,7 +45,7 @@ void Level1::logic() {
     player->move();
 
     if (Game::checkElementCollision(player, opponent)) {
-        SDL_Log("Car collision detected on");
+        SDL_Log("Car collision detected");
     }
 }
 

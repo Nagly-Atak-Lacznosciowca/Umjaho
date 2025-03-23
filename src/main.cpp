@@ -28,8 +28,9 @@ auto game = new Game();
         return SDL_APP_FAILURE;
     }
 
+    /// changing width/height in current version will destroy buttons on `Menu`
     if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 800, 540,
-        SDL_WINDOW_RESIZABLE, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
+        0, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
@@ -45,10 +46,6 @@ auto game = new Game();
     game->deltaTime = now - game->lastTick;
     game->lastTick = now;
 
-    for (; !game->gameQueue.empty(); game->gameQueue.pop()) {
-        game->gameQueue.front()();
-    }
-
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
     SDL_RenderClear(game->renderer.SDLRenderer);
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
@@ -57,7 +54,7 @@ auto game = new Game();
     const Uint64 actionInterval = 10000000; // 10ms interval
 
     if (now - lastActionTime > actionInterval) {
-        //cuurent scene game tick
+        //current scene game tick
         game->sceneManager.currentScene()->logic();
 
         lastActionTime = now;

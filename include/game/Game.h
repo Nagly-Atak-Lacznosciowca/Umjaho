@@ -22,7 +22,6 @@ public:
     unsigned long long lastTick = 0;
     unsigned long long deltaTime = 0;
     Renderer renderer;
-    std::queue<void(*)()> gameQueue;
 
     static bool checkSpeedControls();
     static bool checkTurnControls();

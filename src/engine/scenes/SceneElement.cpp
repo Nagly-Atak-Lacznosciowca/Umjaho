@@ -7,9 +7,12 @@ SceneElement::SceneElement(const double x, const double y, const double width, c
 SDL_FPoint *SceneElement::getPoints() const {
 	// If car's angle is 0, it's rotated sideways, facing right.
 	// Thus, length and not width is added to x-es, same with y-s, but with width instead
-	
-	SDL_FPoint center = SDL_FPoint((x + x + height) / 2, (y + y + width) / 2);
-	const SDL_FPoint points[] = { SDL_FPoint(x, y), SDL_FPoint(x + height, y), SDL_FPoint(x + height, y + width), SDL_FPoint(x, y + width) };
+
+    SDL_FPoint center = SDL_FPoint(x + width / 2, y + height / 2);
+	const SDL_FPoint points[] = { SDL_FPoint(x, y),
+                                  SDL_FPoint(x + width, y),
+                                  SDL_FPoint(x + width, y + height),
+                                  SDL_FPoint(x, y + height) };
 	auto* result = new SDL_FPoint[5];
 	
 	const float sin = SDL_sin(-angle);
@@ -28,13 +31,21 @@ SDL_FPoint *SceneElement::getPoints() const {
 
 void SceneElement::render(Renderer &renderer) const
 {
-	auto rect = SDL_FRect{ static_cast<float>(this->x), static_cast<float>(this->y), static_cast<float>(this->height), static_cast<float>(this->width) };
+	auto rect = SDL_FRect{ static_cast<float>(this->x),
+                           static_cast<float>(this->y),
+                           static_cast<float>(this->width),
+                           static_cast<float>(this->height) };
 
-	const auto points = getPoints();
-	const SDL_FPoint center = { (points[1].x + points[3].x) / 2, (points[1].y + points[3].y) / 2 };
-	SDL_RenderTextureRotated(renderer.SDLRenderer, texture, nullptr, &rect, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);
-	
-	SDL_RenderLines(renderer.SDLRenderer, points, 5);
-	
-	delete points;
+//    SDL_FPoint pivot = { 0.0f, 0.0f };
+    SDL_RenderTextureRotated(renderer.SDLRenderer, texture, nullptr, &rect, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);
+
+#ifdef DEBUG
+    const auto points = getPoints();
+    SDL_RenderLines(renderer.SDLRenderer, points, 5);
+    delete points;
+#endif
+}
+
+SceneElement::~SceneElement() {
+    SDL_DestroyTexture(texture);
 }

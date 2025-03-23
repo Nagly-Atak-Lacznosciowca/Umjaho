@@ -1,6 +1,7 @@
 
 #include "game/Game.h"
 #include "engine/scenes/scenes/Level1.h"
+#include "engine/scenes/scenes/Menu.h"
 #include <filesystem>
 
 std::map<std::string, SDL_Texture*> Game::textures = {};
@@ -20,9 +21,12 @@ void Game::init() {
 			SDL_Log("Błąd tekstura %s", SDL_GetError());
 		}
 		textures.insert({entry.path().filename().string(), texture});
-		SDL_Log("Loading %s", entry.path().c_str());
+		SDL_Log("Loading %ls", entry.path().c_str());
 	}
+
 	auto level = new Level1();
+    auto menu = new Menu([this]{ this->sceneManager.popScene(); });
+	sceneManager.addScene(menu);
 	sceneManager.addScene(level);
 }
 
@@ -123,5 +127,11 @@ bool Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
 	delete elem2Points;
 	
 	return false;
+}
+
+Game::~Game() {
+    for (const auto &item: Game::textures) {
+        delete item.second;
+    }
 }
 

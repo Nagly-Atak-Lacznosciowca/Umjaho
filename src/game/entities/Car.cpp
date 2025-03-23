@@ -9,8 +9,8 @@ const double Car::LENGTH = 100;
 // length 3 array [dx, dy, dz]
 void Car::move() {
     double vector[] = {
-        this->x + this->speed * SDL_cos(-this->angle),    // Formula for vector rotation or something
-        this->y + this->speed * SDL_sin(-this->angle)    // Beware of the minus sign :(((
+        this->x + this->speed * SDL_sin(this->angle),    // Formula for vector rotation or something
+        this->y + this->speed * SDL_cos(this->angle)    // Beware of the minus sign :(((
     };
     this->x = vector[0];
     this->y = vector[1];

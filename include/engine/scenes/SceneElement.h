@@ -15,12 +15,13 @@ public:
 	int zIndex;
 	
 	SDL_Texture* texture = nullptr;
-	
+
 	SceneElement(double x, double y, double width, double height, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 	
 	SDL_FPoint *getPoints() const;
 	
 	void render(Renderer &renderer) const;
+    virtual ~SceneElement();
 };
 
 #endif //UMJAHO_SCENEELEMENT_H
