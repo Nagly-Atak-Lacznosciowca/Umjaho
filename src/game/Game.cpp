@@ -46,7 +46,7 @@ bool Game::checkTurnControls()
 	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D];
 }
 
-SDL_FPoint *getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_FPoint p3, const SDL_FPoint p4)
+SDL_FPoint* Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_FPoint p3, const SDL_FPoint p4)
 {
 	const float x1 = p1.x;
 	const float y1 = p1.y;
@@ -123,7 +123,7 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 	
 	for (auto & elem1Line : elem1Lines)
 		for (auto & elem2Line : elem2Lines) {
-			SDL_FPoint* intersectionPoint = getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1]);
+			SDL_FPoint* intersectionPoint = Game::getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1]);
 			if (intersectionPoint != nullptr) {
 				delete elem1Points;
 				delete elem2Points;
