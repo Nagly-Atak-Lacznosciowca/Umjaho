@@ -26,7 +26,7 @@ public:
     static bool checkSpeedControls();
     static bool checkTurnControls();
 
-    static bool checkElementCollision(SceneElement *car1, SceneElement *car2);
+    static SDL_FPoint* checkElementCollision(SceneElement *elem1, SceneElement *elem2);
 
     static std::map<std::string, SDL_Texture*> textures;
 

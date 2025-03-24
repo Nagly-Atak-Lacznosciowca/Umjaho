@@ -52,27 +52,33 @@ SDL_FPoint *getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_
 	const float y1 = p1.y;
 	const float x2 = p2.x;
 	const float y2 = p2.y;
-	
+
 	const float x3 = p3.x;
 	const float y3 = p3.y;
 	const float x4 = p4.x;
 	const float y4 = p4.y;
-	
+
 	// math from https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Formulas
-	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-	const float u = -1 * ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-	
+	const float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+	if (denom == 0) {
+		return nullptr;
+	}
+
+	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+	const float u = -1 * (((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
+
 	if (!((t >= 0 && t <= 1) && (u >= 0 && u <= 1)))
 		return nullptr;
-	
+
 	const float intersectionX = x1 + t * (x2 - x1);
 	const float intersectionY = y1 + t * (y2 - y1);
-	
+
 	return new SDL_FPoint {intersectionX, intersectionY};
 }
 
 // TO DO support rotated cars
-bool Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
+SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
 {
 	auto elem1Points = elem1->getPoints();
 	auto elem2Points = elem2->getPoints();
@@ -116,17 +122,19 @@ bool Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
 	};
 	
 	for (auto & elem1Line : elem1Lines)
-		for (auto & elem2Line : elem2Lines)
-			if (getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1])) {
+		for (auto & elem2Line : elem2Lines) {
+			SDL_FPoint* intersectionPoint = getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1]);
+			if (intersectionPoint != nullptr) {
 				delete elem1Points;
 				delete elem2Points;
-				return true;
+				return intersectionPoint;
 			}
+		}
 
 	delete elem1Points;
 	delete elem2Points;
 	
-	return false;
+	return nullptr;
 }
 
 Game::~Game() {

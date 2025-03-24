@@ -1,6 +1,7 @@
 #include "engine/scenes/scenes/Level1.h"
 #include "game/Event.h"
 #include "game/Game.h"
+#include "game/entity/obstacles/Barrier.h"
 
 Level1::Level1() {
 
@@ -11,8 +12,11 @@ Level1::Level1() {
     opponent = new Opponent(300, 200);
     opponent->texture = Game::textures.at("car-red-regular.bmp");
 
+    auto wall = new Barrier(10,10, 200, 80);
+
     contents.push_back(player);
     contents.push_back(opponent);
+    contents.push_back(wall);
 }
 
 void Level1::logic() {
@@ -44,9 +48,15 @@ void Level1::logic() {
 
     player->move();
 
-    if (Game::checkElementCollision(player, opponent)) {
-        SDL_Log("Car collision detected");
+    for (const auto& element : contents) {
+        if (element!=player) {
+            if (auto intersection = Game::checkElementCollision(player, element)) {
+                SDL_Log("Element collision %f %f", intersection->x, intersection->y);
+            }
+
+        }
     }
+
 }
 
 void Level1::handleEvent(SDL_Event* event) {
