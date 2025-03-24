@@ -1,6 +1,8 @@
 #ifndef UMJAHO_CAR_H
 #define UMJAHO_CAR_H
 
+#include <vector>
+
 #include "engine/scenes/SceneElement.h"
 #include "engine/Renderer.h"
 
@@ -30,6 +32,8 @@ public:
     void turnLeft();
     void turnRight();
     void straighten();
+	void collide(SceneElement* element);
+	bool canTurn(const std::vector<SceneElement*>& elements);
 };
 
 #endif //UMJAHO_CAR_H

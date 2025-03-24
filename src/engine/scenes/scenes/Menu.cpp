@@ -11,8 +11,8 @@ Menu::Menu(SceneManager* sceneManager) {
 	this->sceneManager = sceneManager;
 	
     this->background = Game::textures.at("title.bmp");
-    const float scaleX = 800.0f / (float)(this->background->w);
-    const float scaleY = 540.0f / (float)(this->background->h);
+    const float scaleX = 1600.0f / (float)(this->background->w);
+    const float scaleY = 900.0f / (float)(this->background->h);
 
     auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, [this] {this->startLevel();});
     this->contents.push_back(playButton);

@@ -44,43 +44,34 @@ bool Game::checkTurnControls()
 	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D];
 }
 
+
 SDL_FPoint* Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_FPoint p3, const SDL_FPoint p4)
 {
 	const float x1 = p1.x;
 	const float y1 = p1.y;
 	const float x2 = p2.x;
 	const float y2 = p2.y;
-
-	const float x3 = p3.x;
-	const float y3 = p3.y;
-	const float x4 = p4.x;
-	const float y4 = p4.y;
-
-	// math from https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Formulas
+  
 	const float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-
-	if (denom == 0) {
-		return nullptr;
-	}
+	if (denom == 0) return false;
 
 	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
-	const float u = -1 * (((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
+	const float u = -(((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
 
-	if (!((t >= 0 && t <= 1) && (u >= 0 && u <= 1)))
-		return nullptr;
+	if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+		intersection.x = x1 + t * (x2 - x1);
+		intersection.y = y1 + t * (y2 - y1);
+		return true;
+	}
 
-	const float intersectionX = x1 + t * (x2 - x1);
-	const float intersectionY = y1 + t * (y2 - y1);
-
-	return new SDL_FPoint {intersectionX, intersectionY};
+	return false;
 }
 
-// TO DO support rotated cars
-SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
-{
+
+SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2) {
 	auto elem1Points = elem1->getPoints();
 	auto elem2Points = elem2->getPoints();
-	
+  
 	SDL_FPoint elem1Lines[][4] = {
 		{
 			elem1Points[0],
@@ -128,12 +119,13 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 				return intersectionPoint;
 			}
 		}
+	}
 
-	delete elem1Points;
-	delete elem2Points;
-	
+	delete[] elem1Points;
+	delete[] elem2Points;
 	return nullptr;
 }
+
 
 Game::~Game() {
     for (const auto &item: Game::textures) {
