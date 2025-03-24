@@ -55,7 +55,7 @@ auto game = new Game();
 
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
-        game->sceneManager.currentScene()->logic();
+	    game->sceneManager.currentScene()->logic();
 
         lastActionTime = now;
 
@@ -63,7 +63,6 @@ auto game = new Game();
 
 
     //scene render
-
     game->sceneManager.currentScene()->render(game->renderer);
 
 
