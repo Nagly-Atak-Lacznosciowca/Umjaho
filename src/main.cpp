@@ -8,6 +8,7 @@
 #include <SDL3/SDL_hints.h>
 
 #include "engine/Renderer.h"
+#include "engine/scenes/scenes/Level1.h"
 #include "game/Game.h"
 #include "game/Event.h"
 #include "game/entity/Car.h"
@@ -29,7 +30,7 @@ auto game = new Game();
     }
 
     /// changing width/height in current version will destroy buttons on `Menu`
-    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 800, 540,
+    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900,
         0, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
@@ -57,13 +58,25 @@ auto game = new Game();
         //current scene game tick
         game->sceneManager.currentScene()->logic();
 
+        // check if the current scene is level 1
+        // temp solution to increase frequency of collision checks
+        // spoiler - it ain't doing crap
+        if (dynamic_cast<Level1*>(game->sceneManager.currentScene())) {
+            auto level1 = dynamic_cast<Level1*>(game->sceneManager.currentScene());
+            for (const auto& element : level1->contents) {
+                if (element != level1->player) {
+                    if (Game::checkElementCollision(level1->player, element)) {
+                        level1->player->collide(element);
+                    }
+                }
+            }
+        }
+
         lastActionTime = now;
 
     }
 
-
     //scene render
-
     game->sceneManager.currentScene()->render(game->renderer);
 
 
