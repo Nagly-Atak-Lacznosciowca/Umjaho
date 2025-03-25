@@ -34,26 +34,24 @@ void Level1::logic() {
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
-        if (player->canTurn(contents)) {
+        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
-        }
-        // SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
-        if (player->canTurn(contents)) {
+        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
-        }
-        // SDL_PushEvent(&custom_event);
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
 
     if (!Game::checkSpeedControls()) {

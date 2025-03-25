@@ -115,37 +115,47 @@ void Car::straighten() {
 }
 
 
-// TODO block the car from moving into the wall (prevent acceleration?), figure out the weird blend-turn
-// TODO finish stopping the car when it's almost perpendicular to the wall
+// TODO prevent penetrating when the car hits close to parallel to the wall and when turning
+// TODO do something to rotate when hitting, especially close to parallel
 void Car::collide(SceneElement* element) {
     if (auto intersection = Game::checkElementCollision(this, element)) {
         SDL_Log("Element collision %f %f", intersection->x, intersection->y);
 
-        auto normal = SDL_FPoint{
-            static_cast<float>(intersection->x - (this->x + this->width / 2)),
-            static_cast<float>(intersection->y - (this->y + this->height / 2))
-        };
-        auto length = SDL_sqrtf(normal.x * normal.x + normal.y * normal.y);
-        normal.x /= length;
-        normal.y /= length;
+        // auto normal = SDL_FPoint{
+        //     static_cast<float>(intersection->x - (this->x + this->width / 2)),
+        //     static_cast<float>(intersection->y - (this->y + this->height / 2))
+        // };
+        // auto length = SDL_sqrtf(normal.x * normal.x + normal.y * normal.y);
+        // normal.x /= length;
+        // normal.y /= length;
+        //
+        // auto reverse = SDL_FPoint{
+        //     static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.x),
+        //     static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.y)
+        // };
 
-        auto reverse = SDL_FPoint{
-            static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.x),
-            static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.y)
-        };
-        // check if the car is almost perpendicular to the wall, remember that the angle is in radians and can loop around
-        if (SDL_fabs(SDL_fmod(this->angle, SDL_atan2(normal.x, normal.y))) < 0.1) {     // no it's not swapped, kill yourself CLion
-            this->speed = 0;
+        // if (SDL_fabs(this->angle - element->angle) > 1.5 && SDL_fabs(this->angle - element->angle) < 4.7) {
+        if (this->speed < 2) {
+            this->speed = -this->speed > 0 ? 1 : -1;
         }
-        else {
-            this->x += reverse.x;
-            this->y += reverse.y;
+        else if (this->speed > 4) {
+            this->speed = -this->speed/2.5;
+            this->x += this->speed * SDL_sin(this->angle);
+            this->y += this->speed * SDL_cos(this->angle);
         }
+        else this->speed = -this->speed/2.5;
+
+        this->x += this->speed * SDL_sin(this->angle);
+        this->y += this->speed * SDL_cos(this->angle);
+        // }
+        // else {
+        //     this->x += reverse.x;
+        //     this->y += reverse.y;
+        // }
     }
 }
 
 // it's bwoken, it's bwoken!
-// TODO fix
 bool Car::canTurn(const std::vector<SceneElement*>& elements) {
     for (const auto& element : elements) {
         if (element == this) continue;
