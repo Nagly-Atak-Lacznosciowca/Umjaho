@@ -1,0 +1,8 @@
+#ifndef UMJAHO_SOUNDPLAYBACK_H
+#define UMJAHO_SOUNDPLAYBACK_H
+
+class SoundPlayback {
+
+};
+
+#endif //UMJAHO_SOUNDPLAYBACK_H
