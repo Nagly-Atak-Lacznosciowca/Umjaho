@@ -62,12 +62,6 @@ void Level1::logic() {
     }
 
     player->move();
-
-    // for (const auto& element : contents) {
-    //     if (element != player) {
-    //         player->collide(element);
-    //     }
-    // }
 }
 
 void Level1::handleEvent(SDL_Event* event) {

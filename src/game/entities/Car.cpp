@@ -1,4 +1,7 @@
 #include "game/entity/Car.h"
+
+#include <cmath>
+
 #include "game/Game.h"
 #include "SDL3/SDL.h"
 #include "engine/Renderer.h"
@@ -10,8 +13,8 @@ const double Car::LENGTH = 100;
 // length 3 array [dx, dy, dz]
 void Car::move() {
     double vector[] = {
-        this->x + this->speed * SDL_sin(this->angle),    // Formula for vector rotation or something
-        this->y + this->speed * SDL_cos(this->angle)    // Beware of the minus sign :(((
+        this->x + this->speed * SDL_sin(this->angle),
+        this->y + this->speed * SDL_cos(this->angle)
     };
     this->x = vector[0];
     this->y = vector[1];
@@ -115,43 +118,52 @@ void Car::straighten() {
 }
 
 
-// TODO prevent penetrating when the car hits close to parallel to the wall and when turning
-// TODO do something to rotate when hitting, especially close to parallel
+// TODO prevent penetrating when turning
+// TODO finish: do something to rotate when hitting, especially close to parallel
+// We need to check which wall the car is hitting, then adjust the math accordingly
 void Car::collide(SceneElement* element) {
     if (auto intersection = Game::checkElementCollision(this, element)) {
-        SDL_Log("Element collision %f %f", intersection->x, intersection->y);
 
-        // auto normal = SDL_FPoint{
-        //     static_cast<float>(intersection->x - (this->x + this->width / 2)),
-        //     static_cast<float>(intersection->y - (this->y + this->height / 2))
-        // };
-        // auto length = SDL_sqrtf(normal.x * normal.x + normal.y * normal.y);
-        // normal.x /= length;
-        // normal.y /= length;
-        //
-        // auto reverse = SDL_FPoint{
-        //     static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.x),
-        //     static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.y)
-        // };
+        double absoluteAngle1 = SDL_fmod(this->angle, 2 * M_PI);
+        double absoluteAngle2 = SDL_fmod(element->angle, 2 * M_PI);
+        while (absoluteAngle1 < 0) absoluteAngle1 += 2 * M_PI;
+        while (absoluteAngle2 < 0) absoluteAngle2 += 2 * M_PI;
 
-        // if (SDL_fabs(this->angle - element->angle) > 1.5 && SDL_fabs(this->angle - element->angle) < 4.7) {
-        if (this->speed < 2) {
-            this->speed = -this->speed > 0 ? 1 : -1;
+        auto normal = SDL_FPoint{
+            static_cast<float>(intersection->x - (this->x + this->width / 2)),
+            static_cast<float>(intersection->y - (this->y + this->height / 2))
+        };
+        auto length = SDL_sqrtf(normal.x * normal.x + normal.y * normal.y);
+        normal.x /= length;
+        normal.y /= length;
+
+        auto reverse = SDL_FPoint{
+            static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.x),
+            static_cast<float>((this->speed > 0 ? -this->speed : this->speed) * normal.y)
+        };
+
+        double angleDiff = SDL_fabs(absoluteAngle1 - absoluteAngle2);
+        // This works only for two of four walls (on width-wall hit) for now
+        if ((angleDiff > M_PI/4 && angleDiff < 3*M_PI/4) || (angleDiff > 5*M_PI/4 && angleDiff < 7*M_PI/4)) {
+            this->x += reverse.x;
+            this->y += reverse.y;
         }
-        else if (this->speed > 4) {
-            this->speed = -this->speed/2.5;
+        else {
+            if (this->speed < 2) {
+                this->speed = -this->speed > 0 ? 1 : -1;
+            }
+            else if (this->speed > 4) {
+                this->speed = -this->speed/2.5;
+                this->x += this->speed * SDL_sin(this->angle);
+                this->y += this->speed * SDL_cos(this->angle);
+            }
+            else this->speed = -this->speed/2.5;
+
             this->x += this->speed * SDL_sin(this->angle);
             this->y += this->speed * SDL_cos(this->angle);
         }
-        else this->speed = -this->speed/2.5;
 
-        this->x += this->speed * SDL_sin(this->angle);
-        this->y += this->speed * SDL_cos(this->angle);
-        // }
-        // else {
-        //     this->x += reverse.x;
-        //     this->y += reverse.y;
-        // }
+        SDL_Log("Element collision %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
     }
 }
 
