@@ -65,7 +65,8 @@ auto game = new Game();
             auto level1 = dynamic_cast<Level1*>(game->sceneManager.currentScene());
             for (const auto& element : level1->contents) {
                 if (element != level1->player) {
-                    if (Game::checkElementCollision(level1->player, element)) {
+                    bool isHeightCollided = false;
+                    if (Game::checkElementCollision(level1->player, element, isHeightCollided)) {
                         level1->player->collide(element);
                     }
                 }

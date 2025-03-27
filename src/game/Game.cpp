@@ -69,8 +69,28 @@ bool getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
 	return false;
 }
 
+int getIntersectedLine(SceneElement *obstacle, SDL_FPoint *intersectionPoint) {
+	auto obstaclePoints = obstacle->getPoints();
+	for (int i = 0; i < 4; i++) {
+		SDL_FPoint linePoint1 = obstaclePoints[i];
+		SDL_FPoint linePoint2 = obstaclePoints[(i + 1) % 4];
 
-SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2) {
+		float dxc = intersectionPoint->x - linePoint1.x;
+		float dyc = intersectionPoint->y - linePoint1.y;
+
+		float dxl = linePoint2.x - linePoint1.x;
+		float dyl = linePoint2.y - linePoint1.y;
+
+		float crossProduct = dxc * dyl - dyc * dxl;
+		if (crossProduct == 0) {
+			return i+1;
+		}
+	}
+	return 0;
+}
+
+
+SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2, bool &isHeightCollided) {
 	auto elem1Points = elem1->getPoints();
 	auto elem2Points = elem2->getPoints();
 
@@ -78,11 +98,26 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 		for (int j = 0; j < 4; j++) {
 			SDL_FPoint intersection;
 			if (getIntersection(elem1Points[i], elem1Points[(i + 1) % 4],
-								elem2Points[j], elem2Points[(j + 1) % 4], intersection)) {
+								elem2Points[j], elem2Points[(j + 1) % 4],
+								intersection)) {
+
+				int lineNumber = getIntersectedLine(elem2, &intersection);
+				// if ((elem1Points[0].x < intersection.x && elem1Points[0].y < intersection.y
+				// 	&& elem1Points[1].x > intersection.x && elem1Points[1].y > intersection.y)
+				// 	|| (elem1Points[4].x < intersection.x && elem1Points[4].y < intersection.y
+				// 	&& elem1Points[3].x > intersection.x && elem1Points[3].y > intersection.y)) {
+				if (lineNumber == 1 || lineNumber == 3) {
+                    isHeightCollided = false;
+                }
+				else {
+                    isHeightCollided = true;
+                }
+				SDL_Log("Height collided %s", isHeightCollided ? "true" : "false");
+
 				delete[] elem1Points;
 				delete[] elem2Points;
 				return new SDL_FPoint{intersection.x, intersection.y};
-								}
+			}
 		}
 	}
 

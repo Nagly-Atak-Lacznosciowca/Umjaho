@@ -122,7 +122,8 @@ void Car::straighten() {
 // TODO finish: do something to rotate when hitting, especially close to parallel
 // We need to check which wall the car is hitting, then adjust the math accordingly
 void Car::collide(SceneElement* element) {
-    if (auto intersection = Game::checkElementCollision(this, element)) {
+    bool isHeightCollided = false;
+    if (auto intersection = Game::checkElementCollision(this, element, isHeightCollided)) {
 
         double absoluteAngle1 = SDL_fmod(this->angle, 2 * M_PI);
         double absoluteAngle2 = SDL_fmod(element->angle, 2 * M_PI);
@@ -144,34 +145,46 @@ void Car::collide(SceneElement* element) {
 
         double angleDiff = SDL_fabs(absoluteAngle1 - absoluteAngle2);
         // This works only for two of four walls (on width-wall hit) for now
-        if ((angleDiff > M_PI/4 && angleDiff < 3*M_PI/4) || (angleDiff > 5*M_PI/4 && angleDiff < 7*M_PI/4)) {
-            this->x += reverse.x;
-            this->y += reverse.y;
+        if (isHeightCollided) {
+            if ((angleDiff > 0 && angleDiff < M_PI/6) || (angleDiff > 11*M_PI/6 && angleDiff < 2*M_PI) || (angleDiff > 5*M_PI/6 && angleDiff < 7*M_PI/6)) {
+                this->x += reverse.x;
+                this->y += reverse.y;
+                SDL_Log("Colliding height (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
+                return;
+            }
         }
         else {
-            if (this->speed < 2) {
-                this->speed = -this->speed > 0 ? 1 : -1;
+            if ((angleDiff > 2*M_PI/6 && angleDiff < 4*M_PI/6) || (angleDiff > 8*M_PI/6 && angleDiff < 10*M_PI/6)) {
+                this->x += reverse.x;
+                this->y += reverse.y;
+                SDL_Log("Colliding width (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
+                return;
             }
-            else if (this->speed > 4) {
-                this->speed = -this->speed/2.5;
-                this->x += this->speed * SDL_sin(this->angle);
-                this->y += this->speed * SDL_cos(this->angle);
-            }
-            else this->speed = -this->speed/2.5;
+        }
 
+        if (this->speed < 2) {
+            this->speed = -this->speed > 0 ? 1 : -1;
+        }
+        else if (this->speed > 4) {
+            this->speed = -this->speed/2.5;
             this->x += this->speed * SDL_sin(this->angle);
             this->y += this->speed * SDL_cos(this->angle);
         }
+        else this->speed = -this->speed/2.5;
 
-        SDL_Log("Element collision %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
+        this->x += this->speed * SDL_sin(this->angle);
+        this->y += this->speed * SDL_cos(this->angle);
+
+        SDL_Log("Colliding (bounce) on %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
     }
 }
 
 // it's bwoken, it's bwoken!
 bool Car::canTurn(const std::vector<SceneElement*>& elements) {
+    bool isHeightCollided = false;
     for (const auto& element : elements) {
         if (element == this) continue;
-        if (auto intersection = Game::checkElementCollision(this, element)) {
+        if (auto intersection = Game::checkElementCollision(this, element, isHeightCollided)) {
             return false;
         }
     }
