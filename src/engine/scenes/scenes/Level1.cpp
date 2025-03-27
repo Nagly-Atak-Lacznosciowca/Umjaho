@@ -22,7 +22,7 @@ Level1::Level1() {
 
     auto walls = std::array<Barrier*, 3>{
         new Barrier(10,500, 700, 8),
-        new Barrier(900,100, 15, 200, 0.8),
+        new Barrier(900,200, 300, 300, 0.6),
         new Barrier(1250,500, 50, 500, -1.2)
     };
     for (auto wall: walls) {

@@ -69,7 +69,7 @@ bool getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
 	return false;
 }
 
-int getIntersectedLine(SceneElement *obstacle, SDL_FPoint *intersectionPoint) {
+int getIntersectedLine(const SceneElement *obstacle, const SDL_FPoint *intersectionPoint) {
 	auto obstaclePoints = obstacle->getPoints();
 	for (int i = 0; i < 4; i++) {
 		SDL_FPoint linePoint1 = obstaclePoints[i];
@@ -82,15 +82,15 @@ int getIntersectedLine(SceneElement *obstacle, SDL_FPoint *intersectionPoint) {
 		float dyl = linePoint2.y - linePoint1.y;
 
 		float crossProduct = dxc * dyl - dyc * dxl;
-		if (crossProduct == 0) {
-			return i+1;
+		if (crossProduct < 0.05 && crossProduct > -0.05) {		// Supposed to be 0, but float precision went on vacation, never came back
+			return i+1;											// I hate floats so much
 		}
 	}
 	return 0;
 }
 
 
-SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2, bool &isHeightCollided) {
+SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2) {
 	auto elem1Points = elem1->getPoints();
 	auto elem2Points = elem2->getPoints();
 
@@ -101,18 +101,7 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 								elem2Points[j], elem2Points[(j + 1) % 4],
 								intersection)) {
 
-				int lineNumber = getIntersectedLine(elem2, &intersection);
-				// if ((elem1Points[0].x < intersection.x && elem1Points[0].y < intersection.y
-				// 	&& elem1Points[1].x > intersection.x && elem1Points[1].y > intersection.y)
-				// 	|| (elem1Points[4].x < intersection.x && elem1Points[4].y < intersection.y
-				// 	&& elem1Points[3].x > intersection.x && elem1Points[3].y > intersection.y)) {
-				if (lineNumber == 1 || lineNumber == 3) {
-                    isHeightCollided = false;
-                }
-				else {
-                    isHeightCollided = true;
-                }
-				SDL_Log("Height collided %s", isHeightCollided ? "true" : "false");
+				elem1->lastCollidedWall = getIntersectedLine(elem2, &intersection);
 
 				delete[] elem1Points;
 				delete[] elem2Points;
