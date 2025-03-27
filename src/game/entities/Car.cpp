@@ -149,6 +149,10 @@ void Car::collide(SceneElement* element) {
             if ((angleDiff > 0 && angleDiff < M_PI/6) || (angleDiff > 11*M_PI/6 && angleDiff < 2*M_PI) || (angleDiff > 5*M_PI/6 && angleDiff < 7*M_PI/6)) {
                 this->x += reverse.x;
                 this->y += reverse.y;
+
+                if (angleDiff > M_PI) this->angle += 0.05;
+                else this->angle -= 0.05;
+
                 SDL_Log("Colliding height (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
                 return;
             }
@@ -157,6 +161,11 @@ void Car::collide(SceneElement* element) {
             if ((angleDiff > 2*M_PI/6 && angleDiff < 4*M_PI/6) || (angleDiff > 8*M_PI/6 && angleDiff < 10*M_PI/6)) {
                 this->x += reverse.x;
                 this->y += reverse.y;
+
+                // FIXME reversed angle
+                if (angleDiff > M_PI) this->angle -= 0.05;
+                else this->angle += 0.05;
+
                 SDL_Log("Colliding width (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
                 return;
             }
@@ -175,7 +184,7 @@ void Car::collide(SceneElement* element) {
         this->x += this->speed * SDL_sin(this->angle);
         this->y += this->speed * SDL_cos(this->angle);
 
-        SDL_Log("Colliding (bounce) on %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
+        SDL_Log("Colliding %s (bounce) on %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", isHeightCollided?"height":"width", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
     }
 }
 
