@@ -3,18 +3,18 @@
 
 #include <string>
 #include <map>
-#include <queue>
 
 #include "engine/sounds/Sound.h"
 #include "engine/sounds/SoundPlayback.h"
+#include "datatypes/CircularBuffer.h"
 
 class SoundManager {
 	public:
 		std::map<std::string, Sound*> sounds;
-		std::queue<SoundPlayback*> playing;
+		CircularBuffer<SoundPlayback*> playing = CircularBuffer<SoundPlayback *>(1024);
 		
 		SoundManager();
-		~SoundManager();
+		~SoundManager() = default;
 		
 		void registerSound(std::string name, Sound* sound);
 		int playSound(Sound* sound);
@@ -22,7 +22,7 @@ class SoundManager {
 		bool stopSound(int id);
 	
 	private:
-		int id = 0;
+		int id;
 };
 
 #endif //UMJAHO_SOUNDMANAGER_H

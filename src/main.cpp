@@ -34,6 +34,7 @@ auto game = new Game();
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+	
     game->init();
 
     return SDL_APP_CONTINUE;    // Carry on with the program
@@ -58,7 +59,6 @@ auto game = new Game();
 	    game->sceneManager.currentScene()->logic();
 
         lastActionTime = now;
-
     }
 
 

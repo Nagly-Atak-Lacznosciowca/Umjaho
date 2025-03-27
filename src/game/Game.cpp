@@ -4,7 +4,8 @@
 #include "engine/scenes/scenes/Menu.h"
 #include <filesystem>
 
-std::map<std::string, SDL_Texture*> Game::textures = {};
+std::map<std::string, SDL_Texture*> Game::textures;
+SoundManager Game::soundManager;
 
 Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {}
 
@@ -18,11 +19,13 @@ void Game::init() {
 			SDL_Log("Couldn't load WAV file: %s", SDL_GetError());
 		}
 		
-		// sounds.push_back(Sound {
-		// 	.audioSpec = audioSpec,
-		// 	.audioBuffer = *audioBuffer,
-		// 	.audioLength = (int)*audioLength
-		// });
+		auto *audioStream = SDL_CreateAudioStream(audioSpec, nullptr);
+		
+		Game::soundManager.registerSound(entry.path().filename().string(), new Sound(
+			audioStream,
+			*audioBuffer,
+			(int)*audioLength
+		));
 		
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
