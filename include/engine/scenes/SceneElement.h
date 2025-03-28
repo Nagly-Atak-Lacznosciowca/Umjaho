@@ -14,12 +14,15 @@ public:
 	
 	int zIndex;
 	int lastCollidedWall = 0;
-	
+    bool isCollidable = false;
+
 	SDL_Texture* texture = nullptr;
 
 	SceneElement(double x, double y, double width, double height, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 	
 	SDL_FPoint *getPoints() const;
+
+    virtual void collide(SceneElement* element);
 	
 	void render() const;
     virtual ~SceneElement();

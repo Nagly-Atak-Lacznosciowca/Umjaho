@@ -57,19 +57,8 @@ auto game = new Game();
         //current scene game tick
 	    Game::sceneManager.currentScene()->logic();
 
-        // check if the current scene is level 1
-        // temp solution to increase frequency of collision checks
-        // spoiler - it ain't doing crap
-        if (dynamic_cast<Level1*>(Game::sceneManager.currentScene())) {
-            auto level1 = dynamic_cast<Level1*>(Game::sceneManager.currentScene());
-            for (const auto& element : level1->contents) {
-                if (element != level1->player) {
-                    if (Game::checkElementCollision(level1->player, element)) {
-                        level1->player->collide(element);
-                    }
-                }
-            }
-        }
+
+
 
         lastActionTime = now;
     }

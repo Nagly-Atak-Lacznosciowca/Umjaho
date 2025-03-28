@@ -17,6 +17,7 @@ class Game {
 		unsigned long long lastTick = 0;
 		unsigned long long deltaTime = 0;
 		
+		
 		static Renderer renderer;
 		static std::map<std::string, SDL_Texture*> textures;
 		static SceneManager sceneManager;

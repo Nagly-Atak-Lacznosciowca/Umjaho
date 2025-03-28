@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "engine/scenes/SceneElement.h"
 #include "game/Game.h"
 
@@ -49,4 +50,7 @@ void SceneElement::render() const
 
 SceneElement::~SceneElement() {
     SDL_DestroyTexture(texture);
+}
+
+void SceneElement::collide(SceneElement *element) {
 }

@@ -10,16 +10,22 @@ class Car : public SceneElement {
 public:
 	static const double WIDTH;
 	static const double LENGTH;
+    static const double NITRO_MULTIPLIER;
+    static const int NEEDED_CHARGES;
+    static const int NITRO_TIME;
 	
 	const double brakeStrength = 0.1;
 	const double turnGain = 0.001;    // Angle gain per frame
 	
-	const double maxSpeed = 6;
+    double maxSpeed = 6;
 		
     double acceleration = 0.05;
     double speed = 0.0;
     double turnAngle = 0.0;     // Current angle of the wheels in radians
 	double maxTurnAngle = 0.03; // Max angle of the wheels
+
+
+
 
 	bool canMove = true;
 
@@ -32,7 +38,7 @@ public:
     void turnLeft();
     void turnRight();
     void straighten();
-	void collide(SceneElement* element);
+	void collide(SceneElement* element) override;
 };
 
 #endif //UMJAHO_CAR_H

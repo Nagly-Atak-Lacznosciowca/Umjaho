@@ -24,3 +24,11 @@ Scene::~Scene() {
         delete item;
     }
 }
+
+void Scene::deleteElement(SceneElement *element){
+    for(int i = 0; i<contents.size(); i++){
+        if(contents.at(i) == element){
+            contents.erase(contents.begin()+i);
+        }
+    }
+}
