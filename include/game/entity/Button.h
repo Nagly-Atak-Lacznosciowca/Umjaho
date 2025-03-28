@@ -6,7 +6,7 @@ class Button : public SceneElement {
 public:
     std::function<void()> action;
     void click() const;
-    Text* text;
+    Text* text = nullptr;
 
 
     Button(double x, double y, double width, double height, double angle, double zIndex, SDL_Texture *texture,
