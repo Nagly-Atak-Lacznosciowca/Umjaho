@@ -1,17 +1,18 @@
 #include "engine/scenes/SceneManager.h"
 
 SceneManager::SceneManager() {
-    scenes = std::queue<Scene*>();
+    scenes = std::stack<Scene*>();
 };
 
-void SceneManager::addScene(Scene *scene) {
+void SceneManager::pushScene(Scene *scene) {;
     scenes.push(scene);
 }
 
 void SceneManager::popScene() {
+	// delete scenes.top();
     scenes.pop();
 }
 
 Scene* SceneManager::currentScene() {
-    return scenes.front();
+    return scenes.top();
 }

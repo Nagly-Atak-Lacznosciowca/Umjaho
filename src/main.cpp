@@ -56,7 +56,7 @@ auto game = new Game();
 
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
-        game->sceneManager.currentScene()->logic();
+	    game->sceneManager.currentScene()->logic();
 
         // check if the current scene is level 1
         // temp solution to increase frequency of collision checks

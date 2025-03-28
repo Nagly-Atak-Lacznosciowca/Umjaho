@@ -23,11 +23,9 @@ void Game::init() {
 		textures.insert({entry.path().filename().string(), texture});
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
-
-	auto level = new Level1();
-    auto menu = new Menu([this]{ this->sceneManager.popScene(); });
-	sceneManager.addScene(menu);
-	sceneManager.addScene(level);
+	
+    auto menu = new Menu(&sceneManager);
+	sceneManager.pushScene(menu);
 }
 
 bool Game::checkSpeedControls()
