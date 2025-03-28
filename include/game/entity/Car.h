@@ -33,7 +33,6 @@ public:
     void turnRight();
     void straighten();
 	void collide(SceneElement* element);
-	bool canTurn(const std::vector<SceneElement*>& elements);
 };
 
 #endif //UMJAHO_CAR_H
