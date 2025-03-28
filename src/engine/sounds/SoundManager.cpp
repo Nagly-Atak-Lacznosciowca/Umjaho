@@ -37,3 +37,12 @@ SoundPlayback* SoundManager::playSound(const std::string &name)
 	
 	return this->playSound(sound);
 }
+
+bool SoundManager::setVolume(float volume)
+{
+	return SDL_SetAudioDeviceGain(Game::audioDeviceID, volume);
+}
+
+float SoundManager::getVolume() {
+	return SDL_GetAudioDeviceGain(Game::audioDeviceID);
+}
