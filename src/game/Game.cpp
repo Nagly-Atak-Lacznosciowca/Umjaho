@@ -75,6 +75,10 @@ int getIntersectedLine(const SceneElement *obstacle, const SDL_FPoint *intersect
 		SDL_FPoint linePoint1 = obstaclePoints[i];
 		SDL_FPoint linePoint2 = obstaclePoints[(i + 1) % 4];
 
+		if ((intersectionPoint->x == linePoint1.x && intersectionPoint->y == linePoint1.y) || (intersectionPoint->x == linePoint2.x && intersectionPoint->y == linePoint2.y)) {
+			return 0;
+		}
+
 		float dxc = intersectionPoint->x - linePoint1.x;
 		float dyc = intersectionPoint->y - linePoint1.y;
 
