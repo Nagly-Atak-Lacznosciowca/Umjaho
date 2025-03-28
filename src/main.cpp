@@ -24,7 +24,7 @@ auto game = new Game();
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
     SDL_SetAppMetadata("Umjaho", "1.0", "tl.krakow.pl.umjaho");
 
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
+    if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
@@ -35,6 +35,7 @@ auto game = new Game();
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+	
     game->init();
 
     return SDL_APP_CONTINUE;    // Carry on with the program
@@ -73,13 +74,11 @@ auto game = new Game();
         }
 
         lastActionTime = now;
-
     }
-
+  
     //scene render
     game->sceneManager.currentScene()->render(game->renderer);
-
-
+	
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);

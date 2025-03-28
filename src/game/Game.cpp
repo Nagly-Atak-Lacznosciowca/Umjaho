@@ -4,13 +4,36 @@
 #include "engine/scenes/scenes/Menu.h"
 #include <filesystem>
 
-std::map<std::string, SDL_Texture*> Game::textures = {};
+std::map<std::string, SDL_Texture*> Game::textures;
+SoundManager Game::soundManager;
+SDL_AudioDeviceID Game::audioDeviceID;
 
-Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {
-
-}
+Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {}
 
 void Game::init() {
+	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
+	
+	if (Game::audioDeviceID == 0)
+		SDL_Log("Couldn't open default audio playback device: %s", SDL_GetError());
+	
+	for (const auto &entry: std::filesystem::directory_iterator("../assets/sounds/")) {
+		auto *audioSpec = new SDL_AudioSpec;
+		auto **audioBuffer = new Uint8*;
+		auto *audioLength = new Uint32;
+		
+		if (!SDL_LoadWAV(entry.path().string().c_str(), audioSpec, audioBuffer, audioLength)) {
+			SDL_Log("Couldn't load WAV file: %s", SDL_GetError());
+		}
+		
+		Game::soundManager.registerSound(entry.path().filename().string(), new Sound(
+			audioSpec,
+			*audioBuffer,
+			(int)*audioLength
+		));
+		
+		SDL_Log("Loading %ls", entry.path().c_str());
+	}
+	
 	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
 		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
 		if (surface == nullptr) {
@@ -23,6 +46,8 @@ void Game::init() {
 		textures.insert({entry.path().filename().string(), texture});
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
+	
+	Game::soundManager.playSound("bus.wav");
 	
     auto menu = new Menu(&sceneManager);
 	sceneManager.pushScene(menu);
