@@ -7,8 +7,9 @@
 std::map<std::string, SDL_Texture*> Game::textures;
 SoundManager Game::soundManager;
 SDL_AudioDeviceID Game::audioDeviceID;
+SceneManager Game::sceneManager;
 
-Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {}
+Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()) {}
 
 void Game::init() {
 	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
@@ -47,7 +48,7 @@ void Game::init() {
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
 	
-	Game::soundManager.playSound("bus.wav");
+//	Game::soundManager.playSound("bus.wav");
 	
     auto menu = new Menu(&sceneManager);
 	sceneManager.pushScene(menu);

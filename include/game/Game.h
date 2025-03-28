@@ -18,7 +18,7 @@ class Game {
 		unsigned long long deltaTime = 0;
 		
 		Renderer renderer;
-		SceneManager sceneManager;
+		static SceneManager sceneManager;
 		
 		static std::map<std::string, SDL_Texture*> textures;
 		static SoundManager soundManager;

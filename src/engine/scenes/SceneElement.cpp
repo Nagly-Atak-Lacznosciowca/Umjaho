@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "engine/scenes/SceneElement.h"
 
 SceneElement::SceneElement(const double x, const double y, const double width, const double height, const double angle, const double zIndex, SDL_Texture* texture) : x(x), y(y), width(width), height(height), angle(angle), zIndex(zIndex), texture(texture) {}
@@ -48,4 +49,7 @@ void SceneElement::render(Renderer &renderer) const
 
 SceneElement::~SceneElement() {
     SDL_DestroyTexture(texture);
+}
+
+void SceneElement::collide(SceneElement *element) {
 }

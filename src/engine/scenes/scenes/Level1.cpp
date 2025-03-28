@@ -2,6 +2,7 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entity/obstacles/Barrier.h"
+#include "game/entity/powerups/Nitro.h"
 
 Level1::Level1() {
 
@@ -28,30 +29,33 @@ Level1::Level1() {
     for (auto wall: walls) {
         contents.push_back(wall);
     }
+    auto nitro = new Nitro(100, 50);
+    contents.push_back(nitro);
 }
 
 void Level1::logic() {
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
-        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
-        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
-        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
-        // if (player->canTurn(contents))
             SDL_PushEvent(&custom_event);
+    }
+
+    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
+        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO};
+        SDL_PushEvent(&custom_event);
     }
 
     if (!Game::checkSpeedControls()) {
@@ -60,8 +64,30 @@ void Level1::logic() {
     if (!Game::checkTurnControls()) {
         player->straighten();
     }
+    if(player->nitroTimer > 0){
+        player->accelerate();
+        player->nitroTimer--;
+        if(player->nitroTimer == 0){
+            player->maxSpeed /= Car::NITRO_MULTIPLIER;
+            player->acceleration /= Car::NITRO_MULTIPLIER;
+            player->nitroActive = false;
+            player->nitroCharges -= Car::NEEDED_CHARGES;
+        }
+        SDL_Log("kurwaaaaaaaaaa");
+    }
+
+    SDL_Log("accel: %f maxSpeed: %f", player->acceleration, player->maxSpeed);
 
     player->move();
+
+    for (const auto& element : contents) {
+        if (element != player) {
+            if (Game::checkElementCollision(player, element)) {
+                    player->collide(element);
+                    element->collide(player);
+            }
+        }
+    }
 }
 
 void Level1::handleEvent(SDL_Event* event) {
@@ -82,6 +108,15 @@ void Level1::handleEvent(SDL_Event* event) {
         case Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD: {
             if (player->speed > 0) player->brake();
             else player->reverse();
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_NITRO: {
+            if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
+                player->acceleration *= Car::NITRO_MULTIPLIER;
+                player->maxSpeed *= Car::NITRO_MULTIPLIER;
+                player->nitroTimer = Car::NITRO_TIME;
+                player->nitroActive = true;
+            }
             break;
         }
         default:

@@ -9,6 +9,9 @@
 
 const double Car::WIDTH = 50;
 const double Car::LENGTH = 100;
+const double Car::NITRO_MULTIPLIER = 1.8;
+const int Car::NEEDED_CHARGES = 3;
+const int Car::NITRO_TIME = 500;
 
 // length 3 array [dx, dy, dz]
 void Car::move() {
@@ -20,7 +23,9 @@ void Car::move() {
     this->y = vector[1];
 }
 
-Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {}
+Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {
+    isCollidable = true;
+}
 
 void Car::decelerate() {
     if (speed > 0) {
@@ -119,6 +124,9 @@ void Car::straighten() {
 
 
 void Car::collide(SceneElement* element) {
+    if(!element->isCollidable){
+        return;
+    }
     if (auto intersection = Game::checkElementCollision(this, element)) {
 
         double absoluteAngle1 = SDL_fmod(this->angle, 2 * M_PI);

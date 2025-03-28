@@ -15,6 +15,7 @@ public:
     virtual void logic() = 0;
     virtual void handleEvent(SDL_Event* event) = 0;
     SDL_Texture* background = nullptr;
+    void deleteElement(SceneElement* element);
 
 };
 

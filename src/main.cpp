@@ -57,27 +57,14 @@ auto game = new Game();
 
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
-	    game->sceneManager.currentScene()->logic();
+	    Game::sceneManager.currentScene()->logic();
 
-        // check if the current scene is level 1
-        // temp solution to increase frequency of collision checks
-        // spoiler - it ain't doing crap
-        if (dynamic_cast<Level1*>(game->sceneManager.currentScene())) {
-            auto level1 = dynamic_cast<Level1*>(game->sceneManager.currentScene());
-            for (const auto& element : level1->contents) {
-                if (element != level1->player) {
-                    if (Game::checkElementCollision(level1->player, element)) {
-                        level1->player->collide(element);
-                    }
-                }
-            }
-        }
 
         lastActionTime = now;
     }
   
     //scene render
-    game->sceneManager.currentScene()->render(game->renderer);
+    Game::sceneManager.currentScene()->render(game->renderer);
 	
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
@@ -104,7 +91,7 @@ auto game = new Game();
             break;
         }
     }
-    game->sceneManager.currentScene()->handleEvent(event);
+    Game::sceneManager.currentScene()->handleEvent(event);
 
     return SDL_APP_CONTINUE;
 }
