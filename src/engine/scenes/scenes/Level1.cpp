@@ -8,35 +8,50 @@ Level1::Level1() {
     player = new Player(10, 10);
     player->texture = Game::textures.at("car-blue-regular.bmp");
     SDL_Log("gfdgdsfg %d", player->texture->w);
-
-    opponent = new Opponent(300, 200);
-    opponent->texture = Game::textures.at("car-red-regular.bmp");
-
-    auto wall = new Barrier(10,10, 200, 80);
-
     contents.push_back(player);
-    contents.push_back(opponent);
-    contents.push_back(wall);
+
+    auto opponents = std::array<Opponent*, 3>{
+        new Opponent(300, 100, 150, 50, 0.5),
+        new Opponent(1400, 200),
+        new Opponent(240, 700, 50, 100, 1.5)
+    };
+    for (auto opponent: opponents) {
+        opponent->texture = Game::textures.at("car-red-regular.bmp");
+        contents.push_back(opponent);
+    }
+
+    auto walls = std::array<Barrier*, 3>{
+        new Barrier(10,500, 700, 8),
+        new Barrier(900,200, 300, 300, 0.6),
+        new Barrier(1250,500, 50, 500, -1.2)
+    };
+    for (auto wall: walls) {
+        contents.push_back(wall);
+    }
 }
 
 void Level1::logic() {
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
         auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
-        SDL_PushEvent(&custom_event);
+        // if (player->canTurn(contents))
+            SDL_PushEvent(&custom_event);
     }
 
     if (!Game::checkSpeedControls()) {
@@ -47,16 +62,6 @@ void Level1::logic() {
     }
 
     player->move();
-
-    for (const auto& element : contents) {
-        if (element!=player) {
-            if (auto intersection = Game::checkElementCollision(player, element)) {
-                SDL_Log("Element collision %f %f", intersection->x, intersection->y);
-            }
-
-        }
-    }
-
 }
 
 void Level1::handleEvent(SDL_Event* event) {

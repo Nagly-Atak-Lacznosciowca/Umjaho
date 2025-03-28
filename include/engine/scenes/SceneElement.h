@@ -13,6 +13,7 @@ public:
 	double angle; // In radians
 	
 	int zIndex;
+	int lastCollidedWall = 0;
 	
 	SDL_Texture* texture = nullptr;
 

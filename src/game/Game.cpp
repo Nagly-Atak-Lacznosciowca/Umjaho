@@ -44,96 +44,79 @@ bool Game::checkTurnControls()
 	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D];
 }
 
-SDL_FPoint* Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2, const SDL_FPoint p3, const SDL_FPoint p4)
-{
-	const float x1 = p1.x;
-	const float y1 = p1.y;
-	const float x2 = p2.x;
-	const float y2 = p2.y;
 
-	const float x3 = p3.x;
-	const float y3 = p3.y;
-	const float x4 = p4.x;
-	const float y4 = p4.y;
+bool getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
+					 const SDL_FPoint p3, const SDL_FPoint p4, SDL_FPoint &intersection) {
+	const float x1 = p1.x, y1 = p1.y;
+	const float x2 = p2.x, y2 = p2.y;
+	const float x3 = p3.x, y3 = p3.y;
+	const float x4 = p4.x, y4 = p4.y;
 
-	// math from https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Formulas
 	const float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-
-	if (denom == 0) {
-		return nullptr;
-	}
+	if (denom == 0) return false;
 
 	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
-	const float u = -1 * (((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
+	const float u = -(((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
 
-	if (!((t >= 0 && t <= 1) && (u >= 0 && u <= 1)))
-		return nullptr;
+	if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+		intersection.x = x1 + t * (x2 - x1);
+		intersection.y = y1 + t * (y2 - y1);
+		return true;
+	}
 
-	const float intersectionX = x1 + t * (x2 - x1);
-	const float intersectionY = y1 + t * (y2 - y1);
-
-	return new SDL_FPoint {intersectionX, intersectionY};
+	return false;
 }
 
-// TO DO support rotated cars
-SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2)
-{
-	auto elem1Points = elem1->getPoints();
-	auto elem2Points = elem2->getPoints();
-	
-	SDL_FPoint elem1Lines[][4] = {
-		{
-			elem1Points[0],
-			elem1Points[1]
-		},
-		{
-			elem1Points[1],
-			elem1Points[2]
-		},
-		{
-			elem1Points[2],
-			elem1Points[3]
-		},
-		{
-			elem1Points[3],
-			elem1Points[4]
-		},
-	};
-	
-	SDL_FPoint elem2Lines[][4] = {
-		{
-			elem2Points[0],
-			elem2Points[1]
-		},
-		{
-			elem2Points[1],
-			elem2Points[2]
-		},
-		{
-			elem2Points[2],
-			elem2Points[3]
-		},
-		{
-			elem2Points[3],
-			elem2Points[4]
-		},
-	};
-	
-	for (auto & elem1Line : elem1Lines)
-		for (auto & elem2Line : elem2Lines) {
-			SDL_FPoint* intersectionPoint = Game::getIntersection(elem1Line[0], elem1Line[1], elem2Line[0], elem2Line[1]);
-			if (intersectionPoint != nullptr) {
-				delete elem1Points;
-				delete elem2Points;
-				return intersectionPoint;
-			}
+int getIntersectedLine(const SceneElement *obstacle, const SDL_FPoint *intersectionPoint) {
+	auto obstaclePoints = obstacle->getPoints();
+	for (int i = 0; i < 4; i++) {
+		SDL_FPoint linePoint1 = obstaclePoints[i];
+		SDL_FPoint linePoint2 = obstaclePoints[(i + 1) % 4];
+
+		if ((intersectionPoint->x == linePoint1.x && intersectionPoint->y == linePoint1.y) || (intersectionPoint->x == linePoint2.x && intersectionPoint->y == linePoint2.y)) {
+			return 0;
 		}
 
-	delete elem1Points;
-	delete elem2Points;
-	
+		float dxc = intersectionPoint->x - linePoint1.x;
+		float dyc = intersectionPoint->y - linePoint1.y;
+
+		float dxl = linePoint2.x - linePoint1.x;
+		float dyl = linePoint2.y - linePoint1.y;
+
+		float crossProduct = dxc * dyl - dyc * dxl;
+		if (crossProduct < 0.05 && crossProduct > -0.05) {		// Supposed to be 0, but float precision went on vacation, never came back
+			return i+1;											// I hate floats so much
+		}
+	}
+	return 0;
+}
+
+
+SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2) {
+	auto elem1Points = elem1->getPoints();
+	auto elem2Points = elem2->getPoints();
+
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			SDL_FPoint intersection;
+			if (getIntersection(elem1Points[i], elem1Points[(i + 1) % 4],
+								elem2Points[j], elem2Points[(j + 1) % 4],
+								intersection)) {
+
+				elem1->lastCollidedWall = getIntersectedLine(elem2, &intersection);
+
+				delete[] elem1Points;
+				delete[] elem2Points;
+				return new SDL_FPoint{intersection.x, intersection.y};
+			}
+		}
+	}
+
+	delete[] elem1Points;
+	delete[] elem2Points;
 	return nullptr;
 }
+
 
 Game::~Game() {
     for (const auto &item: Game::textures) {
