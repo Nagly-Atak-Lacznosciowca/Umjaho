@@ -16,4 +16,4 @@ add_executable(${TEST_NAME} WIN32
 
 target_include_directories(${TEST_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
 #file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-target_link_libraries(${TEST_NAME} PRIVATE SDL3::SDL3)
+target_link_libraries(${TEST_NAME} PRIVATE SDL3_ttf::SDL3_ttf SDL3::SDL3)

@@ -33,6 +33,7 @@ auto game = new Game();
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    TTF_Init();
 	
     game->init();
 
@@ -56,9 +57,6 @@ auto game = new Game();
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
 	    Game::sceneManager.currentScene()->logic();
-
-
-
 
         lastActionTime = now;
     }
@@ -99,4 +97,5 @@ auto game = new Game();
 
 [[maybe_unused]] void SDL_AppQuit(void* appstate, SDL_AppResult result) {
     SDL_Log("cycki");
+    TTF_Quit();
 }

@@ -9,10 +9,16 @@ std::map<std::string, SDL_Texture*> Game::textures;
 SoundManager Game::soundManager;
 SDL_AudioDeviceID Game::audioDeviceID;
 SceneManager Game::sceneManager;
+TTF_Font* Game::font;
 
 Game::Game(): lastTick(0), deltaTime(0) {}
 
 void Game::init() {
+    Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 24);
+    if(Game::font == nullptr){
+        SDL_Log("font fgdgd %s", SDL_GetError());
+    }
+
 	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
 	
 	if (Game::audioDeviceID == 0)

@@ -3,8 +3,10 @@
 #include "game/Game.h"
 #include "game/entity/obstacles/Barrier.h"
 #include "game/entity/powerups/Nitro.h"
+#include "engine/scenes/Text.h"
 
 Level1::Level1() {
+    this->background = Game::textures.at("level1.bmp");
 
     player = new Player(10, 10);
     player->texture = Game::textures.at("car-blue-regular.bmp");
@@ -31,6 +33,10 @@ Level1::Level1() {
     }
     auto nitro = new Nitro(100, 50);
     contents.push_back(nitro);
+
+    auto text = new Text(100, 100);
+    text->setContent("fhdggfds");
+    contents.push_back(text);
 }
 
 void Level1::logic() {

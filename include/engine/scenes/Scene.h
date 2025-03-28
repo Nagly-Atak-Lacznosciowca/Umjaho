@@ -11,7 +11,6 @@ public:
     Scene() = default;
     ~Scene();
     std::vector<SceneElement*> contents;
-    void render(Renderer& renderer);
     virtual void logic() = 0;
     virtual void handleEvent(SDL_Event* event) = 0;
     SDL_Texture* background = nullptr;
