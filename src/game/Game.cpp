@@ -45,8 +45,8 @@ bool Game::checkTurnControls()
 }
 
 
-bool getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
-					 const SDL_FPoint p3, const SDL_FPoint p4, SDL_FPoint &intersection) {
+bool Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
+						   const SDL_FPoint p3, const SDL_FPoint p4, SDL_FPoint &intersection) {
 	const float x1 = p1.x, y1 = p1.y;
 	const float x2 = p2.x, y2 = p2.y;
 	const float x3 = p3.x, y3 = p3.y;
@@ -99,7 +99,7 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			SDL_FPoint intersection;
-			if (getIntersection(elem1Points[i], elem1Points[(i + 1) % 4],
+			if (Game::getIntersection(elem1Points[i], elem1Points[(i + 1) % 4],
 								elem2Points[j], elem2Points[(j + 1) % 4],
 								intersection)) {
 
