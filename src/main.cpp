@@ -60,12 +60,10 @@ auto game = new Game();
 
         lastActionTime = now;
     }
-
-
+	
     //scene render
     game->sceneManager.currentScene()->render(game->renderer);
-
-
+	
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
     SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
@@ -75,6 +73,17 @@ auto game = new Game();
     // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
     // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
     SDL_RenderPresent(game->renderer.SDLRenderer);
+	
+	const auto count = Game::soundManager.playing.count();
+	
+	for (int i = 0; i < count; i++) {
+		const auto sound = Game::soundManager.playing[i];
+		
+		const auto queued = SDL_GetAudioStreamQueued(sound->stream);
+		
+		if (queued < sound->length)
+			SDL_PutAudioStreamData(sound->stream, sound->data, sound->length);
+	}
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }

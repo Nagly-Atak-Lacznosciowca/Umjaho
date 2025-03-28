@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+#include "SDL3/SDL_audio.h"
+
 #include "engine/sounds/Sound.h"
 #include "engine/sounds/SoundPlayback.h"
 #include "datatypes/CircularBuffer.h"

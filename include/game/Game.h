@@ -22,6 +22,7 @@ class Game {
 		
 		static std::map<std::string, SDL_Texture*> textures;
 		static SoundManager soundManager;
+		static SDL_AudioDeviceID audioDeviceID;
 			
 	    Game();
 	    ~Game();

@@ -5,11 +5,11 @@
 
 class Sound {
 	public:
-		SDL_AudioStream *stream;
+		SDL_AudioSpec *spec;
 		Uint8 *data;
 		int length;
 		
-		Sound(SDL_AudioStream *stream, Uint8 *data, int length);
+		Sound(SDL_AudioSpec *spec, Uint8 *data, int length);
 		~Sound() = default;
 };
 

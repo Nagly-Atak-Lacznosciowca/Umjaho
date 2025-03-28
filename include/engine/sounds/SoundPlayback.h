@@ -1,9 +1,15 @@
 #ifndef UMJAHO_SOUNDPLAYBACK_H
 #define UMJAHO_SOUNDPLAYBACK_H
 
+#include "SDL3/SDL_audio.h"
+
 class SoundPlayback {
 	public:
-		SoundPlayback() = default;
+		SDL_AudioStream *stream;
+		Uint8 *data;
+		int length;
+		
+		SoundPlayback(SDL_AudioStream *stream, Uint8 *data, int length);
 		~SoundPlayback() = default;
 };
 

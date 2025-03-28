@@ -1,6 +1,9 @@
 #include <stdexcept>
 
+#include "SDL3/SDL_log.h"
+
 #include "engine/sounds/SoundManager.h"
+#include "game/Game.h"
 
 SoundManager::SoundManager(): sounds({}), playing(1024), id(0) {}
 
@@ -11,7 +14,19 @@ void SoundManager::registerSound(std::string name, Sound *sound)
 
 int SoundManager::playSound(Sound *sound)
 {
-	this->playing.push_back(new SoundPlayback(/*some data*/));
+	const auto stream = SDL_CreateAudioStream(sound->spec, nullptr);
+	
+	if (stream == nullptr)
+		SDL_Log("Couldn't create audio stream: %s", SDL_GetError());
+	
+	if (!SDL_BindAudioStream(Game::audioDeviceID, stream))
+		SDL_Log("Couldn't bind audio: %s", SDL_GetError());
+	
+	this->playing.push_back(new SoundPlayback(
+		stream,
+		sound->data,
+		sound->length
+	));
 	
 	return 0;
 }

@@ -6,10 +6,16 @@
 
 std::map<std::string, SDL_Texture*> Game::textures;
 SoundManager Game::soundManager;
+SDL_AudioDeviceID Game::audioDeviceID;
 
 Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {}
 
 void Game::init() {
+	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
+	
+	if (Game::audioDeviceID == 0)
+		SDL_Log("Couldn't open default audio playback device: %s", SDL_GetError());
+	
 	for (const auto &entry: std::filesystem::directory_iterator("../assets/sounds/")) {
 		auto *audioSpec = new SDL_AudioSpec;
 		auto **audioBuffer = new Uint8*;
@@ -19,94 +25,14 @@ void Game::init() {
 			SDL_Log("Couldn't load WAV file: %s", SDL_GetError());
 		}
 		
-		auto *audioStream = SDL_CreateAudioStream(audioSpec, nullptr);
-		
 		Game::soundManager.registerSound(entry.path().filename().string(), new Sound(
-			audioStream,
+			audioSpec,
 			*audioBuffer,
 			(int)*audioLength
 		));
 		
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
-	
-	auto *countPtr = new int();
-	
-	SDL_AudioDeviceID *audioPlaybackDevices = SDL_GetAudioPlaybackDevices(countPtr);
-	
-	int count = *countPtr;
-	
-	delete countPtr;
-	
-	if (audioPlaybackDevices == nullptr)
-	{
-		SDL_Log("Couldn't get playback devices: %s", SDL_GetError());
-	}
-	
-	// count is 0 on error
-	for (int i = 0; i < count; i++)
-	{
-		// SDL_AudioDeviceID currentDeviceID = audioPlaybackDevices[i]; // and cannot be null
-		//
-		// SDL_Log("Device %d name %s", currentDeviceID, SDL_GetAudioDeviceName(currentDeviceID));
-		//
-		// auto *currentSpec = new SDL_AudioSpec;
-		//
-		// if (!SDL_GetAudioDeviceFormat(currentDeviceID, currentSpec, nullptr)) {
-		// 	SDL_Log("Couldn't get audio device format for %d: %s", currentDeviceID, SDL_GetError());
-		// }
-		//
-		// auto *audioStream = SDL_CreateAudioStream(sounds[0].audioSpec, currentSpec);
-		//
-		// if (audioStream == nullptr) {
-		// 	SDL_Log("Couldn't create audio stream: %s", SDL_GetError());
-		// }
-		//
-		// // if (!SDL_PutAudioStreamData(audioStream, sounds[0].audioBuffer, sounds[0].audioLength)) {
-		// // 	SDL_Log("Couldn't put audio data to stream: %s", SDL_GetError());
-		// // }
-		//
-		// SDL_ResumeAudioStreamDevice(audioStream);
-	}
-	
-	// SDL_AudioDeviceID currentDeviceID = 31; // and cannot be null
-	//
-	// SDL_Log("Device %d name %s", currentDeviceID, SDL_GetAudioDeviceName(currentDeviceID));
-	//
-	// auto *currentSpec = new SDL_AudioSpec;
-	//
-	// if (!SDL_GetAudioDeviceFormat(currentDeviceID, currentSpec, nullptr)) {
-	// 	SDL_Log("Couldn't get audio device format for %d: %s", currentDeviceID, SDL_GetError());
-	// }
-	//
-	// if (SDL_OpenAudioDevice(currentDeviceID, currentSpec) == 0) {
-	// 	SDL_Log("Couldn't open audio device: %s", SDL_GetError());
-	// }
-	//
-	// auto *audioStream = SDL_CreateAudioStream(sounds[0].audioSpec, currentSpec);
-	//
-	// if (audioStream == nullptr) {
-	// 	SDL_Log("Couldn't create audio stream: %s", SDL_GetError());
-	// }
-	//
-	// if (!SDL_PutAudioStreamData(audioStream, sounds[0].audioBuffer, sounds[0].audioLength)) {
-	// 	SDL_Log("Couldn't put audio data to stream: %s", SDL_GetError());
-	// }
-	//
-	// SDL_ResumeAudioStreamDevice(audioStream);
-
-	SDL_free(audioPlaybackDevices);
-	
-	// SDL_AudioSpec *defaultPlaybackSpec;
-	// SDL_AudioSpec *defaultRecordingSpec;
-	//
-	// SDL_GetAudioDeviceFormat(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, defaultPlaybackSpec, nullptr);
-	// SDL_GetAudioDeviceFormat(SDL_AUDIO_DEVICE_DEFAULT_RECORDING, defaultRecordingSpec, nullptr);
-	//
-	// this->sfxStream = SDL_CreateAudioStream(
-	// 	defaultRecordingSpec,
-	// 	defaultPlaybackSpec
-	// );
 	
 	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
 		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
@@ -120,6 +46,8 @@ void Game::init() {
 		textures.insert({entry.path().filename().string(), texture});
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
+	
+	Game::soundManager.playSound("bus.wav");
 	
     auto menu = new Menu(&sceneManager);
 	sceneManager.pushScene(menu);
