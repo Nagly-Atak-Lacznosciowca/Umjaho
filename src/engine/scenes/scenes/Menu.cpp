@@ -33,8 +33,8 @@ Menu::Menu() {
     const float scaleY = (float)height / (float)this->background->h;
 
     auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToLevelMenu);
-    auto *settingsButton = new Button(2304 * scaleX, 1385 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToSettingsMenu);
-    auto *exitButton = new Button(2304 * scaleX, 1835 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, exitGame);
+    auto *settingsButton = new Button(2304 * scaleX, 1389 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToSettingsMenu);
+    auto *exitButton = new Button(2304 * scaleX, 1838 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, exitGame);
 	
     this->contents.push_back(playButton);
     this->contents.push_back(settingsButton);
