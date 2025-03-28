@@ -13,15 +13,13 @@
 class SoundManager {
 	public:
 		std::map<std::string, Sound*> sounds;
-		CircularBuffer<SoundPlayback*> playing = CircularBuffer<SoundPlayback *>(1024);
 		
 		SoundManager();
 		~SoundManager() = default;
 		
-		void registerSound(std::string name, Sound* sound);
-		int playSound(Sound* sound);
-		int playSound(std::string name);
-		bool stopSound(int id);
+		void registerSound(const std::string &name, Sound* sound);
+		SoundPlayback* playSound(Sound* sound);
+		SoundPlayback* playSound(const std::string &name);
 	
 	private:
 		int id;
