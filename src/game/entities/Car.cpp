@@ -156,7 +156,7 @@ void Car::collide(SceneElement* element) {
 
         // REACTION A
         // The car is colliding with height and close to parallel to it -> it slides along it
-        if (this->lastCollidedWall == 2 || this->lastCollidedWall == 4 && inHeightSlideRange) {
+        if ((this->lastCollidedWall == 2 || this->lastCollidedWall == 4) && inHeightSlideRange) {
             this->x += reverse.x;
             this->y += reverse.y;
 
@@ -169,7 +169,7 @@ void Car::collide(SceneElement* element) {
             return;
         }
         // Same for width
-        if (this->lastCollidedWall == 1 || this->lastCollidedWall == 3 && inWidthSlideRange) {
+        if ((this->lastCollidedWall == 1 || this->lastCollidedWall == 3) && inWidthSlideRange) {
             this->x += reverse.x;
             this->y += reverse.y;
 
