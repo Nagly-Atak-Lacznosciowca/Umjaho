@@ -19,6 +19,7 @@ void startLevel3() {
 
 LevelMenu::LevelMenu() {
 	this->background = Game::textures.at("level-menu.bmp");
+
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();

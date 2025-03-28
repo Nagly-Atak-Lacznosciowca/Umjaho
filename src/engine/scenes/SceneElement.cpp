@@ -31,7 +31,7 @@ SDL_FPoint *SceneElement::getPoints() const {
 	return result;
 }
 
-void SceneElement::render() const
+void SceneElement::render()
 {
 	auto rect = SDL_FRect{ static_cast<float>(this->x),
                            static_cast<float>(this->y),

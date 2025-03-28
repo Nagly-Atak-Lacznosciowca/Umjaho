@@ -3,9 +3,16 @@
 #include "game/entity/Button.h"
 #include "engine/scenes/scenes/Level1.h"
 #include "engine/scenes/scenes/LevelMenu.h"
+#include "engine/scenes/scenes/SettingsMenu.h"
 
 void goToLevelMenu() {
 	Game::sceneManager.pushScene(new LevelMenu());
+}
+void goToSettingsMenu(){
+    Game::sceneManager.pushScene(new SettingsMenu());
+}
+void exitGame(){
+    SDL_PushEvent(new SDL_Event{SDL_EVENT_QUIT});
 }
 
 Menu::Menu() {
@@ -13,21 +20,25 @@ Menu::Menu() {
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
-	
+
 	SDL_GetWindowSize(Game::renderer.SDLWindow, windowWidth, windowHeight);
-	
+
 	const int width = *windowWidth;
 	const int height = *windowHeight;
-	
+
 	delete windowWidth;
 	delete windowHeight;
-	
+
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
 
     auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToLevelMenu);
+    auto *settingsButton = new Button(2304 * scaleX, 1385 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToSettingsMenu);
+    auto *exitButton = new Button(2304 * scaleX, 1835 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, exitGame);
 	
     this->contents.push_back(playButton);
+    this->contents.push_back(settingsButton);
+    this->contents.push_back(exitButton);
 }
 
 void Menu::logic() {

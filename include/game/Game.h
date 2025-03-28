@@ -10,6 +10,7 @@
 #include "entity/Car.h"
 #include "engine/scenes/SceneManager.h"
 #include "engine/sounds/SoundManager.h"
+#include "SDL3_ttf/SDL_ttf.h"
 
 class Game {
 	public:
@@ -23,6 +24,7 @@ class Game {
 		static SceneManager sceneManager;
 		static SoundManager soundManager;
 		static SDL_AudioDeviceID audioDeviceID;
+        static TTF_Font* font;
 			
 	  Game();
 	  ~Game();
