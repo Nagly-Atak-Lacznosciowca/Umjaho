@@ -24,7 +24,7 @@ public:
 
     virtual void collide(SceneElement* element);
 	
-	void render(Renderer &renderer) const;
+	void render() const;
     virtual ~SceneElement();
 };
 

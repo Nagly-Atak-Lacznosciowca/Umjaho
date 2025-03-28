@@ -17,10 +17,10 @@ class Game {
 		unsigned long long lastTick = 0;
 		unsigned long long deltaTime = 0;
 		
-		Renderer renderer;
-		static SceneManager sceneManager;
 		
+		static Renderer renderer;
 		static std::map<std::string, SDL_Texture*> textures;
+		static SceneManager sceneManager;
 		static SoundManager soundManager;
 		static SDL_AudioDeviceID audioDeviceID;
 			

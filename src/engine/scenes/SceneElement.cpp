@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include "engine/scenes/SceneElement.h"
+#include "game/Game.h"
 
 SceneElement::SceneElement(const double x, const double y, const double width, const double height, const double angle, const double zIndex, SDL_Texture* texture) : x(x), y(y), width(width), height(height), angle(angle), zIndex(zIndex), texture(texture) {}
 
@@ -30,7 +31,7 @@ SDL_FPoint *SceneElement::getPoints() const {
 	return result;
 }
 
-void SceneElement::render(Renderer &renderer) const
+void SceneElement::render() const
 {
 	auto rect = SDL_FRect{ static_cast<float>(this->x),
                            static_cast<float>(this->y),
@@ -38,11 +39,11 @@ void SceneElement::render(Renderer &renderer) const
                            static_cast<float>(this->height) };
 
 //    SDL_FPoint pivot = { 0.0f, 0.0f };
-    SDL_RenderTextureRotated(renderer.SDLRenderer, texture, nullptr, &rect, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);
+    SDL_RenderTextureRotated(Game::renderer.SDLRenderer, texture, nullptr, &rect, -angle * (180.0f / SDL_PI_F), nullptr, SDL_FLIP_NONE);
 
 #ifdef DEBUG
     const auto points = getPoints();
-    SDL_RenderLines(renderer.SDLRenderer, points, 5);
+    SDL_RenderLines(Game::renderer.SDLRenderer, points, 5);
     delete points;
 #endif
 }

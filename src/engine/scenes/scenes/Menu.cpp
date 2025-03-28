@@ -2,19 +2,31 @@
 #include "game/Game.h"
 #include "game/entity/Button.h"
 #include "engine/scenes/scenes/Level1.h"
+#include "engine/scenes/scenes/LevelMenu.h"
 
-void Menu::startLevel() {
-	this->sceneManager->pushScene(new Level1());
+void goToLevelMenu() {
+	Game::sceneManager.pushScene(new LevelMenu());
 }
 
-Menu::Menu(SceneManager* sceneManager) {
-	this->sceneManager = sceneManager;
-	
+Menu::Menu() {
     this->background = Game::textures.at("title.bmp");
-    const float scaleX = 1600.0f / (float)(this->background->w);
-    const float scaleY = 900.0f / (float)(this->background->h);
+	
+	int *windowWidth = new int();
+	int *windowHeight = new int();
+	
+	SDL_GetWindowSize(Game::renderer.SDLWindow, windowWidth, windowHeight);
+	
+	const int width = *windowWidth;
+	const int height = *windowHeight;
+	
+	delete windowWidth;
+	delete windowHeight;
+	
+    const float scaleX = (float)width / (float)this->background->w;
+    const float scaleY = (float)height / (float)this->background->h;
 
-    auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, [this] {this->startLevel();});
+    auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, goToLevelMenu);
+	
     this->contents.push_back(playButton);
 }
 

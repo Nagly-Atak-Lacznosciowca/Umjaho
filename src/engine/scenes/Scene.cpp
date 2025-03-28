@@ -1,10 +1,13 @@
-#include "engine/scenes/Scene.h"
 #include <stdexcept>
 
-void Scene::render(Renderer& renderer) {
-    SDL_RenderTexture(renderer.SDLRenderer, this->background, nullptr, nullptr);
+#include "engine/scenes/Scene.h"
+#include "game/Game.h"
+
+void Scene::render() {
+    SDL_RenderTexture(Game::renderer.SDLRenderer, this->background, nullptr, nullptr);
+	
     for (auto& sceneElement : this->contents) {
-        sceneElement->render(renderer);
+        sceneElement->render();
     }
 }
 

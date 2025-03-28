@@ -16,7 +16,7 @@ public:
     virtual void handleEvent(SDL_Event* event) = 0;
     SDL_Texture* background = nullptr;
     void deleteElement(SceneElement* element);
-
+    void render();
 };
 
 #endif //UMJAHO_SCENE_H
