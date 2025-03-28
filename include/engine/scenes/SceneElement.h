@@ -21,7 +21,7 @@ public:
 	
 	SDL_FPoint *getPoints() const;
 	
-	void render(Renderer &renderer) const;
+	void render() const;
     virtual ~SceneElement();
 };
 

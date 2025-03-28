@@ -8,8 +8,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 file(GLOB_RECURSE HEADERS "${CMAKE_SOURCE_DIR}/include/*.h")
 file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
-message("${CMAKE_SOURCE_DIR}/include/game/Game.h")
-
 add_executable(${TEST_NAME} WIN32
     ${TEST_DIR}/main.cpp
     ${SOURCES}
