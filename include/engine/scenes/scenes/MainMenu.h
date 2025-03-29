@@ -14,6 +14,7 @@ class MainMenu : public Menu {
 	private:
 		static void goToLevelMenu();
 		static void goToSettingsMenu();
+		static void goToCredits();
 		static void exitGame();
 };
 

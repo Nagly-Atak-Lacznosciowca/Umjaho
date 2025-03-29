@@ -13,10 +13,6 @@ bool SoundPlayback::play() {
 	return SDL_PutAudioStreamData(this->stream, this->data, this->length);
 }
 
-bool SoundPlayback::pause() {
-	return SDL_PauseAudioStreamDevice(this->stream);
-}
-
-bool SoundPlayback::resume() {
-	return SDL_ResumeAudioStreamDevice(this->stream);
+bool SoundPlayback::stop() {
+	return SDL_SetAudioStreamGetCallback(this->stream, nullptr, nullptr) && SDL_ClearAudioStream(this->stream);
 }
