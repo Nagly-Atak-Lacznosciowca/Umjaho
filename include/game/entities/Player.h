@@ -2,7 +2,7 @@
 #define UMJAHO_PLAYER_H
 
 #include "engine/Renderer.h"
-#include "game/entity/Car.h"
+#include "game/entities/Car.h"
 
 class Player : public Car {
     public:

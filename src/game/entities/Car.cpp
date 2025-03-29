@@ -1,4 +1,4 @@
-#include "game/entity/Car.h"
+#include "game/entities/Car.h"
 
 #include <cmath>
 
@@ -7,9 +7,9 @@
 #include "engine/Renderer.h"
 #include "array"
 
-const double Car::WIDTH = 50;
-const double Car::LENGTH = 100;
-const double Car::NITRO_MULTIPLIER = 1.8;
+const double Car::WIDTH = 20;
+const double Car::LENGTH = 40;
+const double Car::NITRO_MULTIPLIER = 1.5;
 const int Car::NEEDED_CHARGES = 3;
 const int Car::NITRO_TIME = 500;
 

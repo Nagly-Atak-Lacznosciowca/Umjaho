@@ -1,7 +1,7 @@
 #ifndef UMJAHO_POWERUP_H
 #define UMJAHO_POWERUP_H
 #include "engine/scenes/SceneElement.h"
-#include "game/entity/Player.h"
+#include "game/entities/Player.h"
 
 class PowerUp : public SceneElement{
     public:

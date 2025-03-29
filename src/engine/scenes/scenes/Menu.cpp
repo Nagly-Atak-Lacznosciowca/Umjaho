@@ -1,6 +1,6 @@
 #include "engine/scenes/scenes/Menu.h"
 #include "game/Game.h"
-#include "game/entity/Button.h"
+#include "engine/scenes/controls/Button.h"
 #include "engine/scenes/scenes/Level1.h"
 #include "engine/scenes/scenes/LevelMenu.h"
 #include "engine/scenes/scenes/SettingsMenu.h"
@@ -54,10 +54,10 @@ void Menu::handleEvent(SDL_Event *event) {
                 SDL_GetMouseState(&xPos, &yPos);
 
                 for (const auto &sceneElement : this->contents) {
-                    if (auto *button = dynamic_cast<Button*>(sceneElement)) {
-                        if (xPos >= button->x && xPos <= button->x + button->width &&
-                            yPos >= button->y && yPos <= button->y + button->height) {
-                            button->click();
+                    if (auto *control = dynamic_cast<Control*>(sceneElement)) {
+                        if (xPos >= control->x && xPos <= control->x + control->width &&
+                            yPos >= control->y && yPos <= control->y + control->height) {
+                            control->click(xPos,yPos);
                         }
                     }
                 }

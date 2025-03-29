@@ -7,7 +7,7 @@
 #include <string>
 
 #include "engine/Renderer.h"
-#include "entity/Car.h"
+#include "entities/Car.h"
 #include "engine/scenes/SceneManager.h"
 #include "engine/sounds/SoundManager.h"
 #include "SDL3_ttf/SDL_ttf.h"

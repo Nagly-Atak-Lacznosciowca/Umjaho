@@ -1,6 +1,6 @@
 #include "engine/scenes/scenes/SettingsMenu.h"
-#include "game/entity/Button.h"
 #include "game/Game.h"
+#include "engine/scenes/controls/AudioControl.h"
 
 void returnToMenu(){
     Game::sceneManager.popScene();
@@ -25,7 +25,11 @@ SettingsMenu::SettingsMenu() {
 
     auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], returnToMenu, "Return");
 
+    auto audioControl = new AudioControl(100*scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
+
+
     contents.push_back(button);
+    contents.push_back(audioControl);
 }
 
 void SettingsMenu::handleEvent(SDL_Event *event) {
@@ -36,10 +40,11 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
                 SDL_GetMouseState(&xPos, &yPos);
 
                 for (const auto &sceneElement : this->contents) {
-                    if (auto *button = dynamic_cast<Button*>(sceneElement)) {
-                        if (xPos >= button->x && xPos <= button->x + button->width &&
-                            yPos >= button->y && yPos <= button->y + button->height) {
-                            button->click();
+                    if (auto *control = dynamic_cast<Control*>(sceneElement)) {
+                        if (xPos >= control->x && xPos <= control->x + control->width &&
+                            yPos >= control->y && yPos <= control->y + control->height) {
+                            SDL_Log("click %f %f", xPos, yPos);
+                            control->click(xPos, yPos);
                         }
                     }
                 }

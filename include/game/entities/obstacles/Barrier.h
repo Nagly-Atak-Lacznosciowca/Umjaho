@@ -1,6 +1,6 @@
 #ifndef UMJAHO_BARRIER_H
 #define UMJAHO_BARRIER_H
-#include "game/entity/obstacles/Obstacle.h"
+#include "game/entities/obstacles/Obstacle.h"
 
 class Barrier : public Obstacle {
     public:

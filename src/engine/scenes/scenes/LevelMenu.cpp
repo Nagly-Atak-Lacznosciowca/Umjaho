@@ -2,7 +2,7 @@
 
 #include "engine/scenes/scenes/LevelMenu.h"
 #include "game/Game.h"
-#include "game/entity/Button.h"
+#include "engine/scenes/controls/Button.h"
 #include "engine/scenes/scenes/Level1.h"
 
 void startLevel1() {
@@ -67,7 +67,7 @@ void LevelMenu::handleEvent(SDL_Event *event) {
 					if (auto *button = dynamic_cast<Button*>(sceneElement)) {
 						if (xPos >= button->x && xPos <= button->x + button->width &&
 						yPos >= button->y && yPos <= button->y + button->height) {
-							button->click();
+							button->click(xPos,yPos);
 						}
 					}
 				}
