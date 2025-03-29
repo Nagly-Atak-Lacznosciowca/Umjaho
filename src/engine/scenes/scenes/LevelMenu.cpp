@@ -2,8 +2,8 @@
 
 #include "engine/scenes/scenes/LevelMenu.h"
 #include "game/Game.h"
-#include "engine/scenes/controls/Button.h"
 #include "engine/scenes/scenes/Level1.h"
+#include "engine/scenes/controls/LevelButton.h"
 
 void startLevel1() {
 	Game::sceneManager.pushScene(new Level1());
@@ -44,9 +44,9 @@ LevelMenu::LevelMenu() {
 	
 	auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], [] {Game::sceneManager.popScene();}, "Return");
 
-	auto *level1Button = new Button((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel1);
-	auto *level2Button = new Button((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel2);
-	auto *level3Button = new Button((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel3);
+	auto *level1Button = new LevelButton((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), new Level1, "Level 1", Game::textures.at("level1.bmp"));
+	auto *level2Button = new LevelButton((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), nullptr, "Level 2", nullptr);
+	auto *level3Button = new LevelButton((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), nullptr, "Level3", nullptr);
 	
 	this->contents.push_back(returnButton);
 	
