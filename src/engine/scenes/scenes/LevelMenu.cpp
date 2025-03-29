@@ -42,11 +42,15 @@ LevelMenu::LevelMenu() {
 	
 	const auto gapX = (this->background->w - elementCount * blockWidth) / (elementCount + 1);
 	const auto gapY = (this->background->h - blockHeight) / 2;
+	
+	auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], [] {Game::sceneManager.popScene();}, "Return");
 
 	auto *level1Button = new Button((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel1);
 	auto *level2Button = new Button((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel2);
 	auto *level3Button = new Button((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), startLevel3);
-
+	
+	this->contents.push_back(returnButton);
+	
 	this->contents.push_back(level1Button);
 	this->contents.push_back(level2Button);
 	this->contents.push_back(level3Button);
