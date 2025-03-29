@@ -5,11 +5,11 @@
 
 class Menu : public Scene {
 	public:
-	    Menu();
-		~Menu() = default;
+		Menu() = default;
+		virtual ~Menu() = default;
 		
-	    void logic() override;
-	    void handleEvent(SDL_Event *event) override;
+		void logic() override;
+		void handleEvent(SDL_Event *event) override;
 	private:
 };
 

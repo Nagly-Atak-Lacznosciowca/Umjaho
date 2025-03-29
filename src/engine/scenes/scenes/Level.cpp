@@ -1,30 +1,26 @@
 #include "engine/scenes/scenes/Level.h"
 #include "game/Event.h"
 #include "game/Game.h"
+#include "engine/scenes/scenes/PauseMenu.h"
 
 void Level::logic() {
-
+	
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
-        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT};
-        SDL_PushEvent(&custom_event);
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT});
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
-        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT};
-        SDL_PushEvent(&custom_event);
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT});
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
-        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD};
-        SDL_PushEvent(&custom_event);
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD});
     }
     else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
-        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD};
-        SDL_PushEvent(&custom_event);
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD});
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
-        auto custom_event = SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO};
-        SDL_PushEvent(&custom_event);
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO});
     }
 
     if (!Game::checkSpeedControls()) {
@@ -85,6 +81,10 @@ void Level::handleEvent(SDL_Event* event) {
             }
             break;
         }
+		case SDL_EVENT_KEY_DOWN:
+			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
+				Game::sceneManager.pushScene(new PauseMenu());
+			break;
         default:
             break;
     }
