@@ -9,7 +9,7 @@ void SceneManager::pushScene(Scene *scene) {;
 }
 
 void SceneManager::popScene() {
-	// delete scenes.top();
+	delete scenes.top();
     scenes.pop();
 }
 

@@ -5,6 +5,7 @@
 #include "engine/scenes/scenes/LevelMenu.h"
 #include "engine/scenes/scenes/SettingsMenu.h"
 #include "engine/scenes/scenes/Menu.h"
+#include "engine/scenes/scenes/Credits.h"
 
 void MainMenu::goToLevelMenu() {
 	Game::sceneManager.pushScene(new LevelMenu());
@@ -12,6 +13,10 @@ void MainMenu::goToLevelMenu() {
 
 void MainMenu::goToSettingsMenu(){
     Game::sceneManager.pushScene(new SettingsMenu());
+}
+
+void MainMenu::goToCredits() {
+	Game::sceneManager.pushScene(new Credits());
 }
 
 void MainMenu::exitGame(){
@@ -37,10 +42,12 @@ MainMenu::MainMenu() {
 
     auto *playButton = new Button(2304 * scaleX, 1168 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, MainMenu::goToLevelMenu);
     auto *settingsButton = new Button(2304 * scaleX, 1389 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, MainMenu::goToSettingsMenu);
+	auto *creditsButton = new Button(2304 * scaleX, 1612 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, MainMenu::goToCredits);
     auto *exitButton = new Button(2304 * scaleX, 1838 * scaleY, 1280 * scaleX, 192 * scaleY, 0, 1, nullptr, MainMenu::exitGame);
 	
     this->contents.push_back(playButton);
     this->contents.push_back(settingsButton);
+	this->contents.push_back(creditsButton);
     this->contents.push_back(exitButton);
 }
 
