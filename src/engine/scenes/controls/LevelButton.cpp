@@ -5,17 +5,10 @@ LevelButton::LevelButton(double x, double y, double width, double height, double
                          SDL_Texture *texture, Level *level, const std::string &text, SDL_Texture* image): Button(x,y,width,height,angle, zIndex,texture,
                                                                                                                   nullptr), level(level), image(image) {
     if(!text.empty()){
-        auto *textWidth = new int();
-        auto *textHeight = new int();
-
-        if (!TTF_GetStringSize(Game::font, text.data(), text.length(), textWidth, textHeight)) {
-            SDL_Log("Couldn't get string size: %s", SDL_GetError());
-        }
-
-        this->text = new Text(x + width/2 - (float)*textWidth/2, y + height/5 - (float)*textHeight/2, *textWidth, *textHeight, angle, zIndex, text);
-
-        delete textWidth;
-        delete textHeight;
+		const auto scale = height / 600;
+        this->text = new Text(0, 0, 0, height/8, angle, zIndex, text);
+	    this->text->x = x + width/2 - this->text->width/2;
+	    this->text->y = y + 50 * scale - this->text->height/2;
     }
 };
 
@@ -27,7 +20,11 @@ void LevelButton::click(float x, float y) const {
 
 void LevelButton::render() {
     Button::render();
+	
+	const auto mapWidth = 390;
+	const auto mapHeight = 390;
+	
     SDL_RenderTexture(Game::renderer.SDLRenderer, this->image, nullptr,
-                      new SDL_FRect{static_cast<float>(x+width/4), static_cast<float>(y + height/3), (float)width/2, (float)width/2});
+                      new SDL_FRect{static_cast<float>(x + width/2 - (float)mapWidth/2), static_cast<float>(y + height/2 - (float)mapHeight/2), static_cast<float>(mapWidth), static_cast<float>(mapHeight)});
 }
 

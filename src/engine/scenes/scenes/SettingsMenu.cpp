@@ -20,10 +20,16 @@ SettingsMenu::SettingsMenu() {
     const float scaleY = (float)height / (float)this->background->h;
 
     auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], [] {Game::sceneManager.popScene();}, "Return");
-
-    auto audioControl = new AudioControl(100*scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
+	
+	const float settingsX = 200.0f;
+	const float labelGap = 10.0f;
+	
+	Text *audioLabel = new Text(settingsX * scaleX, 200*scaleY, 0, 50 * scaleY, 0, 1, "Volume");
+	
+    auto audioControl = new AudioControl((settingsX + labelGap + (float)audioLabel->width) * scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
     contents.push_back(button);
+	contents.push_back(audioLabel);
     contents.push_back(audioControl);
 }
 

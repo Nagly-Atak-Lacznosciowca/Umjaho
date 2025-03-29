@@ -14,7 +14,7 @@ TTF_Font* Game::font;
 Game::Game(): lastTick(0), deltaTime(0) {}
 
 void Game::init() {
-    Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 24);
+    Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 1000);
     if(Game::font == nullptr){
         SDL_Log("font fgdgd %s", SDL_GetError());
     }
@@ -54,6 +54,8 @@ void Game::init() {
 		textures.insert({entry.path().filename().string(), texture});
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
+	
+	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
 	
 	// Game::soundManager.playSound("bus.wav");
 	

@@ -96,6 +96,5 @@ auto game = new Game();
 
 
 [[maybe_unused]] void SDL_AppQuit(void* appstate, SDL_AppResult result) {
-    SDL_Log("cycki");
     TTF_Quit();
 }
