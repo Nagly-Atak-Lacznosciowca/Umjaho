@@ -1,9 +1,9 @@
 #ifndef UMJAHO_LEVELMENU_H
 #define UMJAHO_LEVELMENU_H
 
-#include "engine/scenes/Scene.h"
+#include "Menu.h"
 
-class LevelMenu: public Scene {
+class LevelMenu: public Menu {
 	public:
 		LevelMenu();
 		~LevelMenu() = default;

@@ -23,34 +23,21 @@ SettingsMenu::SettingsMenu() {
 
     auto audioControl = new AudioControl(100*scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
-
     contents.push_back(button);
     contents.push_back(audioControl);
 }
 
+void SettingsMenu::logic()
+{}
+
 void SettingsMenu::handleEvent(SDL_Event *event) {
-    switch (event->type) {
-        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-            if (event->button.button == SDL_BUTTON_LEFT) {
-                float xPos, yPos;
-                SDL_GetMouseState(&xPos, &yPos);
-
-                for (const auto &sceneElement : this->contents) {
-                    if (auto *control = dynamic_cast<Control*>(sceneElement)) {
-                        if (xPos >= control->x && xPos <= control->x + control->width &&
-                            yPos >= control->y && yPos <= control->y + control->height) {
-                            SDL_Log("click %f %f", xPos, yPos);
-                            control->click(xPos, yPos);
-                        }
-                    }
-                }
-            }
-
-            break;
-        }
-    }
-}
-
-void SettingsMenu::logic() {
-
+	Menu::handleEvent(event);
+	
+	switch (event->type)
+	{
+		case SDL_EVENT_KEY_DOWN:
+			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
+				Game::sceneManager.popScene();
+			break;
+	}
 }

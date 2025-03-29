@@ -1,7 +1,7 @@
 
 #include "game/Game.h"
 #include "engine/scenes/scenes/Level1.h"
-#include "engine/scenes/scenes/Menu.h"
+#include "engine/scenes/scenes/MainMenu.h"
 #include <filesystem>
 
 Renderer Game::renderer;
@@ -57,7 +57,7 @@ void Game::init() {
 	
 	// Game::soundManager.playSound("bus.wav");
 	
-    auto menu = new Menu();
+    auto menu = new MainMenu();
 	Game::sceneManager.pushScene(menu);
 }
 

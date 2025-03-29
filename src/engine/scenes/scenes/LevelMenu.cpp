@@ -19,7 +19,6 @@ void startLevel3() {
 
 LevelMenu::LevelMenu() {
 	this->background = Game::textures.at("level-menu.bmp");
-
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
@@ -57,27 +56,16 @@ LevelMenu::LevelMenu() {
 }
 
 void LevelMenu::logic()
-{
-}
+{}
 
 void LevelMenu::handleEvent(SDL_Event *event) {
-	switch (event->type) {
-		case SDL_EVENT_MOUSE_BUTTON_DOWN: {
-			if (event->button.button == SDL_BUTTON_LEFT) {
-				float xPos, yPos;
-				SDL_GetMouseState(&xPos, &yPos);
-				
-				for (const auto &sceneElement : this->contents) {
-					if (auto *button = dynamic_cast<Button*>(sceneElement)) {
-						if (xPos >= button->x && xPos <= button->x + button->width &&
-						yPos >= button->y && yPos <= button->y + button->height) {
-							button->click(xPos,yPos);
-						}
-					}
-				}
-			}
-			
+	Menu::handleEvent(event);
+	
+	switch (event->type)
+	{
+		case SDL_EVENT_KEY_DOWN:
+			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
+				Game::sceneManager.popScene();
 			break;
-		}
 	}
 }
