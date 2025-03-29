@@ -1,6 +1,6 @@
 #ifndef UMJAHO_NITRO_H
 #define UMJAHO_NITRO_H
-#include "game/entity/powerups/PowerUp.h"
+#include "game/entities/powerups/PowerUp.h"
 
 class Nitro: public PowerUp{
 public:

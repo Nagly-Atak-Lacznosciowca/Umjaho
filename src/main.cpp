@@ -11,9 +11,9 @@
 #include "engine/scenes/scenes/Level1.h"
 #include "game/Game.h"
 #include "game/Event.h"
-#include "game/entity/Car.h"
-#include "game/entity/Opponent.h"
-#include "game/entity/Player.h"
+#include "game/entities/Car.h"
+#include "game/entities/Opponent.h"
+#include "game/entities/Player.h"
 
 auto game = new Game();
 
