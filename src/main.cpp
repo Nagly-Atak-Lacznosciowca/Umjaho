@@ -82,6 +82,13 @@ auto game = new Game();
 
     switch (event->type) {
 
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+            float x, y;
+            SDL_GetMouseState(&x, &y);
+            SDL_Log("Click position: %f %f", x, y);
+            break;
+        }
+
         case SDL_EVENT_QUIT:
             return SDL_APP_SUCCESS;
 
