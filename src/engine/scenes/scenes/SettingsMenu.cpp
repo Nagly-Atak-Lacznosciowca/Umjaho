@@ -7,6 +7,11 @@ void exitScene(){
 	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 }
 
+void changeCarColor(std::string color) {
+    Game::playerColor = color;
+    SDL_Log(color.data());
+}
+
 SettingsMenu::SettingsMenu() {
     this->background = Game::textures.at("level-menu.bmp");
 
@@ -24,7 +29,7 @@ SettingsMenu::SettingsMenu() {
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
 
-    auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), exitScene, "Return");
+    auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), exitScene, "Return");
 	
 	const float settingsX = 200.0f;
 	const float labelGap = 10.0f;
@@ -33,9 +38,18 @@ SettingsMenu::SettingsMenu() {
 	
     auto audioControl = new AudioControl((settingsX + labelGap + (float)audioLabel->width) * scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
-    contents.push_back(button);
-	contents.push_back(audioLabel);
+
+
+    auto blueCarButton = new Button(200 * scaleX, 275 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
+    auto redCarButton = new Button(310 * scaleX, 275 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
+
+
+
+    contents.push_back(returnButton);
+    contents.push_back(audioLabel);
     contents.push_back(audioControl);
+    contents.push_back(redCarButton);
+    contents.push_back(blueCarButton);
 }
 
 void SettingsMenu::logic()
