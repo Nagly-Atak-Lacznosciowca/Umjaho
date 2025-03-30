@@ -161,6 +161,7 @@ void Car::enterDirt() {
 }
 void Car::leaveDirt() {
     if (!this->onDirt) return;
+    this->onDirt = false;
     this->resetStats();
 }
 
