@@ -36,6 +36,10 @@ void Level::logic() {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO_USE});
     }
 
+    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_E] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_X]) {
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE});
+    }
+
     if (!Game::checkSpeedControls()) {
         player->decelerate();
     }
@@ -111,6 +115,15 @@ void Level::handleEvent(SDL_Event* event) {
 					}
 				});
 			break;
+
+        case Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE:
+            if(player->holdingObstacle != nullptr){
+                player->holdingObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
+                player->holdingObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
+                player->holdingObstacle->angle = player->angle;
+                this->contents.push_back(player->holdingObstacle);
+                player->holdingObstacle = nullptr;
+            }
         default:
             break;
     }

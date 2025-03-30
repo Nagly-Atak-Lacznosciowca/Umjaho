@@ -3,6 +3,7 @@
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
+#include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
 
 Level1::Level1() {
@@ -101,9 +102,12 @@ Level1::Level1() {
     auto nitro1 = new Nitro(315, 111);
     auto nitro2 = new Nitro(852, 403);
     auto nitro3 = new Nitro(1467, 566);
+
+    auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);
+    contents.push_back(place);
 
     // auto text = new Text(215, 815);
     // text->setContent("fhdggfds");
