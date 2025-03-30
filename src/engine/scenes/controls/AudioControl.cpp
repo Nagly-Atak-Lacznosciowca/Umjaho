@@ -16,7 +16,9 @@ void AudioControl::volumeUp() {
 
 void AudioControl::volumeDown() {
     SDL_Log("Settgfdsgdsadsasadsadsadsdsadsaddsfgfdsgdsg");
-    this->setVolume(volumeButtons[std::max(getVolumeBarIndex()-1, 0)]->value);
+    // this->setVolume(volumeButtons[std::max(getVolumeBarIndex()-1, 0)]->value);
+    if (getVolumeBarIndex() > 0) this->setVolume(volumeButtons[getVolumeBarIndex() - 1]->value);
+    else this->setVolume(0);
 }
 
 void AudioControl::setVolume(float value) {
@@ -32,8 +34,7 @@ void AudioControl::setVolume(float value) {
         }
     }
     Game::soundManager.setVolume(volume);
-    SDL_Log("Setting volume %f", value);
-    SDL_Log("djsjkabdjas %d", getVolumeBarIndex());
+    SDL_Log("Setting volume %f; djsjkabdjas %d", value, getVolumeBarIndex());
 }
 
 AudioControl::AudioControl(double x, double y, double width, double height): Control(x, y, width, height) {

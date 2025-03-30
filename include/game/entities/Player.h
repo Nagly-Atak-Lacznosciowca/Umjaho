@@ -3,6 +3,7 @@
 
 #include "engine/Renderer.h"
 #include "game/entities/Car.h"
+#include "game/entities/obstacles/Obstacle.h"
 
 class Player : public Car {
     public:
@@ -10,6 +11,7 @@ class Player : public Car {
         int nitroTimer = 0;
         bool nitroActive = false;
         int nitroCharges = 0;
+        Obstacle* holdingObstacle = nullptr;
 };
 
 #endif //UMJAHO_PLAYER_H

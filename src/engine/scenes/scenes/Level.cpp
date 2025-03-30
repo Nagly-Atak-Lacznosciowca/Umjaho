@@ -5,6 +5,17 @@
 #include "game/entities/surfaces/Curb.h"
 #include "game/entities/surfaces/Dirt.h"
 #include "game/entities/surfaces/Ice.h"
+#include "engine/scenes/Text.h"
+
+Level::Level() {
+    // Nitro counter label
+    nitroCounterLabel = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: ");
+    contents.push_back(nitroCounterLabel);
+
+    // Nitro counter
+    nitroCounter = new Text(490, 815, 0, 50, 0, 0, "0/3");
+    contents.push_back(nitroCounter);
+}
 
 void Level::logic() {
 	
@@ -23,15 +34,21 @@ void Level::logic() {
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
-        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO});
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO_USE});
+    }
+
+    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_E] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_X]) {
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE});
     }
 
     if (!Game::checkSpeedControls()) {
         player->decelerate();
     }
+
     if (!Game::checkTurnControls()) {
         player->straighten();
     }
+    
     if(player->nitroTimer > 0){
         player->accelerate();
         player->nitroTimer--;
@@ -94,7 +111,6 @@ void Level::handleEvent(SDL_Event* event) {
             player->turnRight();
             break;
         }
-
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
             player->accelerate();
             break;
@@ -104,8 +120,13 @@ void Level::handleEvent(SDL_Event* event) {
             else player->reverse();
             break;
         }
-        case Event::CUSTOM_EVENT_CAR_NITRO: {
+        case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
+            nitroCounter->setContent(std::to_string(player->nitroCharges) + "/3");
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
+                nitroCounter->setContent("0/3");
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;
@@ -122,6 +143,15 @@ void Level::handleEvent(SDL_Event* event) {
 					}
 				});
 			break;
+
+        case Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE:
+            if(player->holdingObstacle != nullptr){
+                player->holdingObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
+                player->holdingObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
+                player->holdingObstacle->angle = player->angle;
+                this->contents.push_back(player->holdingObstacle);
+                player->holdingObstacle = nullptr;
+            }
         default:
             break;
     }

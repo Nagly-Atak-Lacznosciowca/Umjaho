@@ -9,7 +9,7 @@
 Level2::Level2() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track2.bmp");
-    this->background = backgroundTexture;
+    background = backgroundTexture;
 
     auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.bmp"));
     contents.push_back(dirt);
@@ -40,9 +40,4 @@ Level2::Level2() {
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);
-
-    auto text = new Text(215, 815);
-    text->setContent("fhdggfds");
-    text->width = 1200;
-    contents.push_back(text);
 }
