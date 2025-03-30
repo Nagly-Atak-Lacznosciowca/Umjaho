@@ -5,12 +5,16 @@
 #include "game/entities/powerups/Nitro.h"
 #include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Curb.h"
 
 Level1::Level1() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
+
+    auto curb = new Curb(200, 276, 400, 400, 0, 0, Game::textures.at("curb.bmp"));
+    contents.push_back(curb);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left

@@ -2,10 +2,12 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "engine/scenes/scenes/PauseMenu.h"
+#include "game/entities/surfaces/Curb.h"
+#include "game/entities/surfaces/Dirt.h"
+#include "game/entities/surfaces/Ice.h"
 #include "engine/scenes/Text.h"
 
 Level::Level() {
-
     // Nitro counter label
     nitroCounterLabel = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: ");
     contents.push_back(nitroCounterLabel);
@@ -13,7 +15,6 @@ Level::Level() {
     // Nitro counter
     nitroCounter = new Text(490, 815, 0, 50, 0, 0, "0/3");
     contents.push_back(nitroCounter);
-
 }
 
 void Level::logic() {
@@ -67,6 +68,33 @@ void Level::logic() {
                 player->collide(element);
                 element->collide(player);
             }
+        }
+    }
+
+    // For each car check if it's on dirt or ice and use the appropriate method
+    for (const auto& element : contents) {
+        if (auto car = dynamic_cast<Car*>(element)) {
+            bool onCurb = false, onDirt = false, onIce = false;
+            for (const auto& surface : contents) {
+                if (auto curb = dynamic_cast<Curb*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, curb)) {
+                        onCurb = true;
+                    }
+                }
+                if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, dirt)) {
+                        onDirt = true;
+                    }
+                }
+                if (auto ice = dynamic_cast<Ice*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, ice)) {
+                        onIce = true;
+                    }
+                }
+            }
+            if (!onCurb) car->leaveCurb();
+            if (!onDirt) car->leaveDirt();
+            if (!onIce) car->leaveIce();
         }
     }
 }

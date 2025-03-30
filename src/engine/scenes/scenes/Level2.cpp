@@ -4,11 +4,15 @@
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Dirt.h"
 
 Level2::Level2() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track2.bmp");
     background = backgroundTexture;
+
+    auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.bmp"));
+    contents.push_back(dirt);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left

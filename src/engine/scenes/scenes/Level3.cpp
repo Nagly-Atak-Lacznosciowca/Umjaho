@@ -4,6 +4,7 @@
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Ice.h"
 
 Level3::Level3() {
 
@@ -13,6 +14,9 @@ Level3::Level3() {
     SDL_Color textColor = SDL_Color { 0, 0, 0 };
     nitroCounter->setColor(textColor);
     nitroCounterLabel->setColor(textColor);
+
+    auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
+    contents.push_back(ice);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left

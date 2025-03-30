@@ -6,12 +6,18 @@
 #include "SDL3/SDL.h"
 #include "engine/Renderer.h"
 #include "array"
+#include "game/entities/surfaces/Surface.h"
 
 const double Car::WIDTH = 20;
 const double Car::LENGTH = 40;
 const double Car::NITRO_MULTIPLIER = 1.5;
 const int Car::NEEDED_CHARGES = 3;
 const int Car::NITRO_TIME = 500;
+const double Car::BRAKE_STRENGTH = 0.05;
+const double Car::TURN_GAIN = 0.001;
+const double Car::ACCELERATION = 0.02;
+const double Car::MAX_SPEED = 4;
+const double Car::MAX_TURN_ANGLE = 0.03;
 
 // length 3 array [dx, dy, dz]
 void Car::move() {
@@ -120,6 +126,56 @@ void Car::straighten() {
         else turnAngle = 0;
         angle += turnAngle;
     }
+}
+
+void Car::resetStats() {
+    this->maxSpeed = MAX_SPEED;
+    this->acceleration = ACCELERATION;
+    this->brakeStrength = BRAKE_STRENGTH;
+    this->turnGain = TURN_GAIN;
+    this->maxTurnAngle = MAX_TURN_ANGLE;
+}
+
+
+void Car::enterCurb() {
+    if (this->onCurb) return;
+    this->onCurb = true;
+    this->brake();
+    this->maxSpeed = 2.5;
+}
+void Car::leaveCurb() {
+    if (!this->onCurb) return;
+    this->onCurb = false;
+    this->resetStats();
+}
+
+void Car::enterDirt() {
+    if (this->onDirt) return;
+    this->onDirt = true;
+    this->brakeStrength = 0.035;
+    this->acceleration = 0.015;
+    this->turnGain = 0.00085;
+    this->maxTurnAngle = 0.025;
+    this->maxSpeed = 3;
+    this->speed *= 0.8;
+}
+void Car::leaveDirt() {
+    if (!this->onDirt) return;
+    this->resetStats();
+}
+
+void Car::enterIce() {
+    if (this->onIce) return;
+    this->onIce = true;
+    this->acceleration = 0.01;
+    this->brakeStrength = 0.02;
+    this->turnGain = 0.0005;
+    this->maxTurnAngle = 0.015;
+}
+void Car::leaveIce() {
+    if (!this->onIce) return;
+    this->onIce = false;
+    this->resetStats();
 }
 
 
