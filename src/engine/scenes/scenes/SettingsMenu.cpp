@@ -41,14 +41,22 @@ SettingsMenu::SettingsMenu() {
 
 
     auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
-    auto setCarColorRedButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
+    auto setCarColorGreenButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-green-regular.bmp"), []{ changeCarColor("green"); }, "");
+    auto setCarColorOrangeButton = new Button(420 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-orange-regular.bmp"), []{ changeCarColor("orange"); }, "");
+    auto setCarColorPurpleButton = new Button(530 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-purple-regular.bmp"), []{ changeCarColor("purple"); }, "");
+    auto setCarColorRedButton = new Button(640 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
+    auto setCarColorYellowButton = new Button(750 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-yellow-regular.bmp"), []{ changeCarColor("yellow"); }, "");
     currentCarColorLabel = new Text(200 * scaleX, 410 * scaleY, 0, 35, 0, 0, "Current car color: " + Game::playerColor);
 
     contents.push_back(returnButton);
     contents.push_back(audioLabel);
     contents.push_back(audioControl);
-    contents.push_back(setCarColorRedButton);
     contents.push_back(setCarColorBlueButton);
+    contents.push_back(setCarColorGreenButton);
+    contents.push_back(setCarColorOrangeButton);
+    contents.push_back(setCarColorPurpleButton);
+    contents.push_back(setCarColorRedButton);
+    contents.push_back(setCarColorYellowButton);
     contents.push_back(currentCarColorLabel);
 }
 
