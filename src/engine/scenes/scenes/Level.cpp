@@ -8,12 +8,8 @@
 #include "engine/scenes/Text.h"
 
 Level::Level() {
-    // Nitro counter label
-    nitroCounterLabel = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: ");
-    contents.push_back(nitroCounterLabel);
-
     // Nitro counter
-    nitroCounter = new Text(490, 815, 0, 50, 0, 0, "0/3");
+    nitroCounter = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
     contents.push_back(nitroCounter);
 }
 
@@ -121,12 +117,12 @@ void Level::handleEvent(SDL_Event* event) {
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
-            nitroCounter->setContent(std::to_string(player->nitroCharges) + "/3");
+            nitroCounter->setContent("Nitro charges: " + std::to_string(player->nitroCharges) + "/" + std::to_string(Car::NEEDED_CHARGES));
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
-                nitroCounter->setContent("0/3");
+                nitroCounter->setContent("Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;
