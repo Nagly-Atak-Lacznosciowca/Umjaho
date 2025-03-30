@@ -34,6 +34,9 @@ class Car : public SceneElement {
 		bool onDirt = false;
 		bool onIce = false;
 
+		Uint64 lastWaterTime = -1000;
+		Uint64 lastOilTime = -1000;
+
 	    Car(double x, double y, double width = WIDTH, double length = LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 	    void move();
 	    void decelerate();

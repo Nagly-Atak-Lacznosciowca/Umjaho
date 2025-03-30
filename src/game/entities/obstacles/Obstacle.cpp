@@ -5,10 +5,19 @@ Obstacle::Obstacle(const double x, const double y, const double width, const dou
     isCollidable = true;
 }
 
+Obstacle::~Obstacle() {
+    this->texture = nullptr;
+    this->isCollidable = false;
+    this->x = 0;
+    this->y = 0;
+    this->width = 0;
+    this->height = 0;
+}
+
 void Obstacle::passiveAction() {
     throw std::runtime_error("Not implemented");
 }
 
-void Obstacle::activeAction() {
+void Obstacle::activeAction(Car* car) {
     throw std::runtime_error("Not implemented");
 }
