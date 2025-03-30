@@ -33,16 +33,16 @@ void Bot::update() {
 double Bot::evaluateTurn(double testTurn) {
     double score = 0.0;
 
-//    double futureAngle = angle + testTurn;
-//    double futureX = x + cos(futureAngle) * speed;
-//    double futureY = y + sin(futureAngle) * speed;
-//
-//    Vector2D target = waypoints[currentWaypoint];
-//    double targetAngle = atan2(target.y - futureY, target.x - futureX);
-//
-//    double alignmentScore = 100 - fabs(futureAngle - targetAngle) * 10;
-//    score += alignmentScore;
-//
+    double futureAngle = angle + testTurn;
+    double futureX = x + cos(futureAngle) * speed;
+    double futureY = y + sin(futureAngle) * speed;
+
+    Vector2D target = nextCheckpoint;
+    double targetAngle = atan2(target.y - futureY, target.x - futureX);
+
+    double alignmentScore = 100 - fabs(futureAngle - targetAngle) * 10;
+    score += alignmentScore;
+
 //    if (isObstacleNearby(futureX, futureY)) {
 //        score -= 1000;
 //    }

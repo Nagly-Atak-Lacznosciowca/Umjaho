@@ -8,6 +8,7 @@ class Bot : public Car {
     public:
         Bot(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 
+        std::vector<Checkpoint *>* checkpoints;
         void update();
         double evaluateTurn(double testTurn);
 
