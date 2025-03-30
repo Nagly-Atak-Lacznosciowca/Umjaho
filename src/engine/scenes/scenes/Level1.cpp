@@ -6,6 +6,7 @@
 #include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
 #include "game/entities/surfaces/Curb.h"
+#include "game/entities/surfaces/FinishLine.h"
 
 Level1::Level1() {
 
@@ -121,6 +122,10 @@ Level1::Level1() {
     contents.push_back(nitro2);
     contents.push_back(nitro3);
     contents.push_back(place);
+
+    auto finishLine = new FinishLine(450, 620, 20, 160);
+
+    contents.push_back(finishLine);
 
     // auto text = new Text(215, 815);
     // text->setContent("fhdggfds");
