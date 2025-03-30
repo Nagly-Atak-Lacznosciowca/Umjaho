@@ -24,10 +24,11 @@ Credits::Credits()
 	const float scaleY = (float)height / (float)this->background->h;
 	
 	std::pair<std::string, std::string> credits[] = {
-		{"Audio desgin", "Ja"},
-		{"Glupi chuj", "nie Ja"},
-		{"Kupiec", "też nie Ja"},
-		{"Reszta", "znowu Ja"}
+		{"Bartosz Kozub", "@JDCombat"},
+		{"Oskar Biedroń", "@bozgi"},
+		{"Oskar Zdechlik", "@SokZKomucha"},
+		{"Patryk Niemiec", "@niemiets"},
+		{"Szymon Urbaniak", "@HexHyperion"}
 	};
 	
 	const double creditCount = (double)sizeof(credits) / sizeof(std::pair<std::string, std::string>);
@@ -67,7 +68,7 @@ void Credits::logic()
 		text->y += 0.5f;
 	}
 	
-	if ((*this->contents.begin())->y >= height + 100) {
+	if ((*this->contents.begin())->y >= height + 30) {
 		SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 	}
 }
