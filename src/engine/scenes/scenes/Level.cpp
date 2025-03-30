@@ -64,6 +64,8 @@ void Level::logic() {
 }
 
 void Level::handleEvent(SDL_Event* event) {
+	Scene::handleEvent(event);
+	
     switch (event->type) {
         case Event::CUSTOM_EVENT_CAR_ROTATE_LEFT: {
             player->turnLeft();
@@ -99,7 +101,12 @@ void Level::handleEvent(SDL_Event* event) {
         }
 		case SDL_EVENT_KEY_DOWN:
 			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
-				Game::sceneManager.pushScene(new PauseMenu());
+				SDL_PushEvent(new SDL_Event {
+					.user = {
+						.type = Event::CUSTOM_EVENT_PUSH_SCENE,
+						.data1 = new PauseMenu()
+					}
+				});
 			break;
         default:
             break;

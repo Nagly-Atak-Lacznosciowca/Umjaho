@@ -7,8 +7,8 @@
 
 Level1::Level1() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("level1.bmp");
-    SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
+    SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
+    // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     this->background = backgroundTexture;
 
     player = new Player(550, 685);

@@ -1,6 +1,7 @@
 #include "engine/scenes/scenes/Credits.h"
 #include "game/Game.h"
 #include "engine/scenes/controls/Button.h"
+#include "game/Event.h"
 
 int height;
 
@@ -67,16 +68,18 @@ void Credits::logic()
 	}
 	
 	if ((*this->contents.begin())->y >= height + 100) {
-		Game::sceneManager.popScene();
+		SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 	}
 }
 
 void Credits::handleEvent(SDL_Event *event) {
+	Scene::handleEvent(event);
+	
 	switch (event->type)
 	{
 		case SDL_EVENT_KEY_DOWN:
 			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
-				Game::sceneManager.popScene();
+				SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 			break;
 	}
 }
