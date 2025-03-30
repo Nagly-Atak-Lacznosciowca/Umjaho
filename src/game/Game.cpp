@@ -2,6 +2,7 @@
 #include "game/Game.h"
 #include "engine/scenes/scenes/Level1.h"
 #include "engine/scenes/scenes/MainMenu.h"
+#include "game/Event.h"
 #include <filesystem>
 
 Renderer Game::renderer;
@@ -59,8 +60,7 @@ void Game::init() {
 	
 	// Game::soundManager.playSound("bus.wav");
 	
-    auto menu = new MainMenu();
-	Game::sceneManager.pushScene(menu);
+	Game::sceneManager.pushScene(new MainMenu());
 }
 
 bool Game::checkSpeedControls()

@@ -1,5 +1,6 @@
 #include "engine/scenes/controls/LevelButton.h"
 #include "game/Game.h"
+#include "game/Event.h"
 
 LevelButton::LevelButton(double x, double y, double width, double height, double angle, double zIndex,
                          SDL_Texture *texture, Level *level, const std::string &text, SDL_Texture* image): Button(x,y,width,height,angle, zIndex,texture,
@@ -14,7 +15,12 @@ LevelButton::LevelButton(double x, double y, double width, double height, double
 
 void LevelButton::click(float x, float y) const {
     if(level!= nullptr){
-        Game::sceneManager.pushScene(this->level);
+        SDL_PushEvent(new SDL_Event {
+	        .user = {
+	            .type = Event::CUSTOM_EVENT_PUSH_SCENE,
+				.data1 = this->level
+	        }
+		});
     }
 }
 

@@ -6,17 +6,33 @@
 #include "engine/scenes/scenes/SettingsMenu.h"
 #include "engine/scenes/scenes/Menu.h"
 #include "engine/scenes/scenes/Credits.h"
+#include "game/Event.h"
 
 void MainMenu::goToLevelMenu() {
-	Game::sceneManager.pushScene(new LevelMenu());
+	SDL_PushEvent(new SDL_Event {
+		.user = {
+			.type = Event::CUSTOM_EVENT_PUSH_SCENE,
+			.data1 = new LevelMenu()
+		}
+	});
 }
 
 void MainMenu::goToSettingsMenu(){
-    Game::sceneManager.pushScene(new SettingsMenu());
+	SDL_PushEvent(new SDL_Event {
+		.user = {
+			.type = Event::CUSTOM_EVENT_PUSH_SCENE,
+			.data1 = new SettingsMenu()
+		}
+	});
 }
 
 void MainMenu::goToCredits() {
-	Game::sceneManager.pushScene(new Credits());
+	SDL_PushEvent(new SDL_Event {
+		.user = {
+			.type = Event::CUSTOM_EVENT_PUSH_SCENE,
+			.data1 = new Credits()
+		}
+	});
 }
 
 void MainMenu::exitGame(){
