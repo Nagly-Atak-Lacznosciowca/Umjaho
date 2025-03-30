@@ -45,8 +45,8 @@ void Text::updateSurface() {
 	this->texture = SDL_CreateTextureFromSurface(Game::renderer.SDLRenderer, surface);
 
 	delete textWidth;
-	delete textHeight;	
-	delete surface;
+	delete textHeight;
+	SDL_DestroySurface(surface);
 }
 
 Text::~Text() {
