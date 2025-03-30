@@ -10,7 +10,9 @@ void Menu::handleEvent(SDL_Event *event) {
 				float xPos, yPos;
 				SDL_GetMouseState(&xPos, &yPos);
 				
-				for (const auto &sceneElement : this->contents) {
+				for (int i = 0; i < this->contents.size(); i++) {
+					const auto &sceneElement = this->contents[i];
+					
 					if (auto *control = dynamic_cast<Control*>(sceneElement)) {
 						if (xPos >= control->x && xPos <= control->x + control->width &&
 						yPos >= control->y && yPos <= control->y + control->height) {

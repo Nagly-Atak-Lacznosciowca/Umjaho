@@ -6,7 +6,7 @@
 class SettingsMenu: public Menu{
 	public:
 	    SettingsMenu();
-	    ~SettingsMenu() = default;
+	    ~SettingsMenu() override;
 	
 	    void logic() override;
 	    void handleEvent(SDL_Event *event) override;

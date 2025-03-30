@@ -22,6 +22,7 @@ void Scene::handleEvent(SDL_Event* event) {
 Scene::~Scene() {
     for (const auto &item: this->contents) {
         delete item;
+	    this->contents.pop_back();
     }
 }
 

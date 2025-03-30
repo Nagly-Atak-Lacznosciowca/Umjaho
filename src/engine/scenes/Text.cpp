@@ -45,3 +45,7 @@ void Text::setContent(const std::string& text) {
 	
 	delete surface;
 }
+
+Text::~Text() {
+    SDL_DestroyTexture(texture);
+}

@@ -9,7 +9,7 @@ class Credits : public Scene {
 		SoundPlayback *music;
 		
 		Credits();
-		~Credits();
+		~Credits() override;
 		
 		void logic() override;
 		void handleEvent(SDL_Event* event) override;

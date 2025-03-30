@@ -49,7 +49,6 @@ void SceneElement::render()
 }
 
 SceneElement::~SceneElement() {
-    SDL_DestroyTexture(texture);
 }
 
 void SceneElement::collide(SceneElement *element) {

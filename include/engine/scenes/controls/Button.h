@@ -10,6 +10,7 @@ public:
 
     Button(double x, double y, double width, double height, double angle, double zIndex, SDL_Texture *texture,
            const std::function<void()> &action, const std::string &text = "");
+    ~Button() override;
 
     void render() override;
 };

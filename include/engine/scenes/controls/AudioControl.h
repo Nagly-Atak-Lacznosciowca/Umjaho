@@ -7,6 +7,7 @@
 class AudioControl: public Control{
 public:
     AudioControl(double x, double y, double width, double height);
+    ~AudioControl() override;
     Button* plusButton;
     Button* minusButton;
     AudioButton* volumeButtons[8] = {nullptr};
