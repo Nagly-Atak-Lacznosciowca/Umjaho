@@ -50,6 +50,12 @@ void Level::logic() {
             }
         }
     }
+
+    for (const auto &checkpoint: checkpoints) {
+        if (Game::checkElementCollision(checkpoint, player)) {
+            checkpoint->collide(player);
+        }
+    }
 }
 
 void Level::handleEvent(SDL_Event* event) {

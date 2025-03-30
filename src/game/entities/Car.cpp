@@ -23,7 +23,11 @@ void Car::move() {
     this->y = vector[1];
 }
 
-Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {
+Car::Car(double x, double y, int nextCheckpoint, int totalCheckpoints, double width, double length, double angle, double zIndex,
+         SDL_Texture *texture)
+        : SceneElement(x, y, width, length, angle, zIndex, texture) {
+    this->nextCheckpoint = nextCheckpoint;
+    this->totalCheckpoints = totalCheckpoints;
     isCollidable = true;
 }
 

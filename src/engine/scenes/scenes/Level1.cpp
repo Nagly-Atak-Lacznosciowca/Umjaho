@@ -4,16 +4,12 @@
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "engine/scenes/scenes/Checkpoint.h"
 
 Level1::Level1() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
     this->background = backgroundTexture;
-
-    player = new Player(550, 685);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->texture = Game::textures.at("car-blue-regular.bmp");
-    contents.push_back(player);
 
     auto walls = {
         new Barrier(20, 276, 13, 400),
@@ -98,28 +94,27 @@ Level1::Level1() {
     const float scaleY = (float)height / (float)this->background->h;
 
     auto checkpoints = {
-        new Checkpoint(717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
-        new Checkpoint(717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
-        new Checkpoint(237 * scaleX, 935 * scaleY, 5 * scaleX, 272 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(180 * scaleX, 785 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
-        new Checkpoint(180 * scaleX, 345 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
-        new Checkpoint(280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
-        new Checkpoint(849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
-        new Checkpoint(1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
-        new Checkpoint(1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
-        new Checkpoint(2085 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(2205 * scaleX, 53 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
-        new Checkpoint(2320 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
-        new Checkpoint(2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
-        new Checkpoint(2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
-        new Checkpoint(361 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
-        new Checkpoint(806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(0, 717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(1, 361 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(2, 237 * scaleX, 935 * scaleY, 5 * scaleX, 272 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(3, 180 * scaleX, 785 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(4, 180 * scaleX, 345 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(5, 280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(6, 502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
+        new Checkpoint(7, 700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(9, 849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
+        new Checkpoint(11, 1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(12, 1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(13, 2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(14, 2085 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(15, 2205 * scaleX, 53 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(16, 2320 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(17, 2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(18, 2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(19, 2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
+        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr)
     };
 
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
@@ -136,4 +131,12 @@ Level1::Level1() {
     text->setContent("fhdggfds");
     text->width = 1200;
     contents.push_back(text);
+
+    player = new Player(550, 685);
+    player->nextCheckpoint = 0;
+    player->totalCheckpoints = this->checkpoints.size();
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->texture = Game::textures.at("car-blue-regular.bmp");
+    contents.push_back(player);
+
 }

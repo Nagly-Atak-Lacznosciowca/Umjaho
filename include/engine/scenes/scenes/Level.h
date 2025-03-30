@@ -10,7 +10,7 @@ class Level: public Scene {
 	public:
 		Player *player = nullptr;
 		Bot* opponents[4] = {};
-		std::vector<Checkpoint*> checkpoints;
+        std::vector<Checkpoint*> checkpoints;
 
 	    Level() = default;
 		

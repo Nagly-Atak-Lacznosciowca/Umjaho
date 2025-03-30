@@ -6,10 +6,11 @@
 class Checkpoint : public SceneElement {
 
 public:
-    Checkpoint(double x, double y, double width, double height, double angle, double zIndex, SDL_Texture *texture)
-            : SceneElement(x, y, width, height, angle, zIndex, texture) {
+    int id;
+    Checkpoint(int id, double x, double y, double width, double height, double angle, double zIndex,
+               SDL_Texture *texture);
 
-    }
+    void collide(SceneElement *element) override;
 };
 
 #endif //UMJAHO_CHECKPOINT_H
