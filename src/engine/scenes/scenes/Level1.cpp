@@ -4,11 +4,15 @@
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Curb.h"
 
 Level1::Level1() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
     this->background = backgroundTexture;
+
+    auto curb = new Curb(200, 276, 400, 400, 0, 0, Game::textures.at("curb.bmp"));
+    contents.push_back(curb);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
@@ -102,7 +106,7 @@ Level1::Level1() {
 
 
 
-        
+
         // new Barrier(10,500, 700, 8),
         // new Barrier(900,200, 300, 300, 0.6),
         // new Barrier(1250,500, 50, 500, -1.2)
@@ -117,6 +121,7 @@ Level1::Level1() {
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);
+
 
     auto text = new Text(215, 815);
     text->setContent("fhdggfds");

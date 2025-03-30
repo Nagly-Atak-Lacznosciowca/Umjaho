@@ -6,6 +6,7 @@
 #include "SDL3/SDL.h"
 #include "engine/Renderer.h"
 #include "array"
+#include "game/entities/surfaces/Surface.h"
 
 const double Car::WIDTH = 20;
 const double Car::LENGTH = 40;
@@ -121,6 +122,31 @@ void Car::straighten() {
         angle += turnAngle;
     }
 }
+
+
+void Car::enterCurb() {
+    SDL_Log("on curb");
+}
+void Car::leaveCurb() {}
+
+void Car::enterDirt() {
+    SDL_Log("on dirt");
+}
+void Car::leaveDirt() {
+    this->brakeStrength = 0.05;
+    this->turnGain = 0.001;
+}
+
+void Car::enterIce() {
+    // this->brakeStrength = 0.01;
+    // this->turnGain = 0.0005;
+    SDL_Log("on ice");
+}
+void Car::leaveIce() {
+    this->brakeStrength = 0.05;
+    this->turnGain = 0.001;
+}
+
 
 
 void Car::collide(SceneElement* element) {

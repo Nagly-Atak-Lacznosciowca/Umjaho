@@ -2,6 +2,8 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "engine/scenes/scenes/PauseMenu.h"
+#include "game/entities/surfaces/Dirt.h"
+#include "game/entities/surfaces/Ice.h"
 
 void Level::logic() {
 	
@@ -48,6 +50,28 @@ void Level::logic() {
                 player->collide(element);
                 element->collide(player);
             }
+        }
+    }
+
+    // For each car check if it's on dirt or ice and use the appropriate method
+    for (const auto& element : contents) {
+        if (auto car = dynamic_cast<Car*>(element)) {
+            bool onDirt = false;
+            bool onIce = false;
+            for (const auto& surface : contents) {
+                if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, dirt)) {
+                        onDirt = true;
+                    }
+                }
+                else if (auto ice = dynamic_cast<Ice*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, ice)) {
+                        onIce = true;
+                    }
+                }
+            }
+            if (!onDirt) car->leaveDirt();
+            if (!onIce) car->leaveIce();
         }
     }
 }

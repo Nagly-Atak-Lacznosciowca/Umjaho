@@ -14,8 +14,8 @@ class Car : public SceneElement {
 	    static const int NEEDED_CHARGES;
 	    static const int NITRO_TIME;
 		
-		const double brakeStrength = 0.05;
-		const double turnGain = 0.001;    // Angle gain per frame
+		double brakeStrength = 0.05;
+		double turnGain = 0.001;    // Angle gain per frame
 		
 	    double maxSpeed = 4;
 			
@@ -25,7 +25,7 @@ class Car : public SceneElement {
 		double maxTurnAngle = 0.03; // Max angle of the wheels
 	
 		bool canMove = true;
-	
+
 	    Car(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 	    void move();
 	    void decelerate();
@@ -36,6 +36,13 @@ class Car : public SceneElement {
 	    void turnRight();
 	    void straighten();
 		void collide(SceneElement* element) override;
+
+		void enterCurb();
+		void leaveCurb();
+		void enterDirt();
+		void enterIce();
+		void leaveDirt();
+		void leaveIce();
 };
 
 #endif //UMJAHO_CAR_H
