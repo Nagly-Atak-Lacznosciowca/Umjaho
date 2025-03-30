@@ -44,6 +44,7 @@ class Car : public SceneElement {
 	    void turnRight();
 	    void straighten();
 		void collide(SceneElement* element) override;
+		void resetStats();
 
 		void enterCurb();
 		void leaveCurb();

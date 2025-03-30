@@ -128,40 +128,55 @@ void Car::straighten() {
     }
 }
 
+void Car::resetStats() {
+    this->maxSpeed = MAX_SPEED;
+    this->acceleration = ACCELERATION;
+    this->brakeStrength = BRAKE_STRENGTH;
+    this->turnGain = TURN_GAIN;
+    this->maxTurnAngle = MAX_TURN_ANGLE;
+}
+
 
 void Car::enterCurb() {
     if (this->onCurb) return;
     this->onCurb = true;
-    SDL_Log("on curb");
+    this->brake();
+    this->maxSpeed = 2.5;
 }
 void Car::leaveCurb() {
     if (!this->onCurb) return;
     this->onCurb = false;
-    SDL_Log("leave curb");
+    this->resetStats();
 }
 
 void Car::enterDirt() {
     if (this->onDirt) return;
     this->onDirt = true;
-    SDL_Log("on dirt");
+    this->brakeStrength = 0.035;
+    this->acceleration = 0.015;
+    this->turnGain = 0.00085;
+    this->maxTurnAngle = 0.025;
+    this->maxSpeed = 3;
+    this->speed *= 0.8;
 }
 void Car::leaveDirt() {
     if (!this->onDirt) return;
-    this->onDirt = false;
-    SDL_Log("leave dirt");
+    this->resetStats();
 }
 
 void Car::enterIce() {
     if (this->onIce) return;
     this->onIce = true;
-    SDL_Log("on ice");
+    this->acceleration = 0.01;
+    this->brakeStrength = 0.02;
+    this->turnGain = 0.0005;
+    this->maxTurnAngle = 0.015;
 }
 void Car::leaveIce() {
     if (!this->onIce) return;
     this->onIce = false;
-    SDL_Log("leave ice");
+    this->resetStats();
 }
-
 
 
 void Car::collide(SceneElement* element) {
