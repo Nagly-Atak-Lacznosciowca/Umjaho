@@ -9,9 +9,8 @@ void SceneManager::pushScene(Scene *scene) {;
 }
 
 void SceneManager::popScene() {
-	auto top = scenes.top();
+	delete scenes.top();
     scenes.pop();
-    delete top;
 }
 
 Scene* SceneManager::currentScene() {
