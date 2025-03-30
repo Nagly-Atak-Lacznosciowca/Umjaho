@@ -6,8 +6,9 @@ Surface::Surface(double x, double y, double width, double height, double angle, 
 
 void Surface::collide(SceneElement* element) {
     if (auto car = dynamic_cast<Car*>(element)) {
-        Game::sceneManager.currentScene()->deleteElement(this);
-        action(car);
+        if (Game::checkSurfaceIntersection(car, this)) {
+            action(car);
+        }
     }
 }
 

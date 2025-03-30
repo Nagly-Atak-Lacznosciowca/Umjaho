@@ -2,6 +2,7 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "engine/scenes/scenes/PauseMenu.h"
+#include "game/entities/surfaces/Curb.h"
 #include "game/entities/surfaces/Dirt.h"
 #include "game/entities/surfaces/Ice.h"
 
@@ -56,20 +57,25 @@ void Level::logic() {
     // For each car check if it's on dirt or ice and use the appropriate method
     for (const auto& element : contents) {
         if (auto car = dynamic_cast<Car*>(element)) {
-            bool onDirt = false;
-            bool onIce = false;
+            bool onCurb = false, onDirt = false, onIce = false;
             for (const auto& surface : contents) {
+                if (auto curb = dynamic_cast<Curb*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, curb)) {
+                        onCurb = true;
+                    }
+                }
                 if (auto dirt = dynamic_cast<Dirt*>(surface)) {
                     if (Game::checkSurfaceIntersection(car, dirt)) {
                         onDirt = true;
                     }
                 }
-                else if (auto ice = dynamic_cast<Ice*>(surface)) {
+                if (auto ice = dynamic_cast<Ice*>(surface)) {
                     if (Game::checkSurfaceIntersection(car, ice)) {
                         onIce = true;
                     }
                 }
             }
+            if (!onCurb) car->leaveCurb();
             if (!onDirt) car->leaveDirt();
             if (!onIce) car->leaveIce();
         }

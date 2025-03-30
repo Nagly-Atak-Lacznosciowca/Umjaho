@@ -13,20 +13,28 @@ class Car : public SceneElement {
 	    static const double NITRO_MULTIPLIER;
 	    static const int NEEDED_CHARGES;
 	    static const int NITRO_TIME;
-		
-		double brakeStrength = 0.05;
-		double turnGain = 0.001;    // Angle gain per frame
-		
-	    double maxSpeed = 4;
-			
+		static const double BRAKE_STRENGTH;
+		static const double TURN_GAIN;
+		static const double ACCELERATION;
+		static const double MAX_SPEED;
+		static const double MAX_TURN_ANGLE;
+
 	    double acceleration = 0.02;
 	    double speed = 0.0;
+	    double maxSpeed = 4;
+
+		double brakeStrength = 0.05;
+
+		double turnGain = 0.001;
 	    double turnAngle = 0.0;     // Current angle of the wheels in radians
 		double maxTurnAngle = 0.03; // Max angle of the wheels
 	
 		bool canMove = true;
+		bool onCurb = false;
+		bool onDirt = false;
+		bool onIce = false;
 
-	    Car(double x, double y, double width = Car::WIDTH, double length = Car::LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
+	    Car(double x, double y, double width = WIDTH, double length = LENGTH, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
 	    void move();
 	    void decelerate();
 	    void accelerate();

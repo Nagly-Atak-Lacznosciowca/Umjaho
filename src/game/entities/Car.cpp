@@ -13,6 +13,11 @@ const double Car::LENGTH = 40;
 const double Car::NITRO_MULTIPLIER = 1.5;
 const int Car::NEEDED_CHARGES = 3;
 const int Car::NITRO_TIME = 500;
+const double Car::BRAKE_STRENGTH = 0.05;
+const double Car::TURN_GAIN = 0.001;
+const double Car::ACCELERATION = 0.02;
+const double Car::MAX_SPEED = 4;
+const double Car::MAX_TURN_ANGLE = 0.03;
 
 // length 3 array [dx, dy, dz]
 void Car::move() {
@@ -125,26 +130,36 @@ void Car::straighten() {
 
 
 void Car::enterCurb() {
+    if (this->onCurb) return;
+    this->onCurb = true;
     SDL_Log("on curb");
 }
-void Car::leaveCurb() {}
+void Car::leaveCurb() {
+    if (!this->onCurb) return;
+    this->onCurb = false;
+    SDL_Log("leave curb");
+}
 
 void Car::enterDirt() {
+    if (this->onDirt) return;
+    this->onDirt = true;
     SDL_Log("on dirt");
 }
 void Car::leaveDirt() {
-    this->brakeStrength = 0.05;
-    this->turnGain = 0.001;
+    if (!this->onDirt) return;
+    this->onDirt = false;
+    SDL_Log("leave dirt");
 }
 
 void Car::enterIce() {
-    // this->brakeStrength = 0.01;
-    // this->turnGain = 0.0005;
+    if (this->onIce) return;
+    this->onIce = true;
     SDL_Log("on ice");
 }
 void Car::leaveIce() {
-    this->brakeStrength = 0.05;
-    this->turnGain = 0.001;
+    if (!this->onIce) return;
+    this->onIce = false;
+    SDL_Log("leave ice");
 }
 
 
