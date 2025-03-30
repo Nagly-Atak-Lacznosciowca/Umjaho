@@ -11,6 +11,7 @@ class Level: public Scene{
 		Player *player = nullptr;
 		Opponent* opponents[4] = {};
 		Text *nitroCounter = nullptr;
+		Text *nitroCounterLabel = nullptr;
 
 		Level();
 		

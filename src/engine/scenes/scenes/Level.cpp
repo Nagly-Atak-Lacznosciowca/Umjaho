@@ -5,13 +5,15 @@
 #include "engine/scenes/Text.h"
 
 Level::Level() {
-    nitroCounter = new Text(490, 815, 0);
-    nitroCounter->setContent("0/3");
+
+    // Nitro counter label
+    nitroCounterLabel = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: ");
+    contents.push_back(nitroCounterLabel);
+
+    // Nitro counter
+    nitroCounter = new Text(490, 815, 0, 50, 0, 0, "0/3");
     contents.push_back(nitroCounter);
 
-    auto nitroLabel = new Text(200, 815, 0, 50);
-    nitroLabel->setContent("Nitro charges:");
-    contents.push_back(nitroLabel);
 }
 
 void Level::logic() {
@@ -37,9 +39,11 @@ void Level::logic() {
     if (!Game::checkSpeedControls()) {
         player->decelerate();
     }
+
     if (!Game::checkTurnControls()) {
         player->straighten();
     }
+    
     if(player->nitroTimer > 0){
         player->accelerate();
         player->nitroTimer--;
@@ -75,7 +79,6 @@ void Level::handleEvent(SDL_Event* event) {
             player->turnRight();
             break;
         }
-
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
             player->accelerate();
             break;
