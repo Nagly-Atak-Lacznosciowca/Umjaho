@@ -5,17 +5,22 @@
 #include "game/Event.h"
 
 void resume() {
-	Game::sceneManager.popScene();
+	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 }
 
 void goToSettingsMenu() {
-	Game::sceneManager.pushScene(new SettingsMenu());
+	SDL_PushEvent(new SDL_Event {
+		.user = {
+			.type = Event::CUSTOM_EVENT_PUSH_SCENE,
+			.data1 = new SettingsMenu()
+		}
+	});
 }
 
 void exitTitle() {
-	Game::sceneManager.popScene();
-	Game::sceneManager.popScene();
-	Game::sceneManager.popScene();
+	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
+	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
+	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 }
 
 void exitGame() {
@@ -73,8 +78,8 @@ void PauseMenu::handleEvent(SDL_Event *event) {
 	switch (event->type)
 	{
 		case SDL_EVENT_KEY_DOWN:
-			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
-				Game::sceneManager.popScene();
+			if (event->key.scancode == SDL_SCANCODE_ESCAPE && event->key.repeat == false)
+				SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 			break;
 	}
 }

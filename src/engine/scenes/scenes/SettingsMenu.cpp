@@ -1,9 +1,10 @@
 #include "engine/scenes/scenes/SettingsMenu.h"
 #include "game/Game.h"
 #include "engine/scenes/controls/AudioControl.h"
+#include "game/Event.h"
 
 void exitScene(){
-    Game::sceneManager.popScene();
+	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
 }
 
 SettingsMenu::SettingsMenu() {
