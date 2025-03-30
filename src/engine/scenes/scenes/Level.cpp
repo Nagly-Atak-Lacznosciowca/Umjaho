@@ -2,6 +2,17 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "engine/scenes/scenes/PauseMenu.h"
+#include "engine/scenes/Text.h"
+
+Level::Level() {
+    nitroCounter = new Text(490, 815, 0);
+    nitroCounter->setContent("0/3");
+    contents.push_back(nitroCounter);
+
+    auto nitroLabel = new Text(200, 815, 0, 50);
+    nitroLabel->setContent("Nitro charges:");
+    contents.push_back(nitroLabel);
+}
 
 void Level::logic() {
 	
@@ -20,7 +31,7 @@ void Level::logic() {
     }
 
     if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
-        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO});
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO_USE});
     }
 
     if (!Game::checkSpeedControls()) {
@@ -74,8 +85,13 @@ void Level::handleEvent(SDL_Event* event) {
             else player->reverse();
             break;
         }
-        case Event::CUSTOM_EVENT_CAR_NITRO: {
+        case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
+            nitroCounter->setContent(std::to_string(player->nitroCharges) + "/3");
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
+                nitroCounter->setContent("0/3");
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;
