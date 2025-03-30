@@ -1,4 +1,4 @@
-#include "game/entity/Car.h"
+#include "game/entities/Car.h"
 
 #include <cmath>
 
@@ -6,9 +6,18 @@
 #include "SDL3/SDL.h"
 #include "engine/Renderer.h"
 #include "array"
+#include "game/entities/surfaces/Surface.h"
 
-const double Car::WIDTH = 50;
-const double Car::LENGTH = 100;
+const double Car::WIDTH = 20;
+const double Car::LENGTH = 40;
+const double Car::NITRO_MULTIPLIER = 1.5;
+const int Car::NEEDED_CHARGES = 3;
+const int Car::NITRO_TIME = 500;
+const double Car::BRAKE_STRENGTH = 0.05;
+const double Car::TURN_GAIN = 0.001;
+const double Car::ACCELERATION = 0.02;
+const double Car::MAX_SPEED = 4;
+const double Car::MAX_TURN_ANGLE = 0.03;
 
 // length 3 array [dx, dy, dz]
 void Car::move() {
@@ -20,7 +29,9 @@ void Car::move() {
     this->y = vector[1];
 }
 
-Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {}
+Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {
+    isCollidable = true;
+}
 
 void Car::decelerate() {
     if (speed > 0) {
@@ -117,8 +128,61 @@ void Car::straighten() {
     }
 }
 
+void Car::resetStats() {
+    this->maxSpeed = MAX_SPEED;
+    this->acceleration = ACCELERATION;
+    this->brakeStrength = BRAKE_STRENGTH;
+    this->turnGain = TURN_GAIN;
+    this->maxTurnAngle = MAX_TURN_ANGLE;
+}
+
+
+void Car::enterCurb() {
+    if (this->onCurb) return;
+    this->onCurb = true;
+    this->brake();
+    this->maxSpeed = 2.5;
+}
+void Car::leaveCurb() {
+    if (!this->onCurb) return;
+    this->onCurb = false;
+    this->resetStats();
+}
+
+void Car::enterDirt() {
+    if (this->onDirt) return;
+    this->onDirt = true;
+    this->brakeStrength = 0.035;
+    this->acceleration = 0.015;
+    this->turnGain = 0.00085;
+    this->maxTurnAngle = 0.025;
+    this->maxSpeed = 3;
+    this->speed *= 0.8;
+}
+void Car::leaveDirt() {
+    if (!this->onDirt) return;
+    this->resetStats();
+}
+
+void Car::enterIce() {
+    if (this->onIce) return;
+    this->onIce = true;
+    this->acceleration = 0.01;
+    this->brakeStrength = 0.02;
+    this->turnGain = 0.0005;
+    this->maxTurnAngle = 0.015;
+}
+void Car::leaveIce() {
+    if (!this->onIce) return;
+    this->onIce = false;
+    this->resetStats();
+}
+
 
 void Car::collide(SceneElement* element) {
+    if(!element->isCollidable){
+        return;
+    }
     if (auto intersection = Game::checkElementCollision(this, element)) {
 
         double absoluteAngle1 = SDL_fmod(this->angle, 2 * M_PI);
@@ -156,7 +220,7 @@ void Car::collide(SceneElement* element) {
 
         // REACTION A
         // The car is colliding with height and close to parallel to it -> it slides along it
-        if (this->lastCollidedWall == 2 || this->lastCollidedWall == 4 && inHeightSlideRange) {
+        if ((this->lastCollidedWall == 2 || this->lastCollidedWall == 4) && inHeightSlideRange) {
             this->x += reverse.x;
             this->y += reverse.y;
 
@@ -169,7 +233,7 @@ void Car::collide(SceneElement* element) {
             return;
         }
         // Same for width
-        if (this->lastCollidedWall == 1 || this->lastCollidedWall == 3 && inWidthSlideRange) {
+        if ((this->lastCollidedWall == 1 || this->lastCollidedWall == 3) && inWidthSlideRange) {
             this->x += reverse.x;
             this->y += reverse.y;
 

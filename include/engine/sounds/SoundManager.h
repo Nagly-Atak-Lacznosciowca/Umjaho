@@ -18,8 +18,11 @@ class SoundManager {
 		~SoundManager() = default;
 		
 		void registerSound(const std::string &name, Sound* sound);
-		SoundPlayback* playSound(Sound* sound);
-		SoundPlayback* playSound(const std::string &name);
+		SoundPlayback* playSound(Sound* sound, SoundPlaybackOptions options = {});
+		SoundPlayback* playSound(const std::string &name, SoundPlaybackOptions options = {});
+		
+		bool setVolume(float volume);
+		float getVolume();
 	
 	private:
 		int id;

@@ -6,14 +6,14 @@
 #include "Scene.h"
 
 class SceneManager {
-public:
-    SceneManager();
-    void pushScene(Scene *scene);
-    void popScene();
-    Scene* currentScene();
-
-private:
-    std::stack<Scene*> scenes;
+	public:
+	    SceneManager();
+	    void pushScene(Scene *scene);
+	    void popScene();
+	    Scene* currentScene();
+	
+	private:
+	    std::stack<Scene*> scenes;
 };
 
 #endif //UMJAHO_SCENEMANAGER_H

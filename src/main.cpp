@@ -11,13 +11,11 @@
 #include "engine/scenes/scenes/Level1.h"
 #include "game/Game.h"
 #include "game/Event.h"
-#include "game/entity/Car.h"
-#include "game/entity/Opponent.h"
-#include "game/entity/Player.h"
-
+#include "game/entities/Car.h"
+#include "game/entities/Opponent.h"
+#include "game/entities/Player.h"
 
 auto game = new Game();
-
 
 [[maybe_unused]] SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
     SDL_SetLogPriorities(SDL_LOG_PRIORITY_VERBOSE);
@@ -31,10 +29,11 @@ auto game = new Game();
 
     /// changing width/height in current version will destroy buttons on `Menu`
     if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900,
-        0, &game->renderer.SDLWindow, &game->renderer.SDLRenderer)) {
+        0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
+    TTF_Init();
 	
     game->init();
 
@@ -48,46 +47,32 @@ auto game = new Game();
     game->deltaTime = now - game->lastTick;
     game->lastTick = now;
 
-    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 0, 0, 0, 1);
-    SDL_RenderClear(game->renderer.SDLRenderer);
-    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 100, 0, 1);
+    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 0, 0, 0, 1);
+    SDL_RenderClear(Game::renderer.SDLRenderer);
+    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 100, 0, 1);
 
     static Uint64 lastActionTime = 0;
     const Uint64 actionInterval = 10000000; // 10ms interval
 
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
-	    game->sceneManager.currentScene()->logic();
-
-        // check if the current scene is level 1
-        // temp solution to increase frequency of collision checks
-        // spoiler - it ain't doing crap
-        if (dynamic_cast<Level1*>(game->sceneManager.currentScene())) {
-            auto level1 = dynamic_cast<Level1*>(game->sceneManager.currentScene());
-            for (const auto& element : level1->contents) {
-                if (element != level1->player) {
-                    if (Game::checkElementCollision(level1->player, element)) {
-                        level1->player->collide(element);
-                    }
-                }
-            }
-        }
+	    Game::sceneManager.currentScene()->logic();
 
         lastActionTime = now;
     }
   
     //scene render
-    game->sceneManager.currentScene()->render(game->renderer);
+	Game::sceneManager.currentScene()->render();
 	
     // draws FPS
     const float fps = 1000000000.0f / game->deltaTime;
-    SDL_SetRenderDrawColor(game->renderer.SDLRenderer, 255, 255, 255, 255);
-    SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
-    // SDL_RenderDebugText(game->renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
-    SDL_RenderPresent(game->renderer.SDLRenderer);
+    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
+    SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    SDL_RenderPresent(Game::renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }
@@ -97,6 +82,13 @@ auto game = new Game();
 
     switch (event->type) {
 
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+            float x, y;
+            SDL_GetMouseState(&x, &y);
+            SDL_Log("Click position: %f %f", x, y);
+            break;
+        }
+
         case SDL_EVENT_QUIT:
             return SDL_APP_SUCCESS;
 
@@ -104,12 +96,12 @@ auto game = new Game();
             break;
         }
     }
-    game->sceneManager.currentScene()->handleEvent(event);
+    Game::sceneManager.currentScene()->handleEvent(event);
 
     return SDL_APP_CONTINUE;
 }
 
 
 [[maybe_unused]] void SDL_AppQuit(void* appstate, SDL_AppResult result) {
-    SDL_Log("cycki");
+    TTF_Quit();
 }

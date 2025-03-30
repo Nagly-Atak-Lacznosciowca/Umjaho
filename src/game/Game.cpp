@@ -1,16 +1,26 @@
 
 #include "game/Game.h"
 #include "engine/scenes/scenes/Level1.h"
-#include "engine/scenes/scenes/Menu.h"
+#include "engine/scenes/scenes/MainMenu.h"
+#include "game/Event.h"
 #include <filesystem>
 
+Renderer Game::renderer;
 std::map<std::string, SDL_Texture*> Game::textures;
 SoundManager Game::soundManager;
 SDL_AudioDeviceID Game::audioDeviceID;
+SceneManager Game::sceneManager;
+TTF_Font* Game::font;
+std::string Game::playerColor = "blue";
 
-Game::Game(): lastTick(0), deltaTime(0), renderer(Renderer()), sceneManager(SceneManager()) {}
+Game::Game(): lastTick(0), deltaTime(0) {}
 
 void Game::init() {
+    Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 1000);
+    if(Game::font == nullptr){
+        SDL_Log("font fgdgd %s", SDL_GetError());
+    }
+
 	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
 	
 	if (Game::audioDeviceID == 0)
@@ -47,10 +57,11 @@ void Game::init() {
 		SDL_Log("Loading %ls", entry.path().c_str());
 	}
 	
-	Game::soundManager.playSound("bus.wav");
+	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
 	
-    auto menu = new Menu(&sceneManager);
-	sceneManager.pushScene(menu);
+	// Game::soundManager.playSound("bus.wav");
+	
+	Game::sceneManager.pushScene(new MainMenu());
 }
 
 bool Game::checkSpeedControls()
@@ -143,9 +154,42 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 }
 
 
+bool Game::checkSurfaceIntersection(Car *car, Surface *surface) {
+	auto carPoints = car->getPoints();
+	auto surfacePoints = surface->getPoints();
+
+	for (int i = 0; i < 4; i++) {
+		SDL_FPoint carPoint = carPoints[i];
+		int intersections = 0;
+
+		for (int j = 0; j < 4; j++) {
+			SDL_FPoint p1 = surfacePoints[j];
+			SDL_FPoint p2 = surfacePoints[(j + 1) % 4];
+			SDL_FPoint intersection;
+
+			SDL_FPoint rayEnd = {carPoint.x + 10000.0f, carPoint.y};
+			if (getIntersection(carPoint, rayEnd, p1, p2, intersection)) {
+				intersections++;
+			}
+		}
+
+		// Odd intersections mean the point is inside
+		if (intersections % 2 == 1) {
+			delete[] carPoints;
+			delete[] surfacePoints;
+			return true;
+		}
+	}
+
+	delete[] carPoints;
+	delete[] surfacePoints;
+	return false;
+}
+
+
 Game::~Game() {
     for (const auto &item: Game::textures) {
-        delete item.second;
+        SDL_DestroyTexture(item.second);
     }
 }
 

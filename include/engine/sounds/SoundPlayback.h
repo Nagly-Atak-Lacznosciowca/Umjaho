@@ -20,8 +20,7 @@ class SoundPlayback {
 		~SoundPlayback() = default;
 		
 		bool play();
-		bool pause();
-		bool resume();
+		bool stop();
 };
 
 #endif //UMJAHO_SOUNDPLAYBACK_H
