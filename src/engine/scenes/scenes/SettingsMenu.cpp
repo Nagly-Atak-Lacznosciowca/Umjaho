@@ -23,7 +23,7 @@ SettingsMenu::SettingsMenu() {
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
 
-    auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], exitScene, "Return");
+    auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), exitScene, "Return");
 	
 	const float settingsX = 200.0f;
 	const float labelGap = 10.0f;

@@ -6,6 +6,7 @@
 class Text: public SceneElement{
 	public:
 	    Text(double x, double y, double width = 50, double height = 50, double angle = 0, double zIndex = 0, const std::string& text = "");
+        ~Text() override;
 	    std::string content;
 	
 	    void setContent(const std::string& text);
