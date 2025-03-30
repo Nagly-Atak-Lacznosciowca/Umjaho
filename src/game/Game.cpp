@@ -59,7 +59,7 @@ void Game::init() {
 	
 	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
 	
-	// Game::soundManager.playSound("bus.wav");
+	Game::soundManager.setVolume(0.5f);
 	
 	Game::sceneManager.pushScene(new MainMenu());
 }
