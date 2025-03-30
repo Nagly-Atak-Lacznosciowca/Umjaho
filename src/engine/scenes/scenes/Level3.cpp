@@ -13,7 +13,6 @@ Level3::Level3() {
 
     SDL_Color textColor = SDL_Color { 0, 0, 0 };
     nitroCounter->setColor(textColor);
-    nitroCounterLabel->setColor(textColor);
 
     auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
     contents.push_back(ice);
