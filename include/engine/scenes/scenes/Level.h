@@ -4,16 +4,18 @@
 #include "engine/scenes/Scene.h"
 #include "game/entities/Player.h"
 #include "game/entities/Opponent.h"
+#include "engine/scenes/Text.h"
 
 class Level: public Scene{
 	public:
 		Player *player = nullptr;
 		Opponent* opponents[4] = {};
+		Text *nitroCounter = nullptr;
+
+		Level();
 		
-	    Level() = default;
-		
-	    void logic() override;
-	    void handleEvent(SDL_Event* event) override;
+		void logic() override;
+		void handleEvent(SDL_Event* event) override;
 };
 
 #endif //UMJAHO_LEVEL_H
