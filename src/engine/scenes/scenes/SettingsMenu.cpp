@@ -4,12 +4,12 @@
 #include "game/Event.h"
 
 void exitScene(){
-	SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});
+	SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_POP_SCENE });
 }
 
 void changeCarColor(std::string color) {
     Game::playerColor = color;
-    SDL_Log(color.data());
+    SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR });
 }
 
 SettingsMenu::SettingsMenu() {
@@ -40,16 +40,16 @@ SettingsMenu::SettingsMenu() {
 
 
 
-    auto blueCarButton = new Button(200 * scaleX, 275 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
-    auto redCarButton = new Button(310 * scaleX, 275 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
-
-
+    auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
+    auto setCarColorRedButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
+    currentCarColorLabel = new Text(200 * scaleX, 410 * scaleY, 0, 35, 0, 0, "Current car color: " + Game::playerColor);
 
     contents.push_back(returnButton);
     contents.push_back(audioLabel);
     contents.push_back(audioControl);
-    contents.push_back(redCarButton);
-    contents.push_back(blueCarButton);
+    contents.push_back(setCarColorRedButton);
+    contents.push_back(setCarColorBlueButton);
+    contents.push_back(currentCarColorLabel);
 }
 
 void SettingsMenu::logic()
@@ -58,12 +58,18 @@ void SettingsMenu::logic()
 void SettingsMenu::handleEvent(SDL_Event *event) {
 	Menu::handleEvent(event);
 	
-	switch (event->type)
-	{
+	switch (event->type) {
 		case SDL_EVENT_KEY_DOWN:
 			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
                 exitScene();
 			break;
+
+        case Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR: {
+            SDL_Log(Game::playerColor.data());
+            currentCarColorLabel->setContent("Current car color: " + Game::playerColor);
+            break;
+        }
+            
 	}
 }
 
