@@ -82,3 +82,11 @@ void AudioControl::click(float x, float y) const {
         plusButton->click(x, y);
     }
 }
+
+AudioControl::~AudioControl() {
+    delete minusButton;
+    delete plusButton;
+    for (const auto& button : volumeButtons){
+        delete button;
+    }
+}

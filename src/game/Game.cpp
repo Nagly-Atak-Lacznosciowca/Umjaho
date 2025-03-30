@@ -155,7 +155,7 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 
 Game::~Game() {
     for (const auto &item: Game::textures) {
-        delete item.second;
+        SDL_DestroyTexture(item.second);
     }
 }
 

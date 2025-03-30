@@ -25,5 +25,9 @@ void Button::render() {
     }
 }
 
+Button::~Button() {
+    delete text;
+}
+
 
 

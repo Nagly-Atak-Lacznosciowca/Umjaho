@@ -2,6 +2,10 @@
 #include "game/Game.h"
 #include "engine/scenes/controls/AudioControl.h"
 
+void exitScene(){
+    Game::sceneManager.popScene();
+}
+
 SettingsMenu::SettingsMenu() {
     this->background = Game::textures.at("level-menu.bmp");
 
@@ -19,7 +23,7 @@ SettingsMenu::SettingsMenu() {
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
 
-    auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], [] {Game::sceneManager.popScene();}, "Return");
+    auto button = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures["button.bmp"], exitScene, "Return");
 	
 	const float settingsX = 200.0f;
 	const float labelGap = 10.0f;
@@ -43,7 +47,11 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
 	{
 		case SDL_EVENT_KEY_DOWN:
 			if (event->key.scancode == SDL_SCANCODE_ESCAPE)
-				Game::sceneManager.popScene();
+                exitScene();
 			break;
 	}
+}
+
+SettingsMenu::~SettingsMenu() {
+    SDL_Log("Destruct settings");
 }
