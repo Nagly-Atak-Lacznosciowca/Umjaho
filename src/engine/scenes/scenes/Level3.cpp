@@ -8,7 +8,11 @@
 Level3::Level3() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track3.bmp");
-    this->background = backgroundTexture;
+    background = backgroundTexture;
+
+    SDL_Color textColor = SDL_Color { 0, 0, 0 };
+    nitroCounter->setColor(textColor);
+    nitroCounterLabel->setColor(textColor);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
@@ -36,9 +40,4 @@ Level3::Level3() {
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);
-
-    auto text = new Text(215, 815);
-    text->setContent("fhdggfds");
-    text->width = 1200;
-    contents.push_back(text);
 }
