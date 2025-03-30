@@ -6,6 +6,7 @@
 #include "SDL3/SDL.h"
 #include "engine/Renderer.h"
 #include "array"
+#include "game/entities/obstacles/Obstacle.h"
 #include "game/entities/surfaces/Surface.h"
 
 const double Car::WIDTH = 20;
@@ -180,9 +181,17 @@ void Car::leaveIce() {
 
 
 void Car::collide(SceneElement* element) {
+    try {
+        if (auto obstacle = dynamic_cast<Obstacle*>(element)) {
+            obstacle->activeAction(this);
+        }
+    }
+    catch (const std::exception& e) {}
+
     if(!element->isCollidable){
         return;
     }
+
     if (auto intersection = Game::checkElementCollision(this, element)) {
 
         double absoluteAngle1 = SDL_fmod(this->angle, 2 * M_PI);
