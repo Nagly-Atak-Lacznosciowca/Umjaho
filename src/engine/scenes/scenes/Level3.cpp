@@ -20,7 +20,7 @@ Level3::Level3() {
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
-    player->texture = Game::textures.at("car-blue-regular.bmp");
+    player->SetTexture();
     contents.push_back(player);
 
     // auto opponents = std::array<Opponent*, 3>{

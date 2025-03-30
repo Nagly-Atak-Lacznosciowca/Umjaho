@@ -2,14 +2,17 @@
 #define UMJAHO_SETTINGSMENU_H
 
 #include "Menu.h"
+#include "engine/scenes/Text.h"
 
 class SettingsMenu: public Menu{
 	public:
-	    SettingsMenu();
-	    ~SettingsMenu() override;
+		Text* currentCarColorLabel = nullptr;
+		
+		SettingsMenu();
+		~SettingsMenu() override;
 	
-	    void logic() override;
-	    void handleEvent(SDL_Event *event) override;
+		void logic() override;
+		void handleEvent(SDL_Event *event) override;
 };
 
 #endif //UMJAHO_SETTINGSMENU_H

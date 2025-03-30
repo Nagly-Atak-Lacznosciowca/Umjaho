@@ -24,8 +24,9 @@ class Game {
 		static SceneManager sceneManager;
 		static SoundManager soundManager;
 		static SDL_AudioDeviceID audioDeviceID;
-        static TTF_Font* font;
-			
+		static TTF_Font* font;
+		static std::string playerColor;
+
 		Game();
 		~Game();
 			
