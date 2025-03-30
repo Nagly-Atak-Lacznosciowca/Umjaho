@@ -4,36 +4,38 @@
 #include "SDL3_ttf/SDL_ttf.h"
 #include "game/Game.h"
 
+// Text class. 
+// Set initial width or height to 0 to compute it dynamically based on supplied text.
 Text::Text(double x, double y, double width, double height, double angle, double zIndex, const std::string& text, const SDL_Color color) : SceneElement(x, y, width, height, angle, zIndex) {
-	this->color = color;
+	dynamicWidth = width == 0;
+	dynamicHeight = height == 0;
+	this->setColor(color);
 	this->setContent(text);
 }
 
 void Text::setContent(const std::string& text) {
 	this->content = text;
-	this->updateText();
+	this->updateSurface();
 }
 
 void Text::setColor(const SDL_Color color) {
 	this->color = color;
-	this->updateText();
+	this->updateSurface();
 }
 
-void Text::updateText() {
+void Text::updateSurface() {
 	auto *textWidth = new int();
 	auto *textHeight = new int();
-	
+
 	TTF_GetStringSize(Game::font, content.data(), content.length(), textWidth, textHeight);
-	
-	if (this->width == 0 && this->height == 0) {
+
+	if (dynamicWidth && dynamicHeight) {
 		this->width = *textWidth;
 		this->height = *textHeight;
-	}
-	else if (this->width == 0) {
+	} else if (dynamicWidth) {
 		const auto scale = this->height / *textHeight;
 		this->width = scale * *textWidth;
-	}
-	else if (this->height == 0) {
+	} else if (dynamicHeight) {
 		const auto scale = this->width / *textWidth;
 		this->height = scale * *textHeight;
 	}
@@ -48,5 +50,5 @@ void Text::updateText() {
 }
 
 Text::~Text() {
-    SDL_DestroyTexture(texture);
+	SDL_DestroyTexture(texture);
 }
