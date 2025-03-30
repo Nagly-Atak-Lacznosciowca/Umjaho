@@ -17,7 +17,7 @@ class SoundPlayback {
 		int length;
 		
 		SoundPlayback(SDL_AudioStream *stream, Uint8 *data, int length, SoundPlaybackOptions options = {});
-		~SoundPlayback() = default;
+		~SoundPlayback();
 		
 		bool play();
 		bool stop();

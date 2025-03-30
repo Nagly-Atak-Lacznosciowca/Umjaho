@@ -9,6 +9,9 @@ void SceneManager::pushScene(Scene *scene) {;
 }
 
 void SceneManager::popScene() {
+	if (this->scenes.size() <= 1)
+		return;
+	
 	delete scenes.top();
     scenes.pop();
 }

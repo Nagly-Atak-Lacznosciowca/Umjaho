@@ -10,7 +10,7 @@ class Sound {
 		int length;
 		
 		Sound(SDL_AudioSpec *spec, Uint8 *data, int length);
-		~Sound() = default;
+		~Sound();
 };
 
 #endif //UMJAHO_SOUND_H

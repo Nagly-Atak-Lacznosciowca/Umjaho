@@ -194,5 +194,7 @@ Game::~Game() {
     for (const auto &item: Game::textures) {
         SDL_DestroyTexture(item.second);
     }
+	
+	
 }
 

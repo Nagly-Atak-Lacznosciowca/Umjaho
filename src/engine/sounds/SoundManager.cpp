@@ -7,6 +7,12 @@
 
 SoundManager::SoundManager(): sounds({}), id(0) {}
 
+SoundManager::~SoundManager() {
+	for (const auto &sound : this->sounds) {
+		delete sound.second;
+	}
+}
+
 void SoundManager::registerSound(const std::string &name, Sound *sound)
 {
 	this->sounds.insert({name, sound});
