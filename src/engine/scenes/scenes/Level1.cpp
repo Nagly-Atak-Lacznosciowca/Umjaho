@@ -15,17 +15,7 @@ Level1::Level1() {
     player->texture = Game::textures.at("car-blue-regular.bmp");
     contents.push_back(player);
 
-    // auto opponents = std::array<Opponent*, 3>{
-    //     new Opponent(300, 100, 150, 50, 0.5),
-    //     new Opponent(1400, 200),
-    //     new Opponent(240, 700, 50, 100, 1.5)
-    // };
-    // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
-    //     contents.push_back(opponent);
-    // }
-
-    auto walls = std::array<Barrier*, 70>{
+    auto walls = {
         new Barrier(20, 276, 13, 400),
         new Barrier(24, 220, 15, 64, -0.23),
         new Barrier(47, 144, 15, 84, -0.45),
@@ -90,33 +80,57 @@ Level1::Level1() {
         new Barrier(1349, 216, 15, 45, -0.15),
         new Barrier(1356, 204, 25, 20, 0.7),
         new Barrier(1373, 198, 15, 35, 0.8),
-
         new Barrier(208, 246, 15, 50, -0.37),
         new Barrier(239, 203, 15, 57, -0.90),
         new Barrier(284, 186, 15, 50, -1.4),
         new Barrier(328, 188, 15, 50, 1.3),
         new Barrier(371, 208, 15, 60, 0.87),
-
         new Barrier(401, 252, 15, 100, 0.2),
-
-
-
-
-        
-        // new Barrier(10,500, 700, 8),
-        // new Barrier(900,200, 300, 300, 0.6),
-        // new Barrier(1250,500, 50, 500, -1.2)
     };
-    for (auto wall: walls) {
-        contents.push_back(wall);
-    }
 
-    auto nitro1 = new Nitro(315, 111);
-    auto nitro2 = new Nitro(852, 403);
-    auto nitro3 = new Nitro(1467, 566);
-    contents.push_back(nitro1);
-    contents.push_back(nitro2);
-    contents.push_back(nitro3);
+    this->contents.insert(this->contents.end(), walls.begin(), walls.end());
+
+    int width, height;
+
+    SDL_GetWindowSize(Game::renderer.SDLWindow, &width, &height);
+
+    const float scaleX = (float)width / (float)this->background->w;
+    const float scaleY = (float)height / (float)this->background->h;
+
+    auto checkpoints = {
+        new Checkpoint(717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(237 * scaleX, 935 * scaleY, 5 * scaleX, 272 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(180 * scaleX, 785 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(180 * scaleX, 345 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
+        new Checkpoint(849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
+        new Checkpoint(1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(2085 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(2205 * scaleX, 53 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(2320 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
+        new Checkpoint(361 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+    };
+
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
+    auto nitros = {
+        new Nitro(315, 111),
+        new Nitro(852, 403),
+        new Nitro(1467, 566),
+    };
+
+    this->contents.insert(contents.end(), nitros.begin(), nitros.end());
 
     auto text = new Text(215, 815);
     text->setContent("fhdggfds");

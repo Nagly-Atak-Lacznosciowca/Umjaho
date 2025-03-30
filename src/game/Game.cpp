@@ -60,7 +60,7 @@ void Game::init() {
 	
 	// Game::soundManager.playSound("bus.wav");
 	
-	Game::sceneManager.pushScene(new MainMenu());
+	Game::sceneManager.pushScene(new Level1());
 }
 
 bool Game::checkSpeedControls()

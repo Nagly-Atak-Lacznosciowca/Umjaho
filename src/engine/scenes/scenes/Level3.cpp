@@ -15,10 +15,10 @@ Level3::Level3() {
     player->texture = Game::textures.at("car-blue-regular.bmp");
     contents.push_back(player);
 
-    // auto opponents = std::array<Opponent*, 3>{
-    //     new Opponent(300, 100, 150, 50, 0.5),
-    //     new Opponent(1400, 200),
-    //     new Opponent(240, 700, 50, 100, 1.5)
+    // auto opponents = std::array<Bot*, 3>{
+    //     new Bot(300, 100, 150, 50, 0.5),
+    //     new Bot(1400, 200),
+    //     new Bot(240, 700, 50, 100, 1.5)
     // };
     // for (auto opponent: opponents) {
     //     opponent->texture = Game::textures.at("car-red-regular.bmp");

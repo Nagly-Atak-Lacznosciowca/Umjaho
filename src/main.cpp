@@ -12,7 +12,7 @@
 #include "game/Game.h"
 #include "game/Event.h"
 #include "game/entities/Car.h"
-#include "game/entities/Opponent.h"
+#include "game/entities/Bot.h"
 #include "game/entities/Player.h"
 
 auto game = new Game();

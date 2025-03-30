@@ -96,3 +96,10 @@ void Level::handleEvent(SDL_Event* event) {
             break;
     }
 }
+
+void Level::render() {
+    Scene::render();
+    for (const auto &item: this->checkpoints) {
+        item->render();
+    }
+}

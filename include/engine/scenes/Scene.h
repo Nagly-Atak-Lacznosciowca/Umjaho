@@ -18,7 +18,7 @@ class Scene {
 	    virtual void handleEvent(SDL_Event* event) = 0;
 		
 	    void deleteElement(SceneElement* element);
-	    void render();
+	    virtual void render();
 };
 
 #endif //UMJAHO_SCENE_H

@@ -1,6 +1,6 @@
 #ifndef LEVEL2_H
 #define LEVEL2_H
-#include "game/entities/Opponent.h"
+#include "game/entities/Bot.h"
 #include "game/entities/Player.h"
 #include "Level.h"
 
