@@ -13,9 +13,6 @@ Level1::Level1() {
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    auto curb = new Curb(200, 276, 400, 400, 0, 0, Game::textures.at("curb.bmp"));
-    contents.push_back(curb);
-
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
@@ -101,6 +98,18 @@ Level1::Level1() {
     };
     for (auto wall: walls) {
         contents.push_back(wall);
+    }
+
+    auto surfaces = std::array<Surface*, 6>{
+        new Curb(691, 468, 206, 40),
+        new Curb(1008, 614, 206, 40),
+        new Curb(666, 478, 50, 50, 0.78),
+        new Curb(872, 478, 50, 50, 0.78),
+        new Curb(984, 593, 50, 50, 0.78),
+        new Curb(1189, 594, 50, 50, 0.78),
+    };
+    for (auto surface: surfaces) {
+        contents.push_back(surface);
     }
 
     auto nitro1 = new Nitro(315, 111);
