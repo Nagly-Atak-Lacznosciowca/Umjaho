@@ -41,8 +41,9 @@ void Text::updateSurface() {
 	}
 
 	auto surface = TTF_RenderText_Shaded(Game::font, content.data(), content.length(), color, color);
-	surface = SDL_ScaleSurface(surface, (int)width, (int)height, SDL_SCALEMODE_LINEAR);
+	// surface = SDL_ScaleSurface(surface, (int)width, (int)height, SDL_SCALEMODE_LINEAR); // this lags the whole game :(
 	this->texture = SDL_CreateTextureFromSurface(Game::renderer.SDLRenderer, surface);
+	SDL_SetTextureScaleMode(this->texture, SDL_SCALEMODE_LINEAR);
 
 	delete textWidth;
 	delete textHeight;
