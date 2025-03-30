@@ -52,6 +52,14 @@ Credits::Credits()
 	for (auto &text : this->contents) {
 		text->y -= creditCount * (headerHeight + headerGap + textHeight + textGap) * scaleY;
 	}
+	
+	this->music = Game::soundManager.playSound("bus.wav", {
+		.looping = true
+	});
+}
+
+Credits::~Credits() {
+	this->music->stop();
 }
 
 void Credits::logic()

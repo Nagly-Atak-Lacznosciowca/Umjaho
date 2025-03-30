@@ -65,10 +65,6 @@ MainMenu::MainMenu() {
     this->contents.push_back(settingsButton);
 	this->contents.push_back(creditsButton);
     this->contents.push_back(exitButton);
-	
-	Game::soundManager.playSound("main-menu.wav", {
-		.looping = true
-	});
 }
 
 void MainMenu::logic()
