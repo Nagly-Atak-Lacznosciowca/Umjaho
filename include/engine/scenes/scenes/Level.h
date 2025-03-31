@@ -30,6 +30,7 @@ class Level: public Scene{
 		Text* lapLabel;
 		Text* currentLapLabel;
 		int nitroPlaceInterval = 1000;
+		std::vector<Obstacle*> temporaryObstacles = {};
 
 		Level();
 		

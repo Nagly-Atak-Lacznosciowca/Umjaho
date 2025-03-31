@@ -32,7 +32,7 @@ Leaderboard::Leaderboard(Uint64 start, Uint64 ticks, Level* level, Uint64 fastes
 
     Game::playerTimes[levelNumber].emplace_back(lastTime, fastestLap);
 
-    this->background = Game::textures.at("level-menu.bmp");
+    this->background = Game::textures.at("level-menu.png");
 
 
     int *windowWidth = new int();
@@ -67,7 +67,7 @@ Leaderboard::Leaderboard(Uint64 start, Uint64 ticks, Level* level, Uint64 fastes
         text->x = static_cast<float>(width)/2 - (text->width/2);
         contents.push_back(text);
     }
-    auto button = new Button(static_cast<float>(width)/2 - static_cast<float>(width)/8, 760*scaleY, static_cast<float>(width)/4, 50*scaleY, 0, 0, Game::textures.at("button.bmp"), exitToLevelMenu, "Return");
+    auto button = new Button(static_cast<float>(width)/2 - static_cast<float>(width)/8, 760*scaleY, static_cast<float>(width)/4, 50*scaleY, 0, 0, Game::textures.at("button.png"), exitToLevelMenu, "Return");
     contents.push_back(button);
 
 }

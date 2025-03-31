@@ -19,7 +19,7 @@ void switchFPS() {
 }
 
 SettingsMenu::SettingsMenu() {
-    this->background = Game::textures.at("level-menu.bmp");
+    this->background = Game::textures.at("level-menu.png");
 
     int *windowWidth = new int();
     int *windowHeight = new int();
@@ -35,7 +35,7 @@ SettingsMenu::SettingsMenu() {
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
 
-    auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), exitScene, "Return");
+    auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.png"), exitScene, "Return");
 	
 	const float settingsX = 200.0f;
 	const float labelGap = 10.0f;
@@ -44,12 +44,12 @@ SettingsMenu::SettingsMenu() {
 	
     auto audioControl = new AudioControl((settingsX + labelGap + (float)audioLabel->width) * scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
-    auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
-    auto setCarColorGreenButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-green-regular.bmp"), []{ changeCarColor("green"); }, "");
-    auto setCarColorOrangeButton = new Button(420 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-orange-regular.bmp"), []{ changeCarColor("orange"); }, "");
-    auto setCarColorPurpleButton = new Button(530 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-purple-regular.bmp"), []{ changeCarColor("purple"); }, "");
-    auto setCarColorRedButton = new Button(640 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.bmp"), []{ changeCarColor("red"); }, "");
-    auto setCarColorYellowButton = new Button(750 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-yellow-regular.bmp"), []{ changeCarColor("yellow"); }, "");
+    auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.png"), []{ changeCarColor("blue"); }, "");
+    auto setCarColorGreenButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-green-regular.png"), []{ changeCarColor("green"); }, "");
+    auto setCarColorOrangeButton = new Button(420 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-orange-regular.png"), []{ changeCarColor("orange"); }, "");
+    auto setCarColorPurpleButton = new Button(530 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-purple-regular.png"), []{ changeCarColor("purple"); }, "");
+    auto setCarColorRedButton = new Button(640 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-red-regular.png"), []{ changeCarColor("red"); }, "");
+    auto setCarColorYellowButton = new Button(750 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-yellow-regular.png"), []{ changeCarColor("yellow"); }, "");
     currentCarColorLabel = new Text(200 * scaleX, 410 * scaleY, 0, 35, 0, 0, "Current car color: " + Game::playerColor);
 
     contents.push_back(returnButton);
@@ -64,7 +64,7 @@ SettingsMenu::SettingsMenu() {
     contents.push_back(currentCarColorLabel);
 
 	Text *FPSLabel = new Text(settingsX * scaleX, 500*scaleY, 0, 50 * scaleY, 0, 1, "Show FPS");
-	FPSButton = new Button((settingsX + labelGap + (float)FPSLabel->width) * scaleX, 500*scaleY, 100*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), [] {switchFPS();}, Game::showFPS ? "ON" : "OFF");
+	FPSButton = new Button((settingsX + labelGap + (float)FPSLabel->width) * scaleX, 500*scaleY, 100*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.png"), [] {switchFPS();}, Game::showFPS ? "ON" : "OFF");
 
 	contents.push_back(FPSLabel);
 	contents.push_back(FPSButton);

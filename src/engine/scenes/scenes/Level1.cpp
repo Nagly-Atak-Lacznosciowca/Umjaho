@@ -1,4 +1,7 @@
 #include "engine/scenes/scenes/Level1.h"
+
+#include <math.h>
+
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
@@ -10,22 +13,23 @@
 
 Level1::Level1() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
+    SDL_Texture *backgroundTexture = Game::textures.at("track1.png");
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    player = new Player(515, 642);
+    player = new Player(808, 622, 40, 80, 0, 1);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
 
-    // auto opponents = std::array<Opponent*, 3>{
-    //     new Opponent(300, 100, 150, 50, 0.5),
-    //     new Opponent(1400, 200),
-    //     new Opponent(240, 700, 50, 100, 1.5)
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(665, 622, 40, 80, M_PI / -2),
+    //     new Opponent(549, 700, 40, 80, M_PI / -2),
+    //     new Opponent(521, 622, 40, 80, M_PI / -2),
+    //     new Opponent(693, 700, 40, 80, M_PI / -2)
     // };
     // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
     //     contents.push_back(opponent);
     // }
 

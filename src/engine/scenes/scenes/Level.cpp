@@ -72,6 +72,7 @@ Level::Level() {
     contents.push_back(currentLapText);
     contents.push_back(currentLapLabel);
     contents.push_back(lapLabel);
+    temporaryObstacles.clear();
 }
 
 void Level::logic() {
@@ -152,6 +153,15 @@ void Level::logic() {
                 player->collide(element);
                 element->collide(player);
             }
+        }
+    }
+
+    for (auto& obstacle : temporaryObstacles) {
+        obstacle->countdownToDestroy();
+        SDL_Log("obstacle destroyed in %d", obstacle->timeToDestroy);
+        if (obstacle->timeToDestroy <= 0) {
+            auto iterator = std::find(temporaryObstacles.begin(), temporaryObstacles.end(), obstacle);
+            temporaryObstacles.erase(iterator);
         }
     }
 
@@ -243,6 +253,8 @@ void Level::handleEvent(SDL_Event* event) {
                 player->heldObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
                 player->heldObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
                 player->heldObstacle->angle = player->angle;
+                this->temporaryObstacles.push_back(player->heldObstacle);
+                SDL_Log("obstacle destroyed in %d", player->heldObstacle->timeToDestroy);
                 this->contents.push_back(player->heldObstacle);
                 player->heldObstacle = nullptr;
             }

@@ -48,8 +48,8 @@ AudioControl::AudioControl(double x, double y, double width, double height): Con
     SDL_Log("width - height = %f", width-height);
 #endif
 
-    this->plusButton = new Button(width - height+x, y, height, height, 0, 1, Game::textures.at("button.bmp"), [this] -> void{this->volumeUp();}, "+");
-    this->minusButton = new Button(x, y, height, height, 0, 1, Game::textures.at("button.bmp"), [this] -> void{this->volumeDown();}, "-");
+    this->plusButton = new Button(width - height+x, y, height, height, 0, 1, Game::textures.at("button.png"), [this] -> void{this->volumeUp();}, "+");
+    this->minusButton = new Button(x, y, height, height, 0, 1, Game::textures.at("button.png"), [this] -> void{this->volumeDown();}, "-");
 
     const int buttonCount = getButtonCount();
     const double gap = 5;
