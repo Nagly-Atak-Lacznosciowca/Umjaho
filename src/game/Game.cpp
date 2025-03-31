@@ -12,6 +12,7 @@ SDL_AudioDeviceID Game::audioDeviceID;
 SceneManager Game::sceneManager;
 TTF_Font* Game::font;
 std::string Game::playerColor = "blue";
+bool Game::showFPS = false;
 
 Game::Game(): lastTick(0), deltaTime(0) {}
 

@@ -73,13 +73,15 @@ auto game = new Game();
 	Game::sceneManager.currentScene()->render();
 	
     // draws FPS
-    const float fps = 1000000000.0f / game->deltaTime;
-    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
-    SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    if (Game::showFPS) {
+        const float fps = 1000000000.0f / game->deltaTime;
+        SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
+        SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    }
     SDL_RenderPresent(Game::renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */

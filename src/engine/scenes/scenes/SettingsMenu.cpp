@@ -3,6 +3,8 @@
 #include "engine/scenes/controls/AudioControl.h"
 #include "game/Event.h"
 
+Button* FPSButton = nullptr;
+
 void exitScene(){
 	SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_POP_SCENE });
 }
@@ -10,6 +12,10 @@ void exitScene(){
 void changeCarColor(std::string color) {
     Game::playerColor = color;
     SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR });
+}
+
+void switchFPS() {
+	Game::showFPS = !Game::showFPS;
 }
 
 SettingsMenu::SettingsMenu() {
@@ -58,10 +64,26 @@ SettingsMenu::SettingsMenu() {
     contents.push_back(setCarColorRedButton);
     contents.push_back(setCarColorYellowButton);
     contents.push_back(currentCarColorLabel);
+
+	Text *FPSLabel = new Text(settingsX * scaleX, 500*scaleY, 0, 50 * scaleY, 0, 1, "Show FPS");
+	FPSButton = new Button((settingsX + labelGap + (float)FPSLabel->width) * scaleX, 500*scaleY, 100*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), [] {switchFPS();}, Game::showFPS ? "ON" : "OFF");
+
+	contents.push_back(FPSLabel);
+	contents.push_back(FPSButton);
 }
 
-void SettingsMenu::logic()
-{}
+void SettingsMenu::logic() {
+	if (Game::showFPS) {
+		if (FPSButton->text->content != "ON") {
+			FPSButton->setText("ON");
+		}
+	}
+	else {
+		if (FPSButton->text->content != "OFF") {
+			FPSButton->setText("OFF");
+		}
+	}
+}
 
 void SettingsMenu::handleEvent(SDL_Event *event) {
 	Menu::handleEvent(event);
@@ -77,7 +99,6 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
             currentCarColorLabel->setContent("Current car color: " + Game::playerColor);
             break;
         }
-            
 	}
 }
 
