@@ -62,8 +62,7 @@ Menu pauzy `Esc` można otworzyć w dowolnym momencie, a po jego uruchomieniu gr
 - `Exit to title` - powrót do menu głównego
 - `Exit to desktop` - zamknięcie gry i powrót do pulpitu
 
-Celem wyścigu jest pokonanie wyznaczonej liczby okrążeń i dojechanie do mety w jak najkrótszym czasie, wyprzedzając przy tym przeciwników. Po zakończeniu wyścigu, gracz zostaje przeniesiony do tabeli wyników, na którym widoczne są następujące informacje:
-[WIP]
+Celem wyścigu jest pokonanie wyznaczonej liczby okrążeń i dojechanie do mety w jak najkrótszym czasie, wyprzedzając przy tym przeciwników. Po zakończeniu wyścigu, gracz zostaje przeniesiony do tabeli wyników, na którym widoczne są informacje ze wszystkich wyścigów odbytych na danym torze. Po każdym wyścigu zapisywana jest informacja o całkowitym czasie wyścigu, jak i czas najszybszego okrążenia wykonanego przez gracza.
 
 Ekran ten opuścić można z użyciem klawisza `Esc` lub przycisku `Return` u dołu ekranu. Po zakończeniu wyścigu, gracz powraca do ekranu tytułowego, skąd może rozpocząć kolejny wyścig lub zamknąć program.
 
@@ -80,7 +79,7 @@ Dostępną dla samochodów częścią poziomu jest tor wyścigowy, mający posta
 
 ### Przeszkody
 - `Bariera` - zapobiega opuszczeniu toru. Po kolizji z nimi samochód wytraca prędkość, lecz nie zostaje zniszczony.
-- `Pachołek` - po wjechaniu w niego samochód traci prędkość. Po pierwszej kolizji zostaje zniszczony i znika z toru.
+- `Pachołek` - po wjechaniu w niego samochód lekko się odbija, tracąc prędkość. Po pierwszej kolizji słupek zostaje zniszczony i znika z toru.
 - `Brama` - otwiera się i zamyka co pewien czas. Zamknięta brama zachowuje się identycznie do barierek, otwarta nie wpływa na pojazd.
 - `Próg zwalniający` - zmniejsza prędkość samochodu po najechaniu. Nie wpływa na kierunek jazdy pojazdu.
 - `Woda` - nieco zmienia kierunek jazdy samochodu.

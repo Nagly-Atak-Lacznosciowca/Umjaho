@@ -34,7 +34,7 @@ Level2::Level2() {
     // }
 
     auto walls = std::array<Barrier*, 89>{
-        new Barrier(233, 638, 304, 15),
+        new Barrier(233, 638, 304, 15), // 304 Wieliczka Miasto!!!!!!!!!!
         new Barrier(200, 778, 1000, 15),
         new Barrier(918, 613, 200, 40),
         new Barrier(664, 226, 62, 261),

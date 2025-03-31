@@ -125,7 +125,7 @@ void Level::logic() {
     }else {
         nitroPlaceInterval = 1000;
         if (player->nitroCharges < 3) {
-            auto index = random()%nitroPositions.size();
+            auto index = rand()%nitroPositions.size();
             auto pos = nitroPositions.at(index);
             contents.push_back(new Nitro(pos.first, pos.second));
         }
