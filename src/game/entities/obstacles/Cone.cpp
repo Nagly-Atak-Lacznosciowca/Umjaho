@@ -7,6 +7,6 @@ Cone::Cone(double x, double y, double width, double height, double angle, double
 }
 
 void Cone::activeAction(Car* car) {
-    car->speed = 0.5;
+    car->speed = -0.75;
     Cone::~Cone();
 }
