@@ -20,6 +20,10 @@ void Game::init() {
 	Game::loadFont();
 	Game::loadTextures();
 	Game::loadSounds();
+
+#ifdef DEBUG
+	Game::showFPS = true;
+#endif
 	
 	Game::soundManager.setVolume(0.5f);
 	
