@@ -10,8 +10,8 @@
 class Level: public Scene {
 	public:
 		Player *player = nullptr;
-		Bot* opponents[4] = {};
-		Text *nitroCounter = nullptr;
+        Text *nitroCounter = nullptr;
+        std::vector<Bot *> opponents;
 
 		Level();
         std::vector<Checkpoint*> checkpoints;
@@ -19,6 +19,7 @@ class Level: public Scene {
 		void logic() override;
 	    void handleEvent(SDL_Event* event) override;
         void render() override;
+        void sceneElementLogic(SceneElement* element);
 };
 
 #endif //UMJAHO_LEVEL_H

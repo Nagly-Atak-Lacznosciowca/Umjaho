@@ -76,28 +76,14 @@ void Level::logic() {
     }
 
     for (const auto& element : contents) {
-        if (auto car = dynamic_cast<Car*>(element)) {
-            bool onCurb = false, onDirt = false, onIce = false;
-            for (const auto& surface : contents) {
-                if (auto curb = dynamic_cast<Curb*>(surface)) {
-                    if (Game::checkSurfaceIntersection(car, curb)) {
-                        onCurb = true;
-                    }
-                }
-                if (auto dirt = dynamic_cast<Dirt*>(surface)) {
-                    if (Game::checkSurfaceIntersection(car, dirt)) {
-                        onDirt = true;
-                    }
-                }
-                if (auto ice = dynamic_cast<Ice*>(surface)) {
-                    if (Game::checkSurfaceIntersection(car, ice)) {
-                        onIce = true;
-                    }
-                }
-            }
-            if (!onCurb) car->leaveCurb();
-            if (!onDirt) car->leaveDirt();
-            if (!onIce) car->leaveIce();
+        this->sceneElementLogic(element);
+    }
+
+    for (const auto &item: opponents) {
+        item->update();
+        if (Game::checkElementCollision(player, item)) {
+            player->collide(item);
+            item->collide(player);
         }
     }
 }
@@ -164,5 +150,34 @@ void Level::render() {
     Scene::render();
     for (const auto &item: this->checkpoints) {
         item->render();
+    }
+    for (const auto &item: this->opponents) {
+        item->render();
+    }
+}
+
+void Level::sceneElementLogic(SceneElement* element) {
+    if (auto car = dynamic_cast<Car*>(element)) {
+        bool onCurb = false, onDirt = false, onIce = false;
+        for (const auto& surface : contents) {
+            if (auto curb = dynamic_cast<Curb*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, curb)) {
+                    onCurb = true;
+                }
+            }
+            if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, dirt)) {
+                    onDirt = true;
+                }
+            }
+            if (auto ice = dynamic_cast<Ice*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, ice)) {
+                    onIce = true;
+                }
+            }
+        }
+        if (!onCurb) car->leaveCurb();
+        if (!onDirt) car->leaveDirt();
+        if (!onIce) car->leaveIce();
     }
 }

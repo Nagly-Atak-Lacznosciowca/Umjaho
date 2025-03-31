@@ -7,6 +7,7 @@
 #include "engine/scenes/Text.h"
 #include "game/entities/surfaces/Curb.h"
 #include "engine/scenes/scenes/Checkpoint.h"
+#include "game/entities/StraightMaster.h"
 
 Level1::Level1() {
 
@@ -147,15 +148,19 @@ Level1::Level1() {
     auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
     contents.push_back(place);
 
-    auto text = new Text(215, 815);
-    text->setContent("fhdggfds");
-    text->width = 1200;
-    contents.push_back(text);
-
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
     player->totalCheckpoints = this->checkpoints.size();
+
+    auto bot = new StraightMaster(750, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+
+    opponents.push_back(bot);
+    opponents[0]->texture = Game::textures.at("car-purple-regular.bmp");
+    opponents[0]->player = *player;
+    opponents[0]->checkpoints = this->checkpoints;
+    opponents[0]->isCollidable = true;
+    opponents[0]->angle = SDL_PI_F / -2;
 
 }
