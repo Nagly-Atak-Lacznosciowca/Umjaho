@@ -6,7 +6,7 @@
 
 class Gate : public Obstacle {
     public:
-        Gate(double x, double y, double width = 25, double height = 200, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("gate-closed.bmp"));
+        Gate(double x, double y, double width = 25, double height = 200, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("gate-closed.png"));
         bool isOpen = false;
 
         void passiveAction() override;

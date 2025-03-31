@@ -26,7 +26,7 @@ void startLevel3() {
 }
 
 LevelMenu::LevelMenu() {
-	this->background = Game::textures.at("level-menu.bmp");
+	this->background = Game::textures.at("level-menu.png");
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
@@ -50,11 +50,11 @@ LevelMenu::LevelMenu() {
 	const auto gapX = (this->background->w - elementCount * blockWidth) / (elementCount + 1);
 	const auto gapY = (this->background->h - blockHeight) / 2;
 	
-	auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 55*scaleY, 0, 1, Game::textures.at("button.bmp"), [] {SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});}, "Return");
+	auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 55*scaleY, 0, 1, Game::textures.at("button.png"), [] {SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});}, "Return");
 
-	auto *level1Button = new LevelButton<Level1>((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.bmp"), "Level 1", Game::textures.at("track1.bmp"));
-	auto *level2Button = new LevelButton<Level2>((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.bmp"), "Level 2", Game::textures.at("track2.bmp"));
-	auto *level3Button = new LevelButton<Level3>((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.bmp"), "Level 3", Game::textures.at("track3.bmp"));
+	auto *level1Button = new LevelButton<Level1>((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 1", Game::textures.at("track1.png"));
+	auto *level2Button = new LevelButton<Level2>((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 2", Game::textures.at("track2.png"));
+	auto *level3Button = new LevelButton<Level3>((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 3", Game::textures.at("track3.png"));
 	
 	this->contents.push_back(returnButton);
 	

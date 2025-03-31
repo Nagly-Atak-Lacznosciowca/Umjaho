@@ -6,6 +6,6 @@ Player::Player(const double x, const double y, const double width, const double 
 // Sets player's texture based on color set in Game
 // TODO: Add textures based on turn direction
 void Player::SetTexture() {
-  std::string textureName = "car-" + Game::playerColor + "-regular.bmp";
+  std::string textureName = "car-" + Game::playerColor + "-regular.png";
   texture = Game::textures.at(textureName);
 }
