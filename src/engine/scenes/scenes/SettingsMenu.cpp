@@ -44,8 +44,6 @@ SettingsMenu::SettingsMenu() {
 	
     auto audioControl = new AudioControl((settingsX + labelGap + (float)audioLabel->width) * scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
-
-
     auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
     auto setCarColorGreenButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-green-regular.bmp"), []{ changeCarColor("green"); }, "");
     auto setCarColorOrangeButton = new Button(420 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-orange-regular.bmp"), []{ changeCarColor("orange"); }, "");
@@ -95,7 +93,9 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
 			break;
 
         case Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR: {
+#ifdef DEBUG
             SDL_Log(Game::playerColor.data());
+#endif
             currentCarColorLabel->setContent("Current car color: " + Game::playerColor);
             break;
         }
@@ -103,5 +103,7 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
 }
 
 SettingsMenu::~SettingsMenu() {
+#ifdef DEBUG
     SDL_Log("Destruct settings");
+#endif
 }
