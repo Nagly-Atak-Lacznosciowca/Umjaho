@@ -1,11 +1,12 @@
 #include "game/entities/StraightMaster.h"
 
 void StraightMaster::update() {
-    if (isFacingCheckpoint()) {
-        SDL_Log("Facing checkpoint!");
-        accelerate();
-        move();
-    }
+    Bot::update();
+    // if (isFacingCheckpoint()) {
+        // SDL_Log("Facing checkpoint!");
+        // accelerate();
+        // move();
+    // }
 }
 
 double StraightMaster::evaluateTurn(double testTurn) {
@@ -28,18 +29,6 @@ Checkpoint* StraightMaster::getNextCheckpoint() {
 
 StraightMaster::StraightMaster(double x, double y, Player &player, std::vector<Bot *> &opponents,
                                std::vector<SceneElement *> &contents, std::vector<Checkpoint *> &checkpoints,
-                               double zIndex, SDL_Texture *texture, double width, double length, double angle) : Bot(x,
-                                                                                                                     y,
-                                                                                                                     player,
-                                                                                                                     opponents,
-                                                                                                                     contents,
-                                                                                                                     checkpoints,
-                                                                                                                     zIndex,
-                                                                                                                     texture,
-                                                                                                                     width,
-                                                                                                                     length,
-                                                                                                                     angle) {
+                               double zIndex, SDL_Texture *texture, double width, double length, double angle) : Bot(x, y, player, opponents, contents, checkpoints, zIndex, texture, width, length, angle) {
 
 }
-
-
