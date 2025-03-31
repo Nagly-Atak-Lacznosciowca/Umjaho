@@ -79,18 +79,6 @@ void Game::loadSounds() {
 			(int)*audioLength
 		));
 		
-		SDL_Log("Loading %ls", entry.path().c_str());
-	}
-	
-	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
-		SDL_Texture* texture = IMG_LoadTexture(Game::renderer.SDLRenderer,entry.path().string().c_str());
-		if (texture == nullptr) {
-			SDL_Log("Błąd tekstura %s", SDL_GetError());
-		}
-
-		textures.insert({entry.path().filename().string(), texture});
-		SDL_Log("Loading %ls", entry.path().c_str());
-
 #ifdef DEBUG
 		SDL_Log("Loaded sound: %ls", entry.path().c_str());
 #endif
