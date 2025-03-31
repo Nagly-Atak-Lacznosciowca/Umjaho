@@ -27,6 +27,10 @@ Level3::Level3() {
     player->SetTexture();
     contents.push_back(player);
 
+    currentLapLabel->setColor({0,0,0});
+    currentLapText->setColor({0,0,0});
+    lapLabel->setColor({0,0,0});
+
     // auto opponents = std::array<Opponent*, 3>{
     //     new Opponent(300, 100, 150, 50, 0.5),
     //     new Opponent(1400, 200),
@@ -56,10 +60,6 @@ Level3::Level3() {
     contents.push_back(water);
     contents.push_back(oil);
 
-    auto nitro1 = new Nitro(315, 111);
-    auto nitro2 = new Nitro(852, 403);
-    auto nitro3 = new Nitro(1467, 566);
-    contents.push_back(nitro1);
-    contents.push_back(nitro2);
-    contents.push_back(nitro3);
+    nitroPositions = {{249, 305}, {1455, 670}, {1249, 524}, {69, 478}};
+
 }
