@@ -30,7 +30,7 @@ void Game::loadFont() {
 	Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 1000);
 	
 	if(Game::font == nullptr){
-		SDL_Log("font fgdgd %s", SDL_GetError());
+		SDL_Log("Couldn't load font: %s", SDL_GetError());
 	}
 }
 
