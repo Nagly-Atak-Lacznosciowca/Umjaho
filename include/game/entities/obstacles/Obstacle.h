@@ -7,7 +7,9 @@ class Obstacle : public SceneElement {
     public:
         Obstacle(double x, double y, double width = 50, double height = 50, double angle = 0, double zIndex = 0, SDL_Texture* texture = nullptr);
         ~Obstacle() override;
+        Uint64 timeToDestroy = 10000;   // 10 seconds
 
+        void countdownToDestroy();              // For obstacles placed by the player
         virtual void passiveAction();           // Standard action executed for the whole time, e.g. gate opening and closing
         virtual void activeAction(Car* car);    // Action executed when the player collides with the obstacle, e.g. mine explosion
 };

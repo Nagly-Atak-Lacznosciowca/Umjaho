@@ -19,6 +19,7 @@ class Level: public Scene{
 		Uint64 ticks = 0;
 		Uint64 lapTimes[3] = {};
 		Uint64 currentLapTime = 0;
+		std::vector<Obstacle*> temporaryObstacles = {};
 
 		Level();
 		
