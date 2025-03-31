@@ -8,36 +8,34 @@
 #include "engine/scenes/Text.h"
 
 Level::Level() {
-    // Nitro counter label
-    nitroCounterLabel = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: ");
-    contents.push_back(nitroCounterLabel);
-
     // Nitro counter
-    nitroCounter = new Text(490, 815, 0, 50, 0, 0, "0/3");
+    nitroCounter = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
     contents.push_back(nitroCounter);
 }
 
 void Level::logic() {
 	
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
+	const auto keyboardState = SDL_GetKeyboardState(nullptr);
+	
+    if (keyboardState[SDL_SCANCODE_LEFT] || keyboardState[SDL_SCANCODE_A]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT});
     }
-    else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
+    else if (keyboardState[SDL_SCANCODE_RIGHT] || keyboardState[SDL_SCANCODE_D]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT});
     }
 
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
+    if (keyboardState[SDL_SCANCODE_UP] || keyboardState[SDL_SCANCODE_W]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD});
     }
-    else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
+    else if (keyboardState[SDL_SCANCODE_DOWN] || keyboardState[SDL_SCANCODE_S]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD});
     }
 
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
+    if (keyboardState[SDL_SCANCODE_SPACE]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO_USE});
     }
 
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_E] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_X]) {
+    if (keyboardState[SDL_SCANCODE_E] || keyboardState[SDL_SCANCODE_X]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE});
     }
 
@@ -121,12 +119,12 @@ void Level::handleEvent(SDL_Event* event) {
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
-            nitroCounter->setContent(std::to_string(player->nitroCharges) + "/3");
+            nitroCounter->setContent("Nitro charges: " + std::to_string(player->nitroCharges) + "/" + std::to_string(Car::NEEDED_CHARGES));
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
-                nitroCounter->setContent("0/3");
+                nitroCounter->setContent("Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;

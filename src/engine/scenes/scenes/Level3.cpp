@@ -2,6 +2,11 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
+#include "game/entities/obstacles/Cone.h"
+#include "game/entities/obstacles/SpeedBump.h"
+#include "game/entities/obstacles/Water.h"
+#include "game/entities/obstacles/Oil.h"
+#include "game/entities/obstacles/Gate.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
 #include "game/entities/surfaces/Ice.h"
@@ -13,10 +18,9 @@ Level3::Level3() {
 
     SDL_Color textColor = SDL_Color { 0, 0, 0 };
     nitroCounter->setColor(textColor);
-    nitroCounterLabel->setColor(textColor);
 
-    auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
-    contents.push_back(ice);
+    // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
+    // contents.push_back(ice);
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left
@@ -37,6 +41,20 @@ Level3::Level3() {
     // for (auto wall: walls) {
     //     contents.push_back(wall);
     // }
+
+    auto cone = new Cone(1000, 500, 25, 25, 0, 0, Game::textures.at("cone.bmp"));
+    auto cone2 = new Cone(1200, 500, 25, 25, 0, 0, Game::textures.at("cone.bmp"));
+    auto speedbump = new SpeedBump(800, 300, 65, 18, 0, 0, Game::textures.at("speedbump.bmp"));
+    auto water = new Water(600, 700, 100, 25, 0, 0, Game::textures.at("water.bmp"));
+    auto oil = new Oil(1000, 700, 100, 25, 0, 0, Game::textures.at("oil.bmp"));
+    auto gate = new Gate(180, 283, 7, 90, 0, 0, Game::textures.at("gate-closed.bmp"));
+
+    contents.push_back(gate);
+    contents.push_back(cone);
+    contents.push_back(cone2);
+    contents.push_back(speedbump);
+    contents.push_back(water);
+    contents.push_back(oil);
 
     auto nitro1 = new Nitro(315, 111);
     auto nitro2 = new Nitro(852, 403);

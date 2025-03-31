@@ -6,8 +6,10 @@
 
 class Credits : public Scene {
 	public:
+		SoundPlayback *music;
+		
 		Credits();
-		~Credits() override = default;
+		~Credits() override;
 		
 		void logic() override;
 		void handleEvent(SDL_Event* event) override;

@@ -45,7 +45,7 @@ MainMenu::MainMenu() {
 	int *windowWidth = new int();
 	int *windowHeight = new int();
 
-	SDL_GetWindowSize(Game::renderer.SDLWindow, windowWidth, windowHeight);
+	SDL_GetWindowSizeInPixels(Game::renderer.SDLWindow, windowWidth, windowHeight);
 
 	const int width = *windowWidth;
 	const int height = *windowHeight;
@@ -65,10 +65,6 @@ MainMenu::MainMenu() {
     this->contents.push_back(settingsButton);
 	this->contents.push_back(creditsButton);
     this->contents.push_back(exitButton);
-	
-	Game::soundManager.playSound("main-menu.wav", {
-		.looping = true
-	});
 }
 
 void MainMenu::logic()
