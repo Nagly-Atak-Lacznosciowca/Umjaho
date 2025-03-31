@@ -37,7 +37,25 @@ void Level::lap() {
 
 Level::Level() {
     // Nitro counter
-    nitroCounter = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
+	
+	int *windowWidth = new int();
+	int *windowHeight = new int();
+	
+	SDL_GetWindowSizeInPixels(Game::renderer.SDLWindow, windowWidth, windowHeight);
+	
+	const float batteryScale = 1.0f/3.0f;
+	
+	const auto batteryX = 100;
+	const auto batteryY = -20;
+	
+	const auto batteryWidth = 550;
+	const auto batteryHeight = 200;
+	
+    nitroCounter = new NitroBattery(batteryX, batteryY + (float)*windowHeight - batteryHeight * batteryScale, batteryWidth * batteryScale, batteryHeight * batteryScale, 0, 1, 0);
+	
+	delete windowWidth;
+	delete windowHeight;
+	
     contents.push_back(nitroCounter);
 }
 
@@ -161,12 +179,12 @@ void Level::handleEvent(SDL_Event* event) {
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
-            nitroCounter->setContent("Nitro charges: " + std::to_string(player->nitroCharges) + "/" + std::to_string(Car::NEEDED_CHARGES));
+            nitroCounter->setState(this->player->nitroCharges);
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
-                nitroCounter->setContent("Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
+	            nitroCounter->setState(0);
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;

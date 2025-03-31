@@ -5,12 +5,13 @@
 #include "game/entities/Player.h"
 #include "game/entities/Opponent.h"
 #include "engine/scenes/Text.h"
+#include "engine/scenes/NitroBattery.h"
 
 class Level: public Scene{
 	public:
 		Player *player = nullptr;
 		Opponent* opponents[4] = {};
-		Text *nitroCounter = nullptr;
+		NitroBattery *nitroCounter = nullptr;
 		Uint64 startTime = 0;
 		Uint64 lapStartTime = 0;
 		int laps = 3;
@@ -18,7 +19,6 @@ class Level: public Scene{
 		Uint64 ticks = 0;
 		Uint64 lapTimes[3] = {};
 		Uint64 currentLapTime = 0;
-
 
 		Level();
 		
