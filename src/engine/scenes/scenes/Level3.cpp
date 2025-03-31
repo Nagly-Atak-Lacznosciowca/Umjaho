@@ -1,7 +1,5 @@
 #include "engine/scenes/scenes/Level3.h"
 
-#include <math.h>
-
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
@@ -56,6 +54,18 @@ Level3::Level3() {
     auto water = new Water(600, 700, 100, 25, 0, 0, Game::textures.at("water.png"));
     auto oil = new Oil(1000, 700, 100, 25, 0, 0, Game::textures.at("oil.png"));
     auto gate = new Gate(180, 283, 7, 90, 0, 0, Game::textures.at("gate-closed.png"));
+
+    Ice* surfaces[] = {
+        new Ice(685, 455, 415, 125),
+        new Ice(1080, 470, 120, 135, -0.3),
+        new Ice(1113, 572, 454, 177),
+        new Ice(1440, 400, 130, 171),
+        new Ice(1192, 529, 43, 43)
+    };
+
+    for (const auto& surface : surfaces) {
+        contents.push_back(surface);
+    }
 
     contents.push_back(gate);
     contents.push_back(cone);
