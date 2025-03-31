@@ -13,6 +13,7 @@ SDL_AudioDeviceID Game::audioDeviceID;
 SceneManager Game::sceneManager;
 TTF_Font* Game::font;
 std::string Game::playerColor = "blue";
+std::vector<Uint64> Game::playerTimes[3] = {{}, {}, {}};
 
 Game::Game(): lastTick(0), deltaTime(0) {}
 

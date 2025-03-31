@@ -1,10 +1,11 @@
 #ifndef LEADERBOARD_H
 #define LEADERBOARD_H
-#include "engine/scenes/Scene.h"
+#include "Level.h"
+#include "Menu.h"
 
-class Leaderboard : public Scene {
+class Leaderboard : public Menu {
   public:
-    Leaderboard(Uint64 time);
+    Leaderboard(Uint64 time, Uint64 ticks, Level* level, Uint64 fastestLap);
 
     Uint64 lastTime = 0;
 

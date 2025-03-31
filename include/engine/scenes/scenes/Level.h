@@ -12,8 +12,12 @@ class Level: public Scene{
 		Opponent* opponents[4] = {};
 		Text *nitroCounter = nullptr;
 		Uint64 startTime = 0;
+		Uint64 lapStartTime = 0;
 		int laps = 3;
 		int currentLap = 0;
+		Uint64 ticks = 0;
+		Uint64 lapTimes[3] = {};
+		Uint64 currentLapTime = 0;
 
 
 		Level();

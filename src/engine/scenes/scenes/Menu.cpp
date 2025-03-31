@@ -23,5 +23,7 @@ void Menu::handleEvent(SDL_Event *event) {
 			}
 			
 			break;
+		default:
+			break;
 	}
 }
