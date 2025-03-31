@@ -14,7 +14,7 @@ Level1::Level1() {
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    player = new Player(550, 685);
+    player = new Player(515, 642);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
