@@ -6,6 +6,34 @@
 #include "game/entities/surfaces/Dirt.h"
 #include "game/entities/surfaces/Ice.h"
 #include "engine/scenes/Text.h"
+#include "engine/scenes/scenes/Leaderboard.h"
+#include "game/entities/surfaces/FinishLine.h"
+#include <algorithm>
+
+void Level::lap() {
+    if (!player->onFinishLine) return;
+    SDL_Log("current lap %d", currentLap);
+    if (currentLap == 0) {
+        startTime = ticks;
+        lapStartTime = startTime;
+        currentLap++;
+    }
+    else if (currentLap <= laps) {
+        lapTimes[currentLap-1] = currentLapTime;
+        currentLap++;
+        lapStartTime = ticks;
+    }
+    else {
+        std::sort(lapTimes, lapTimes+3, std::less<Uint64>());
+        auto fastestLap = lapTimes[0];
+        SDL_PushEvent(new SDL_Event{
+            .user = {
+                .type = Event::CUSTOM_EVENT_PUSH_SCENE,
+                .data1 = new Leaderboard(startTime, ticks, this, fastestLap)
+            }
+        });
+    }
+}
 
 Level::Level() {
     // Nitro counter
@@ -59,6 +87,10 @@ void Level::logic() {
     }
 
     player->move();
+    ticks++;
+    currentLapTime = ticks - lapStartTime;
+
+    SDL_Log("current time %d", currentLapTime);
 
     for (const auto& element : contents) {
         if (element != player) {
@@ -72,7 +104,7 @@ void Level::logic() {
     // For each car check if it's on dirt or ice and use the appropriate method
     for (const auto& element : contents) {
         if (auto car = dynamic_cast<Car*>(element)) {
-            bool onCurb = false, onDirt = false, onIce = false;
+            bool onCurb = false, onDirt = false, onIce = false, onFinishLine = false;
             for (const auto& surface : contents) {
                 if (auto curb = dynamic_cast<Curb*>(surface)) {
                     if (Game::checkSurfaceIntersection(car, curb)) {
@@ -89,10 +121,20 @@ void Level::logic() {
                         onIce = true;
                     }
                 }
+                if (auto finishLine = dynamic_cast<FinishLine*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, finishLine) && dynamic_cast<Player*>(car)) {
+                        onFinishLine = true;
+                    }
+                }
             }
             if (!onCurb) car->leaveCurb();
             if (!onDirt) car->leaveDirt();
             if (!onIce) car->leaveIce();
+            if (!onFinishLine) {
+                if (!player->onFinishLine) return;
+                lap();
+                player->onFinishLine = false;
+            };
         }
     }
 }
