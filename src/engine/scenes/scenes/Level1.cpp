@@ -3,13 +3,31 @@
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
+#include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Curb.h"
 #include "engine/scenes/scenes/Checkpoint.h"
 
 Level1::Level1() {
 
     SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
-    this->background = backgroundTexture;
+    // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
+    background = backgroundTexture;
+
+    player = new Player(550, 685);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+    contents.push_back(player);
+
+    // auto opponents = std::array<Opponent*, 3>{
+    //     new Opponent(300, 100, 150, 50, 0.5),
+    //     new Opponent(1400, 200),
+    //     new Opponent(240, 700, 50, 100, 1.5)
+    // };
+    // for (auto opponent: opponents) {
+    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     contents.push_back(opponent);
+    // }
 
     auto walls = {
         new Barrier(20, 276, 13, 400),
@@ -30,17 +48,10 @@ Level1::Level1() {
         new Barrier(1119, 280, 60, 15, 0.91),
         new Barrier(1157+3, 191-3, 15, 80, -0.078),
         new Barrier(200, 292, 15, 305, 0),
-        new Barrier(225, 602, 736, 15, 0),
-        new Barrier(1013, 640, 203, 15, 0),
+        new Barrier(225, 602, 1040, 15, 0),
         new Barrier(200, 782, 1150, 15, 0),
         new Barrier(1385, 225, 15, 288, 0),
         new Barrier(1568, 194, 15, 350, 0), // 194!!! 194 Krowodrza Górka P+R - Os. Pod Fortem referencja!!!!
-        new Barrier(943, 504, 162, 15, 0),
-        new Barrier(698, 467, 196, 15, 0),
-        new Barrier(971, 571, 70, 70, 0.92),
-        new Barrier(1191, 571, 70, 70, -0.92),
-        new Barrier(658, 481, 70, 70, -0.92),
-        new Barrier(867, 481, 70, 70, 0.92),
         new Barrier(1559, 528, 15, 80, -0.23),
         new Barrier(1531, 601, 15, 80, -0.51),
         new Barrier(1492, 653, 15, 80, -0.76),
@@ -59,7 +70,7 @@ Level1::Level1() {
         new Barrier(67+395, 688-278, 15, 80, 0.70),
         new Barrier(110+395-5, 723-278, 15, 70, 1.0),
         new Barrier(156+395, 745-278, 15, 70, 1.30),
-        new Barrier(590, 504, 100, 15, 0),
+        new Barrier(590, 504, 550, 15, 0),
         new Barrier(1179, 115, 15, 80, -0.36),
         new Barrier(1216, 52, 15, 80, -0.70),
         new Barrier(1261, 20, 15, 70, -1.0),
@@ -82,6 +93,9 @@ Level1::Level1() {
         new Barrier(328, 188, 15, 50, 1.3),
         new Barrier(371, 208, 15, 60, 0.87),
         new Barrier(401, 252, 15, 100, 0.2),
+        // new Barrier(10,500, 700, 8),
+        // new Barrier(900,200, 300, 300, 0.6),
+        // new Barrier(1250,500, 50, 500, -1.2)
     };
 
     this->contents.insert(this->contents.end(), walls.begin(), walls.end());
@@ -125,6 +139,24 @@ Level1::Level1() {
         new Nitro(1467, 566),
     };
 
+    auto surfaces = std::array<Surface*, 6>{
+        new Curb(691, 468, 206, 40),
+        new Curb(1008, 614, 206, 40),
+        new Curb(666, 478, 50, 50, 0.78),
+        new Curb(872, 478, 50, 50, 0.78),
+        new Curb(984, 593, 50, 50, 0.78),
+        new Curb(1189, 594, 50, 50, 0.78),
+    };
+    for (auto surface: surfaces) {
+        contents.push_back(surface);
+    }
+
+    auto nitro1 = new Nitro(315, 111);
+    auto nitro2 = new Nitro(852, 403);
+    auto nitro3 = new Nitro(1467, 566);
+
+    auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
+    contents.push_back(place);
     this->contents.insert(contents.end(), nitros.begin(), nitros.end());
 
     auto text = new Text(215, 815);
@@ -139,4 +171,8 @@ Level1::Level1() {
     player->texture = Game::textures.at("car-blue-regular.bmp");
     contents.push_back(player);
 
+    // auto text = new Text(215, 815);
+    // text->setContent("fhdggfds");
+    // text->width = 1200;
+    // contents.push_back(text);
 }

@@ -11,6 +11,7 @@ SoundManager Game::soundManager;
 SDL_AudioDeviceID Game::audioDeviceID;
 SceneManager Game::sceneManager;
 TTF_Font* Game::font;
+std::string Game::playerColor = "blue";
 
 Game::Game(): lastTick(0), deltaTime(0) {}
 
@@ -65,18 +66,22 @@ void Game::init() {
 
 bool Game::checkSpeedControls()
 {
-	return SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S];
+	const auto keyboardState = SDL_GetKeyboardState(nullptr);
+	
+	return keyboardState[SDL_SCANCODE_UP]
+	|| keyboardState[SDL_SCANCODE_DOWN]
+	|| keyboardState[SDL_SCANCODE_W]
+	|| keyboardState[SDL_SCANCODE_S];
 }
 
 bool Game::checkTurnControls()
 {
-	return SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]
-	|| SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D];
+	const auto keyboardState = SDL_GetKeyboardState(nullptr);
+	
+	return keyboardState[SDL_SCANCODE_LEFT]
+	|| keyboardState[SDL_SCANCODE_RIGHT]
+	|| keyboardState[SDL_SCANCODE_A]
+	|| keyboardState[SDL_SCANCODE_D];
 }
 
 
@@ -153,9 +158,44 @@ SDL_FPoint* Game::checkElementCollision(SceneElement *elem1, SceneElement *elem2
 }
 
 
+bool Game::checkSurfaceIntersection(Car *car, Surface *surface) {
+	auto carPoints = car->getPoints();
+	auto surfacePoints = surface->getPoints();
+
+	for (int i = 0; i < 4; i++) {
+		SDL_FPoint carPoint = carPoints[i];
+		int intersections = 0;
+
+		for (int j = 0; j < 4; j++) {
+			SDL_FPoint p1 = surfacePoints[j];
+			SDL_FPoint p2 = surfacePoints[(j + 1) % 4];
+			SDL_FPoint intersection;
+
+			SDL_FPoint rayEnd = {carPoint.x + 10000.0f, carPoint.y};
+			if (getIntersection(carPoint, rayEnd, p1, p2, intersection)) {
+				intersections++;
+			}
+		}
+
+		// Odd intersections mean the point is inside
+		if (intersections % 2 == 1) {
+			delete[] carPoints;
+			delete[] surfacePoints;
+			return true;
+		}
+	}
+
+	delete[] carPoints;
+	delete[] surfacePoints;
+	return false;
+}
+
+
 Game::~Game() {
     for (const auto &item: Game::textures) {
         SDL_DestroyTexture(item.second);
     }
+	
+	
 }
 

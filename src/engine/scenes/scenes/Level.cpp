@@ -2,33 +2,51 @@
 #include "game/Event.h"
 #include "game/Game.h"
 #include "engine/scenes/scenes/PauseMenu.h"
+#include "game/entities/surfaces/Curb.h"
+#include "game/entities/surfaces/Dirt.h"
+#include "game/entities/surfaces/Ice.h"
+#include "engine/scenes/Text.h"
+
+Level::Level() {
+    // Nitro counter
+    nitroCounter = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
+    contents.push_back(nitroCounter);
+}
 
 void Level::logic() {
 	
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LEFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_A]) {
+	const auto keyboardState = SDL_GetKeyboardState(nullptr);
+
+    if (keyboardState[SDL_SCANCODE_LEFT] || keyboardState[SDL_SCANCODE_A]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT});
     }
-    else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RIGHT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_D]) {
+    else if (keyboardState[SDL_SCANCODE_RIGHT] || keyboardState[SDL_SCANCODE_D]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_RIGHT});
     }
 
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_UP] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_W]) {
+    if (keyboardState[SDL_SCANCODE_UP] || keyboardState[SDL_SCANCODE_W]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_FORWARD});
     }
-    else if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_DOWN] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_S]) {
+    else if (keyboardState[SDL_SCANCODE_DOWN] || keyboardState[SDL_SCANCODE_S]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_MOVE_BACKWARD});
     }
 
-    if (SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_SPACE]) {
-        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO});
+    if (keyboardState[SDL_SCANCODE_SPACE]) {
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_NITRO_USE});
+    }
+
+    if (keyboardState[SDL_SCANCODE_E] || keyboardState[SDL_SCANCODE_X]) {
+        SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE});
     }
 
     if (!Game::checkSpeedControls()) {
         player->decelerate();
     }
+
     if (!Game::checkTurnControls()) {
         player->straighten();
     }
+
     if(player->nitroTimer > 0){
         player->accelerate();
         player->nitroTimer--;
@@ -56,6 +74,33 @@ void Level::logic() {
             checkpoint->collide(player);
         }
     }
+
+    for (const auto& element : contents) {
+        if (auto car = dynamic_cast<Car*>(element)) {
+            bool onCurb = false, onDirt = false, onIce = false;
+            for (const auto& surface : contents) {
+                if (auto curb = dynamic_cast<Curb*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, curb)) {
+                        onCurb = true;
+                    }
+                }
+                if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, dirt)) {
+                        onDirt = true;
+                    }
+                }
+                if (auto ice = dynamic_cast<Ice*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, ice)) {
+                        onIce = true;
+                    }
+                }
+            }
+            if (!onCurb) car->leaveCurb();
+            if (!onDirt) car->leaveDirt();
+            if (!onIce) car->leaveIce();
+        }
+    }
+}
 }
 
 void Level::handleEvent(SDL_Event* event) {
@@ -70,7 +115,6 @@ void Level::handleEvent(SDL_Event* event) {
             player->turnRight();
             break;
         }
-
         case Event::CUSTOM_EVENT_CAR_MOVE_FORWARD: {
             player->accelerate();
             break;
@@ -80,8 +124,13 @@ void Level::handleEvent(SDL_Event* event) {
             else player->reverse();
             break;
         }
-        case Event::CUSTOM_EVENT_CAR_NITRO: {
+        case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
+            nitroCounter->setContent("Nitro charges: " + std::to_string(player->nitroCharges) + "/" + std::to_string(Car::NEEDED_CHARGES));
+            break;
+        }
+        case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
+                nitroCounter->setContent("Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;
@@ -98,14 +147,23 @@ void Level::handleEvent(SDL_Event* event) {
 					}
 				});
 			break;
+
+        case Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE:
+            if(player->holdingObstacle != nullptr){
+                player->holdingObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
+                player->holdingObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
+                player->holdingObstacle->angle = player->angle;
+                this->contents.push_back(player->holdingObstacle);
+                player->holdingObstacle = nullptr;
+            }
         default:
             break;
     }
-}
 
-void Level::render() {
-    Scene::render();
-    for (const auto &item: this->checkpoints) {
-        item->render();
+    void Level::render() {
+        Scene::render();
+        for (const auto &item: this->checkpoints) {
+            item->render();
+        }
     }
 }

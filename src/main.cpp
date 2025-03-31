@@ -57,6 +57,14 @@ auto game = new Game();
     if (now - lastActionTime > actionInterval) {
         //current scene game tick
 	    Game::sceneManager.currentScene()->logic();
+        for (auto& content : Game::sceneManager.currentScene()->contents) {
+            if (auto obstacle = dynamic_cast<Obstacle*>(content)) {
+                try {
+                    obstacle->passiveAction();
+                }
+                catch (const std::exception& _) {}
+            }
+        }
 
         lastActionTime = now;
     }

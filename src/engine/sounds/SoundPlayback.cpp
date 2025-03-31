@@ -9,6 +9,10 @@ SoundPlayback::SoundPlayback(SDL_AudioStream *stream, Uint8 *data, int length, S
 	}
 }
 
+SoundPlayback::~SoundPlayback() {
+	SDL_DestroyAudioStream(stream);
+}
+
 bool SoundPlayback::play() {
 	return SDL_PutAudioStreamData(this->stream, this->data, this->length);
 }

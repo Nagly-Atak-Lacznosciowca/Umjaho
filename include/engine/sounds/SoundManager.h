@@ -15,7 +15,7 @@ class SoundManager {
 		std::map<std::string, Sound*> sounds;
 		
 		SoundManager();
-		~SoundManager() = default;
+		~SoundManager();
 		
 		void registerSound(const std::string &name, Sound* sound);
 		SoundPlayback* playSound(Sound* sound, SoundPlaybackOptions options = {});
