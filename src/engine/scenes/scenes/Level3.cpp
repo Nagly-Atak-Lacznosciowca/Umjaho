@@ -13,13 +13,13 @@
 
 Level3::Level3() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("track3.bmp");
+    SDL_Texture *backgroundTexture = Game::textures.at("track3.png");
     background = backgroundTexture;
 
     SDL_Color textColor = SDL_Color { 0, 0, 0 };
     // nitroCounter->setColor(textColor);
 
-    // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
+    // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.png"));
     // contents.push_back(ice);
 
     player = new Player(332, 667);
@@ -33,7 +33,7 @@ Level3::Level3() {
     //     new Opponent(240, 700, 50, 100, 1.5)
     // };
     // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
     //     contents.push_back(opponent);
     // }
 
@@ -42,12 +42,12 @@ Level3::Level3() {
     //     contents.push_back(wall);
     // }
 
-    auto cone = new Cone(1000, 500, 25, 25, 0, 0, Game::textures.at("cone.bmp"));
-    auto cone2 = new Cone(1200, 500, 25, 25, 0, 0, Game::textures.at("cone.bmp"));
-    auto speedbump = new SpeedBump(800, 300, 65, 18, 0, 0, Game::textures.at("speedbump.bmp"));
-    auto water = new Water(600, 700, 100, 25, 0, 0, Game::textures.at("water.bmp"));
-    auto oil = new Oil(1000, 700, 100, 25, 0, 0, Game::textures.at("oil.bmp"));
-    auto gate = new Gate(180, 283, 7, 90, 0, 0, Game::textures.at("gate-closed.bmp"));
+    auto cone = new Cone(1000, 500, 25, 25, 0, 0, Game::textures.at("cone.png"));
+    auto cone2 = new Cone(1200, 500, 25, 25, 0, 0, Game::textures.at("cone.png"));
+    auto speedbump = new SpeedBump(800, 300, 65, 18, 0, 0, Game::textures.at("speedbump.png"));
+    auto water = new Water(600, 700, 100, 25, 0, 0, Game::textures.at("water.png"));
+    auto oil = new Oil(1000, 700, 100, 25, 0, 0, Game::textures.at("oil.png"));
+    auto gate = new Gate(180, 283, 7, 90, 0, 0, Game::textures.at("gate-closed.png"));
 
     contents.push_back(gate);
     contents.push_back(cone);

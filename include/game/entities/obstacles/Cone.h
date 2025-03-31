@@ -7,7 +7,7 @@
 
 class Cone : public Obstacle {
     public:
-        Cone(double x, double y, double width = 25, double height = 25, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("cone.bmp"));
+        Cone(double x, double y, double width = 25, double height = 25, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("cone.png"));
         ~Cone() override = default;
 
         void activeAction(Car* car) override;

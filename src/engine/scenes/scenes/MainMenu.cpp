@@ -40,7 +40,7 @@ void MainMenu::exitGame(){
 }
 
 MainMenu::MainMenu() {
-    this->background = Game::textures.at("title.bmp");
+    this->background = Game::textures.at("title.png");
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();

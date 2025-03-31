@@ -8,10 +8,10 @@
 
 Level2::Level2() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("track2.bmp");
+    SDL_Texture *backgroundTexture = Game::textures.at("track2.png");
     background = backgroundTexture;
 
-//    auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.bmp"));
+//    auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.png"));
 //    contents.push_back(dirt);
 
     player = new Player(330, 667);
@@ -25,7 +25,7 @@ Level2::Level2() {
     //     new Opponent(240, 700, 50, 100, 1.5)
     // };
     // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
     //     contents.push_back(opponent);
     // }
 

@@ -29,7 +29,7 @@ void exitGame() {
 
 PauseMenu::PauseMenu()
 {
-	this->background = Game::textures.at("pause-menu.bmp");
+	this->background = Game::textures.at("pause-menu.png");
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
@@ -56,10 +56,10 @@ PauseMenu::PauseMenu()
 	const auto buttonHeight = 20;
 	const auto gap = 10;
 	
-	auto *resumeButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 0 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), resume, "Resume");
-	auto *settingsButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 1 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), goToSettingsMenu, "Settings");
-	auto *exitTitleButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 2 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), exitTitle, "Exit to title");
-	auto *exitGameButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 3 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.bmp"), exitGame, "Exit to desktop");
+	auto *resumeButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 0 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.png"), resume, "Resume");
+	auto *settingsButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 1 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.png"), goToSettingsMenu, "Settings");
+	auto *exitTitleButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 2 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.png"), exitTitle, "Exit to title");
+	auto *exitGameButton = new Button(((float)this->background->w / 2 - (float)buttonWidth / 2) * scaleX, buttonListY + 3 * (gap + buttonHeight) * scaleY, buttonWidth * scaleX, buttonHeight * scaleY, 0, 1, Game::textures.at("button.png"), exitGame, "Exit to desktop");
 	
 	this->contents.push_back(pausedText);
 	

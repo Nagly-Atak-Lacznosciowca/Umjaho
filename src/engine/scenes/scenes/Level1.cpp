@@ -10,7 +10,7 @@
 
 Level1::Level1() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
+    SDL_Texture *backgroundTexture = Game::textures.at("track1.png");
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
@@ -25,7 +25,7 @@ Level1::Level1() {
     //     new Opponent(240, 700, 50, 100, 1.5)
     // };
     // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
     //     contents.push_back(opponent);
     // }
 

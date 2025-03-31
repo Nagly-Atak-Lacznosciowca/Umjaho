@@ -55,7 +55,7 @@ void Game::loadTextures() {
 #endif
 	}
 	
-	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
+	SDL_SetTextureScaleMode(textures.at("button.png"), SDL_SCALEMODE_NEAREST);
 }
 
 void Game::loadSounds() {

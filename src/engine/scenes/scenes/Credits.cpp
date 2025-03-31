@@ -7,7 +7,7 @@ int height;
 
 Credits::Credits()
 {
-	this->background = Game::textures.at("pause-menu.bmp");
+	this->background = Game::textures.at("pause-menu.png");
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
