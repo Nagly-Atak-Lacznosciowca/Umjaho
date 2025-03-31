@@ -4,6 +4,7 @@
 #include "engine/scenes/scenes/MainMenu.h"
 #include "game/Event.h"
 #include <filesystem>
+#include "SDL3_image/SDL_image.h"
 
 Renderer Game::renderer;
 std::map<std::string, SDL_Texture*> Game::textures;
@@ -40,16 +41,10 @@ void Game::loadFont() {
 
 void Game::loadTextures() {
 	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
-		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
-		
-		if (surface == nullptr) {
-			SDL_Log("Couldn't load BMP: %s", SDL_GetError());
-		}
-		
-		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
+		SDL_Texture *texture = IMG_LoadTexture(Game::renderer.SDLRenderer, entry.path().string().c_str());
 		
 		if (texture == nullptr) {
-			SDL_Log("Couldn't create texture from surface: %s", SDL_GetError());
+			SDL_Log("Couldn't load texture: %s", SDL_GetError());
 		}
 		
 		Game::textures.insert({entry.path().filename().string(), texture});

@@ -5,12 +5,13 @@
 #include "game/entities/Player.h"
 #include "game/entities/Opponent.h"
 #include "engine/scenes/Text.h"
+#include "engine/scenes/NitroBattery.h"
 
 class Level: public Scene{
 	public:
 		Player *player = nullptr;
 		Opponent* opponents[4] = {};
-		Text *nitroCounter = nullptr;
+		NitroBattery *nitroCounter = nullptr;
 
 		Level();
 		
