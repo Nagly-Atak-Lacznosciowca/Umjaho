@@ -1,5 +1,8 @@
 #include "game/entities/powerups/PlaceObstacle.h"
 #include "game/Game.h"
+#include "game/entities/obstacles/Cone.h"
+#include "game/entities/obstacles/Oil.h"
+#include "game/entities/obstacles/Water.h"
 
 PlaceObstacle::PlaceObstacle(double x, double y, Obstacle* obstacle, double width, double height, double angle, double zIndex): PowerUp(x,y,width,height,angle,zIndex), obstacle(obstacle) {
     if (obstacle == nullptr) {
