@@ -4,19 +4,19 @@
 const unsigned int SoundPlayback::MAX_PLAYBACK_VOLUME = 127;
 
 SoundPlayback::SoundPlayback(SDL_AudioStream *stream, Uint8 *data, int length, SoundPlaybackOptions options): stream(stream), data(data), length(length)  {
-	SDL_AudioSpec spec;
-	
-	if (!SDL_GetAudioStreamFormat(stream, &spec, nullptr)) {
-		SDL_Log("Couldn't get audio stream format: %s", SDL_GetError());
-	}
-	
-	Uint8 *temp = (Uint8*)SDL_malloc(this->length * sizeof(Uint8));
-
-	if (!SDL_MixAudio(temp, this->data, spec.format, this->length, (float)options.volume / SoundPlayback::MAX_PLAYBACK_VOLUME)) {
-		SDL_Log("Couldn't mix audio: %s", SDL_GetError());
-	}
-	
-	SDL_memcpy(this->data, temp, this->length);
+	// SDL_AudioSpec spec;
+	//
+	// if (!SDL_GetAudioStreamFormat(stream, &spec, nullptr)) {
+	// 	SDL_Log("Couldn't get audio stream format: %s", SDL_GetError());
+	// }
+	//
+	// Uint8 *temp = (Uint8*)SDL_malloc(this->length * sizeof(Uint8));
+	//
+	// if (!SDL_MixAudio(temp, this->data, spec.format, this->length, (float)options.volume / SoundPlayback::MAX_PLAYBACK_VOLUME)) {
+	// 	SDL_Log("Couldn't mix audio: %s", SDL_GetError());
+	// }
+	//
+	// SDL_memcpy(this->data, temp, this->length);
 	
 	if (options.looping)
 	{
