@@ -1,4 +1,7 @@
 #include "engine/scenes/scenes/Level3.h"
+
+#include <math.h>
+
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
@@ -22,15 +25,16 @@ Level3::Level3() {
     // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.png"));
     // contents.push_back(ice);
 
-    player = new Player(332, 667);
+    player = new Player(536, 657, 30, 60, 0, 1);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
 
-    // auto opponents = std::array<Opponent*, 3>{
-    //     new Opponent(300, 100, 150, 50, 0.5),
-    //     new Opponent(1400, 200),
-    //     new Opponent(240, 700, 50, 100, 1.5)
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(335, 657, 30, 60, M_PI / -2),
+    //     new Opponent(355, 712, 30, 60, M_PI / -2),
+    //     new Opponent(435, 657, 30, 60, M_PI / -2),
+    //     new Opponent(455, 712, 30, 60, M_PI / -2)
     // };
     // for (auto opponent: opponents) {
     //     opponent->texture = Game::textures.at("car-red-regular.png");

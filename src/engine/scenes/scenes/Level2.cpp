@@ -1,4 +1,7 @@
 #include "engine/scenes/scenes/Level2.h"
+
+#include <math.h>
+
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
@@ -14,15 +17,16 @@ Level2::Level2() {
 //    auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.png"));
 //    contents.push_back(dirt);
 
-    player = new Player(330, 667);
+    player = new Player(534, 657, 30, 60, 0, 1);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
 
-    // auto opponents = std::array<Opponent*, 3>{
-    //     new Opponent(300, 100, 150, 50, 0.5),
-    //     new Opponent(1400, 200),
-    //     new Opponent(240, 700, 50, 100, 1.5)
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(333, 657, 30, 60, M_PI / -2),
+    //     new Opponent(353, 712, 30, 60, M_PI / -2),
+    //     new Opponent(433, 657, 30, 60, M_PI / -2),
+    //     new Opponent(453, 712, 30, 60, M_PI / -2)
     // };
     // for (auto opponent: opponents) {
     //     opponent->texture = Game::textures.at("car-red-regular.png");
