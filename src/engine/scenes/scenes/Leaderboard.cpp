@@ -30,7 +30,7 @@ Leaderboard::Leaderboard(Uint64 start, Uint64 ticks, Level* level, Uint64 fastes
         levelNumber = 2;
     }
 
-    Game::playerTimes[levelNumber].push_back(lastTime);
+    Game::playerTimes[levelNumber].emplace_back(lastTime, fastestLap);
 
     this->background = Game::textures.at("level-menu.png");
 
@@ -54,11 +54,16 @@ Leaderboard::Leaderboard(Uint64 start, Uint64 ticks, Level* level, Uint64 fastes
 
     contents.push_back(title);
 
+    SDL_Log("fastest lap %d", fastestLap);
+
     for (int i = 0; i < Game::playerTimes[levelNumber].size(); i++) {
-        Uint64 minutes = Game::playerTimes[levelNumber][i] / 6000;
-        Uint64 seconds = Game::playerTimes[levelNumber][i] / 100;
-        Uint64 milliseconds = Game::playerTimes[levelNumber][i] - seconds * 100 - minutes * 6000;
-        auto text = new Text(0, 80 + i*70, 0, 30*scaleY, 0, 0, std::format("#{} Time: {:02} : {:02} : {:02}", i+1, minutes, seconds, milliseconds));
+        Uint64 minutes = Game::playerTimes[levelNumber][i].first / 6000;
+        Uint64 seconds = Game::playerTimes[levelNumber][i].first / 100 - minutes * 60;
+        Uint64 milliseconds = Game::playerTimes[levelNumber][i].first - seconds * 100 - minutes * 6000;
+        Uint64 fastestMinutes = Game::playerTimes[levelNumber][i].second / 6000;
+        Uint64 fastestSeconds = Game::playerTimes[levelNumber][i].second / 100 - fastestMinutes*60;
+        Uint64 fastestMilliseconds = Game::playerTimes[levelNumber][i].second - fastestSeconds * 100 - fastestMinutes * 6000;
+        auto text = new Text(0, 80 + i*70, 0, 30*scaleY, 0, 0, std::format("#{} Time: {:02}:{:02}:{:02}    Best lap: {:02}:{:02}:{:02}", i+1, minutes, seconds, milliseconds, fastestMinutes, fastestSeconds, fastestMilliseconds));
         text->x = static_cast<float>(width)/2 - (text->width/2);
         contents.push_back(text);
     }

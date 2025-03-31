@@ -9,6 +9,9 @@
 #include "engine/scenes/scenes/Leaderboard.h"
 #include "game/entities/surfaces/FinishLine.h"
 #include <algorithm>
+#include <format>
+
+#include "game/entities/powerups/Nitro.h"
 
 void Level::lap() {
     if (!player->onFinishLine) return;
@@ -20,6 +23,9 @@ void Level::lap() {
     }
     else if (currentLap <= laps) {
         lapTimes[currentLap-1] = currentLapTime;
+        auto lap = new Text(520 + (currentLap-1)*250, 830, 0, 30, 0,0, std::format("Lap {} Time: {:02}:{:02}:{:02}", currentLap, minutes, seconds, milliseconds));
+        lapLabel->setContent(std::format("{}/3", currentLap));
+        contents.push_back(lap);
         currentLap++;
         lapStartTime = ticks;
     }
@@ -52,12 +58,20 @@ Level::Level() {
 	const auto batteryHeight = 200;
 	
     nitroCounter = new NitroBattery(batteryX, batteryY + (float)*windowHeight - batteryHeight * batteryScale, batteryWidth * batteryScale, batteryHeight * batteryScale, 0, 1, 0);
+
+
+    currentLapLabel = new Text(285, 830, 0, 30, 0, 0, "Current lap:");
+    currentLapText = new Text(425, 830, 0, 30);
+
+    lapLabel = new Text(1375, 830, 0, 30, 0,0, "0/3");
 	
 	delete windowWidth;
 	delete windowHeight;
 	
     contents.push_back(nitroCounter);
-
+    contents.push_back(currentLapText);
+    contents.push_back(currentLapLabel);
+    contents.push_back(lapLabel);
     temporaryObstacles.clear();
 }
 
@@ -106,11 +120,32 @@ void Level::logic() {
         }
     }
 
+    if (nitroPlaceInterval > 0) {
+        nitroPlaceInterval--;
+    }else {
+        nitroPlaceInterval = 1000;
+        if (player->nitroCharges < 3) {
+            auto index = random()%nitroPositions.size();
+            auto pos = nitroPositions.at(index);
+            contents.push_back(new Nitro(pos.first, pos.second));
+        }
+    }
+
     player->move();
     ticks++;
     currentLapTime = ticks - lapStartTime;
 
-    // SDL_Log("current time %d", currentLapTime);
+    minutes = static_cast<int>(currentLapTime) / 6000;
+    seconds = static_cast<int>(currentLapTime) / 100 - minutes * 60;
+    milliseconds = static_cast<int>(currentLapTime) - seconds * 100 - minutes * 6000;
+
+
+    oss << minutes << ':' << seconds << ':' << milliseconds;
+
+    currentLapText->setContent(oss.str());
+
+    oss.str("");
+    oss.clear();
 
     for (const auto& element : contents) {
         if (element != player) {
