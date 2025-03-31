@@ -26,6 +26,7 @@ class Game {
 		static SDL_AudioDeviceID audioDeviceID;
 		static TTF_Font* font;
 		static std::string playerColor;
+		static std::vector<Uint64> playerTimes[3];
 		static bool showFPS;
 
 		Game();

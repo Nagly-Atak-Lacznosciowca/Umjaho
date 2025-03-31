@@ -6,6 +6,7 @@
 #include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
 #include "game/entities/surfaces/Curb.h"
+#include "game/entities/surfaces/FinishLine.h"
 
 Level1::Level1() {
 
@@ -13,7 +14,7 @@ Level1::Level1() {
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    player = new Player(550, 685);
+    player = new Player(515, 642);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
@@ -116,11 +117,15 @@ Level1::Level1() {
     auto nitro2 = new Nitro(852, 403);
     auto nitro3 = new Nitro(1467, 566);
 
-    auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
+    auto place = new PlaceObstacle(100, 200);
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);
     contents.push_back(place);
+
+    auto finishLine = new FinishLine(450, 620, 20, 160);
+
+    contents.push_back(finishLine);
 
     // auto text = new Text(215, 815);
     // text->setContent("fhdggfds");

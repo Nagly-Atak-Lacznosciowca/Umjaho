@@ -22,7 +22,7 @@ Level3::Level3() {
     // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.bmp"));
     // contents.push_back(ice);
 
-    player = new Player(550, 685);
+    player = new Player(332, 667);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
