@@ -17,11 +17,52 @@ bool Game::showFPS = false;
 Game::Game(): lastTick(0), deltaTime(0) {}
 
 void Game::init() {
-    Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 1000);
-    if(Game::font == nullptr){
-        SDL_Log("font fgdgd %s", SDL_GetError());
-    }
+	Game::loadFont();
+	Game::loadTextures();
+	Game::loadSounds();
 
+#ifdef DEBUG
+	Game::showFPS = true;
+#endif
+	
+	Game::soundManager.setVolume(0.5f);
+	
+	Game::sceneManager.pushScene(new MainMenu());
+}
+
+void Game::loadFont() {
+	Game::font = TTF_OpenFont("../assets/fonts/Jersey25-Regular.ttf", 1000);
+	
+	if(Game::font == nullptr){
+		SDL_Log("Couldn't load font: %s", SDL_GetError());
+	}
+}
+
+void Game::loadTextures() {
+	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
+		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
+		
+		if (surface == nullptr) {
+			SDL_Log("Couldn't load BMP: %s", SDL_GetError());
+		}
+		
+		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
+		
+		if (texture == nullptr) {
+			SDL_Log("Couldn't create texture from surface: %s", SDL_GetError());
+		}
+		
+		Game::textures.insert({entry.path().filename().string(), texture});
+
+#ifdef DEBUG
+		SDL_Log("Loaded texture: %ls", entry.path().c_str());
+#endif
+	}
+	
+	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
+}
+
+void Game::loadSounds() {
 	Game::audioDeviceID = SDL_OpenAudioDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
 	
 	if (Game::audioDeviceID == 0)
@@ -41,28 +82,11 @@ void Game::init() {
 			*audioBuffer,
 			(int)*audioLength
 		));
-		
-		SDL_Log("Loading %ls", entry.path().c_str());
+
+#ifdef DEBUG
+		SDL_Log("Loaded sound: %ls", entry.path().c_str());
+#endif
 	}
-	
-	for (const auto &entry: std::filesystem::directory_iterator("../assets/textures/")) {
-		SDL_Surface *surface = SDL_LoadBMP(entry.path().string().c_str());
-		if (surface == nullptr) {
-			SDL_Log("Błąd bmp %s", SDL_GetError());
-		}
-		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer.SDLRenderer, surface);
-		if (texture == nullptr) {
-			SDL_Log("Błąd tekstura %s", SDL_GetError());
-		}
-		textures.insert({entry.path().filename().string(), texture});
-		SDL_Log("Loading %ls", entry.path().c_str());
-	}
-	
-	SDL_SetTextureScaleMode(textures.at("button.bmp"), SDL_SCALEMODE_NEAREST);
-	
-	Game::soundManager.setVolume(0.5f);
-	
-	Game::sceneManager.pushScene(new MainMenu());
 }
 
 bool Game::checkSpeedControls()

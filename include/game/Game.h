@@ -30,9 +30,13 @@ class Game {
 
 		Game();
 		~Game();
-			
+		
 		void init();
-	
+		
+		static void loadFont();
+		static void loadTextures();
+		static void loadSounds();
+		
 		static bool checkSpeedControls();
 		static bool checkTurnControls();
 		static bool getIntersection(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4, SDL_FPoint &intersection);
