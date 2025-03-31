@@ -10,8 +10,8 @@ class Player : public Car {
         int nitroTimer = 0;
         bool nitroActive = false;
         int nitroCharges = 0;
-        Obstacle* holdingObstacle = nullptr;
         bool onFinishLine = false;
+        Obstacle* heldObstacle = nullptr;
         
         void SetTexture();
         

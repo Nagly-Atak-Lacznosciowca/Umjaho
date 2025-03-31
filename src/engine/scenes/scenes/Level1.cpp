@@ -117,7 +117,7 @@ Level1::Level1() {
     auto nitro2 = new Nitro(852, 403);
     auto nitro3 = new Nitro(1467, 566);
 
-    auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
+    auto place = new PlaceObstacle(100, 200);
     contents.push_back(nitro1);
     contents.push_back(nitro2);
     contents.push_back(nitro3);

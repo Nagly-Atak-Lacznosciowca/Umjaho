@@ -24,15 +24,17 @@ auto game = new Game();
 
     if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+		
         return SDL_APP_FAILURE;
     }
 
     /// changing width/height in current version will destroy buttons on `Menu`
-    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900,
-        0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
+    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900, 0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+		
         return SDL_APP_FAILURE;
     }
+	
     TTF_Init();
 	
     game->init();
@@ -73,13 +75,15 @@ auto game = new Game();
 	Game::sceneManager.currentScene()->render();
 	
     // draws FPS
-    const float fps = 1000000000.0f / game->deltaTime;
-    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
-    SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    if (Game::showFPS) {
+        const float fps = 1000000000.0f / game->deltaTime;
+        SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
+        SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+        // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+    }
     SDL_RenderPresent(Game::renderer.SDLRenderer);
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
@@ -91,9 +95,11 @@ auto game = new Game();
     switch (event->type) {
 
         case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+#ifdef DEBUG
             float x, y;
             SDL_GetMouseState(&x, &y);
             SDL_Log("Click position: %f %f", x, y);
+#endif
             break;
         }
 

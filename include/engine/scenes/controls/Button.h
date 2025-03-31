@@ -1,3 +1,6 @@
+#ifndef BUTTON_H
+#define BUTTON_H
+
 #include <functional>
 #include "engine/scenes/Text.h"
 #include "Control.h"
@@ -13,4 +16,7 @@ public:
     ~Button() override;
 
     void render() override;
+    void setText(const std::string &text) const;
 };
+
+#endif //BUTTON_H

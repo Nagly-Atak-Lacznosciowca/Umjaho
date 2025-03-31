@@ -54,4 +54,4 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC SDL3_ttf::SDL3_ttf SDL3_image::SDL3_image SDL3::SDL3)
 
-#include(RunTests)
+include(RunTests)

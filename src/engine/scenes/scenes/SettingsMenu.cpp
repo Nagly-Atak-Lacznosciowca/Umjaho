@@ -3,6 +3,8 @@
 #include "engine/scenes/controls/AudioControl.h"
 #include "game/Event.h"
 
+Button* FPSButton = nullptr;
+
 void exitScene(){
 	SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_POP_SCENE });
 }
@@ -10,6 +12,10 @@ void exitScene(){
 void changeCarColor(std::string color) {
     Game::playerColor = color;
     SDL_PushEvent(new SDL_Event { Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR });
+}
+
+void switchFPS() {
+	Game::showFPS = !Game::showFPS;
 }
 
 SettingsMenu::SettingsMenu() {
@@ -38,8 +44,6 @@ SettingsMenu::SettingsMenu() {
 	
     auto audioControl = new AudioControl((settingsX + labelGap + (float)audioLabel->width) * scaleX, 200*scaleY, 500*scaleX, 50*scaleY);
 
-
-
     auto setCarColorBlueButton = new Button(200 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-blue-regular.bmp"), []{ changeCarColor("blue"); }, "");
     auto setCarColorGreenButton = new Button(310 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-green-regular.bmp"), []{ changeCarColor("green"); }, "");
     auto setCarColorOrangeButton = new Button(420 * scaleX, 300 * scaleY, 100 * scaleX, 100 * scaleY, 0, 0, Game::textures.at("car-orange-regular.bmp"), []{ changeCarColor("orange"); }, "");
@@ -58,10 +62,26 @@ SettingsMenu::SettingsMenu() {
     contents.push_back(setCarColorRedButton);
     contents.push_back(setCarColorYellowButton);
     contents.push_back(currentCarColorLabel);
+
+	Text *FPSLabel = new Text(settingsX * scaleX, 500*scaleY, 0, 50 * scaleY, 0, 1, "Show FPS");
+	FPSButton = new Button((settingsX + labelGap + (float)FPSLabel->width) * scaleX, 500*scaleY, 100*scaleX, 50*scaleY, 0, 1, Game::textures.at("button.bmp"), [] {switchFPS();}, Game::showFPS ? "ON" : "OFF");
+
+	contents.push_back(FPSLabel);
+	contents.push_back(FPSButton);
 }
 
-void SettingsMenu::logic()
-{}
+void SettingsMenu::logic() {
+	if (Game::showFPS) {
+		if (FPSButton->text->content != "ON") {
+			FPSButton->setText("ON");
+		}
+	}
+	else {
+		if (FPSButton->text->content != "OFF") {
+			FPSButton->setText("OFF");
+		}
+	}
+}
 
 void SettingsMenu::handleEvent(SDL_Event *event) {
 	Menu::handleEvent(event);
@@ -73,14 +93,17 @@ void SettingsMenu::handleEvent(SDL_Event *event) {
 			break;
 
         case Event::CUSTOM_EVENT_PLAYER_CHANGE_COLOR: {
+#ifdef DEBUG
             SDL_Log(Game::playerColor.data());
+#endif
             currentCarColorLabel->setContent("Current car color: " + Game::playerColor);
             break;
         }
-            
 	}
 }
 
 SettingsMenu::~SettingsMenu() {
+#ifdef DEBUG
     SDL_Log("Destruct settings");
+#endif
 }

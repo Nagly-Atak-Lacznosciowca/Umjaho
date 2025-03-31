@@ -18,12 +18,12 @@ void Gate::passiveAction() {
 
     if (isOpen) {
         // open the gate
-        this->texture = nullptr;
+        this->texture = Game::textures.at("gate-open.bmp");
         this->isCollidable = false;
     }
     else {
         // close the gate
-        this->texture = Game::textures.at("curb.bmp");
+        this->texture = Game::textures.at("gate-closed.bmp");
         this->isCollidable = true;
     }
 }
