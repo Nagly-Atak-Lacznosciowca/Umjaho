@@ -13,7 +13,7 @@ class Level: public Scene {
 		Bot* opponents[4] = {};
 		Text *nitroCounter = nullptr;
 
-		Level() = default;
+		Level();
         std::vector<Checkpoint*> checkpoints;
 
 		void logic() override;

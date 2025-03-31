@@ -14,11 +14,6 @@ Level1::Level1() {
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    player = new Player(550, 685);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->SetTexture();
-    contents.push_back(player);
-
     // auto opponents = std::array<Opponent*, 3>{
     //     new Opponent(300, 100, 150, 50, 0.5),
     //     new Opponent(1400, 200),
@@ -97,7 +92,6 @@ Level1::Level1() {
         // new Barrier(900,200, 300, 300, 0.6),
         // new Barrier(1250,500, 50, 500, -1.2)
     };
-
     this->contents.insert(this->contents.end(), walls.begin(), walls.end());
 
     int width, height;
@@ -130,7 +124,6 @@ Level1::Level1() {
         new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
         new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr)
     };
-
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
     auto nitros = {
@@ -138,8 +131,10 @@ Level1::Level1() {
         new Nitro(852, 403),
         new Nitro(1467, 566),
     };
+    this->contents.insert(contents.end(), nitros.begin(), nitros.end());
 
-    auto surfaces = std::array<Surface*, 6>{
+
+    auto surfaces = {
         new Curb(691, 468, 206, 40),
         new Curb(1008, 614, 206, 40),
         new Curb(666, 478, 50, 50, 0.78),
@@ -147,17 +142,10 @@ Level1::Level1() {
         new Curb(984, 593, 50, 50, 0.78),
         new Curb(1189, 594, 50, 50, 0.78),
     };
-    for (auto surface: surfaces) {
-        contents.push_back(surface);
-    }
-
-    auto nitro1 = new Nitro(315, 111);
-    auto nitro2 = new Nitro(852, 403);
-    auto nitro3 = new Nitro(1467, 566);
+    this->contents.insert(contents.end(), surfaces.begin(), surfaces.end());
 
     auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
     contents.push_back(place);
-    this->contents.insert(contents.end(), nitros.begin(), nitros.end());
 
     auto text = new Text(215, 815);
     text->setContent("fhdggfds");
@@ -165,14 +153,9 @@ Level1::Level1() {
     contents.push_back(text);
 
     player = new Player(550, 685);
-    player->nextCheckpoint = 0;
-    player->totalCheckpoints = this->checkpoints.size();
     player->angle = SDL_PI_F / -2; // Start facing left
-    player->texture = Game::textures.at("car-blue-regular.bmp");
+    player->SetTexture();
     contents.push_back(player);
+    player->totalCheckpoints = this->checkpoints.size();
 
-    // auto text = new Text(215, 815);
-    // text->setContent("fhdggfds");
-    // text->width = 1200;
-    // contents.push_back(text);
 }

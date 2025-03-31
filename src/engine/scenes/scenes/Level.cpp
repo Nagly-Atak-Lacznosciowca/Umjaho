@@ -101,7 +101,6 @@ void Level::logic() {
         }
     }
 }
-}
 
 void Level::handleEvent(SDL_Event* event) {
 	Scene::handleEvent(event);
@@ -159,11 +158,11 @@ void Level::handleEvent(SDL_Event* event) {
         default:
             break;
     }
+}
 
-    void Level::render() {
-        Scene::render();
-        for (const auto &item: this->checkpoints) {
-            item->render();
-        }
+void Level::render() {
+    Scene::render();
+    for (const auto &item: this->checkpoints) {
+        item->render();
     }
 }
