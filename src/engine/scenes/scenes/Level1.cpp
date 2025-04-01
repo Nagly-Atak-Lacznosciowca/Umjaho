@@ -182,7 +182,7 @@ Level1::Level1() {
     //     contents.push_back(opponent);
     // }
 
-    player = new Player(665, 622, 30, 60, M_PI/-2, 1);
+    player = new Player(809, 622, 30, 60, M_PI/-2, 1);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
@@ -190,11 +190,14 @@ Level1::Level1() {
 
     auto bot = new MiddleLiner(521, 622, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
     auto bot2 = new StraightMaster(549, 700, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
-    auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
+    auto bot3 = new StraightMaster(665, 622, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
+    auto bot4 = new MiddleLiner(693, 700, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
 
     opponents.push_back(bot);
     opponents.push_back(bot2);
-//    opponents.push_back(bot3);
+    opponents.push_back(bot3);
+    opponents.push_back(bot4);
+
     opponents[0]->texture = Game::textures.at("car-purple-regular.png");
     opponents[0]->player = *player;
     opponents[0]->checkpoints = this->checkpoints;
@@ -208,12 +211,18 @@ Level1::Level1() {
     opponents[1]->totalCheckpoints = this->checkpoints.size();
     opponents[1]->isCollidable = true;
     opponents[1]->angle = SDL_PI_F / -2;
-//
-//    opponents[2]->texture = Game::textures.at("car-green-regular.bmp");
-//    opponents[2]->player = *player;
-//    opponents[2]->checkpoints = this->checkpoints;
-//    opponents[2]->totalCheckpoints = this->checkpoints.size();
-//    opponents[2]->isCollidable = true;
-//    opponents[2]->angle = SDL_PI_F / -2;
 
+    opponents[2]->texture = Game::textures.at("car-red-regular.bmp");
+    opponents[2]->player = *player;
+    opponents[2]->checkpoints = this->checkpoints;
+    opponents[2]->totalCheckpoints = this->checkpoints.size();
+    opponents[2]->isCollidable = true;
+    opponents[2]->angle = SDL_PI_F / -2;
+
+    opponents[3]->texture = Game::textures.at("car-yellow-regular.bmp");
+    opponents[3]->player = *player;
+    opponents[3]->checkpoints = this->checkpoints;
+    opponents[3]->totalCheckpoints = this->checkpoints.size();
+    opponents[3]->isCollidable = true;
+    opponents[3]->angle = SDL_PI_F / -2;
 }
