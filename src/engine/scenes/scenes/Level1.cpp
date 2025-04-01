@@ -202,7 +202,7 @@ Level1::Level1() {
     opponents[0]->isCollidable = true;
     opponents[0]->angle = SDL_PI_F / -2;
 
-    opponents[1]->texture = Game::textures.at("car-orange-regular.bmp");
+    opponents[1]->texture = Game::textures.at("car-orange-regular.png");
     opponents[1]->player = *player;
     opponents[1]->checkpoints = this->checkpoints;
     opponents[1]->totalCheckpoints = this->checkpoints.size();
