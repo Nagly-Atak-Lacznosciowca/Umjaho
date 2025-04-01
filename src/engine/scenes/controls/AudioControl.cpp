@@ -80,7 +80,7 @@ void AudioControl::render() {
     minusButton->render();
 }
 
-void AudioControl::click(float x, float y) const {
+void AudioControl::click(float x, float y) {
     for (const auto& button:volumeButtons) {
         if (x >= button->x && x <= button->x + button->width &&
             y >= button->y && y <= button->y + button->height) {

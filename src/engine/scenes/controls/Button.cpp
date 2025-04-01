@@ -14,7 +14,7 @@ Button::Button(double x, double y, double width, double height, double angle, do
     }
 }
 
-void Button::click(float x, float y) const {
+void Button::click(float x, float y) {
     if (action) action();
 }
 
