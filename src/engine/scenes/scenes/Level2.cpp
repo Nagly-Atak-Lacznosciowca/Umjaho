@@ -94,7 +94,7 @@ Level2::Level2() {
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
-    player.totalCheckpoints = this->checkpoints.size();
+    player->totalCheckpoints = this->checkpoints.size();
 
     for (const auto& checkpoint: checkpoints) {
         contents.push_back(checkpoint);
