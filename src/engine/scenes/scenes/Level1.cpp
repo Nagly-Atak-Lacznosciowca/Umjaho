@@ -133,12 +133,7 @@ Level1::Level1() {
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
-    auto nitros = {
-        new Nitro(315, 111),
-        new Nitro(852, 403),
-        new Nitro(1467, 566),
-    };
-    this->contents.insert(contents.end(), nitros.begin(), nitros.end());
+
 
 
     auto surfaces = {
@@ -175,10 +170,6 @@ Level1::Level1() {
     contents.push_back(finishLine);
 
 
-    player = new Player(808, 622, 40, 80, 0, 1);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->SetTexture();
-    contents.push_back(player);
 
     // auto opponents = std::array<Opponent*, 4>{
     //     new Opponent(665, 622, 40, 80, M_PI / -2),
@@ -204,7 +195,7 @@ Level1::Level1() {
     opponents.push_back(bot);
 //    opponents.push_back(bot2);
 //    opponents.push_back(bot3);
-    opponents[0]->texture = Game::textures.at("car-purple-regular.bmp");
+    opponents[0]->texture = Game::textures.at("car-purple-regular.png");
     opponents[0]->player = *player;
     opponents[0]->checkpoints = this->checkpoints;
     opponents[0]->totalCheckpoints = this->checkpoints.size();

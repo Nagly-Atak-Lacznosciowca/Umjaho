@@ -169,7 +169,12 @@ Level2::Level2() {
 
 
     };
-    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
+    player = new Player(534, 657, 30, 60, 0, 1);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints.begin(), checkpoints.end());
 
     player->totalCheckpoints = this->checkpoints.size();
 
@@ -193,11 +198,10 @@ Level2::Level2() {
     nitroPositions = {{1100, 395}, {778, 521}, {532, 38}, {69, 478}};
     powerupPositions = {{275, 317}, {1080, 566}, {1106, 328}, {610, 507}};
 
-
-    player = new Player(534, 657, 30, 60, 0, 1);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->SetTexture();
     contents.push_back(player);
+
+
+
 
     // auto opponents = std::array<Opponent*, 4>{
     //     new Opponent(333, 657, 30, 60, M_PI / -2),
