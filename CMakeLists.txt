@@ -15,8 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(libs/SDL_ttf EXCLUDE_FROM_ALL)
-add_subdirectory(libs/SDL_image EXCLUDE_FROM_ALL)
+
 
 set(SDLTTF_VENDORED ON)
 
@@ -43,6 +42,8 @@ set(SDLIMAGE_XPM OFF)
 set(SDLIMAGE_XV OFF)
 set(SDLIMAGE_STB OFF)
 
+add_subdirectory(libs/SDL_ttf EXCLUDE_FROM_ALL)
+add_subdirectory(libs/SDL_image EXCLUDE_FROM_ALL)
 
 
 file(GLOB_RECURSE HEADERS "include/*.h")
