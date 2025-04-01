@@ -146,9 +146,6 @@ Level1::Level1() {
     };
     this->contents.insert(contents.end(), surfaces.begin(), surfaces.end());
 
-    for (auto surface: surfaces) {
-        contents.push_back(surface);
-    }
 
     auto obstacles = std::array<Obstacle*, 6>{
         new Cone(913, 458),
