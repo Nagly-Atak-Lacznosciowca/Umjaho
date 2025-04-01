@@ -21,7 +21,7 @@ public:
     int getButtonCount();
     void render() override;
 
-    void click(float x, float y) const override;
+    void click(float x, float y) override;
 };
 
 #endif //UMJAHO_AUDIOCONTROL_H
