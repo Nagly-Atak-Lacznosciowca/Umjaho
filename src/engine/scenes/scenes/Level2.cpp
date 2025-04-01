@@ -56,13 +56,13 @@ Level2::Level2() {
         contents.push_back(surface);
     }
 
-    Checkpoint* checkpoints[] = {
-        new Checkpoint(1, 282, 653, 5, 123, 0, 0, nullptr),
-        new Checkpoint(2, 195, 645, 5, 123, -0.3, 0, nullptr),
-        new Checkpoint(3, 30, 574, 123, 5, 0, 0, nullptr),
-        new Checkpoint(4, 152, 424, 5, 123, 0.2, 0, nullptr),
-        new Checkpoint(5, 241, 410, 5, 123, 0.5, 0, nullptr),
-        new Checkpoint(6, 270, 350, 123, 5, 0, 0, nullptr),
+    auto checkpoints = {
+        new Checkpoint(0, 282, 653, 5, 123, 0, 0, nullptr),
+        new Checkpoint(1, 195, 645, 5, 123, -0.3, 0, nullptr),
+        new Checkpoint(2, 30, 574, 123, 5, 0, 0, nullptr),
+        new Checkpoint(3, 152, 424, 5, 123, 0.2, 0, nullptr),
+        new Checkpoint(4, 241, 410, 5, 123, 0.5, 0, nullptr),
+        new Checkpoint(5, 270, 350, 123, 5, 0, 0, nullptr),
         new Checkpoint(6, 270, 210, 123, 5, 0, 0, nullptr),
         new Checkpoint(7, 385, 60, 5, 135, 0.6, 0, nullptr),
         new Checkpoint(8, 450, 30, 5, 123, 0, 0, nullptr),
@@ -81,17 +81,20 @@ Level2::Level2() {
         new Checkpoint(20, 1035, 194, 5, 130, 1, 0, nullptr),
         new Checkpoint(21, 1106, 323, 5, 130, -0.3, 0, nullptr),
         new Checkpoint(22, 1135, 465, 125, 5, 0, 0, nullptr),
-        new Checkpoint(22, 1135, 635, 125, 5, 0, 0, nullptr),
-        new Checkpoint(23, 1125, 648, 5, 125, 0.3, 0, nullptr),
-        new Checkpoint(24, 904, 650, 5, 125, 0, 0, nullptr),
-        new Checkpoint(25, 725, 625, 170, 5, 0, 0, nullptr),
-        new Checkpoint(26, 700, 488, 5, 125, 0, 0, nullptr),
-        new Checkpoint(27, 830, 600, 5, 170, -1, 0, nullptr),
-        new Checkpoint(28, 555, 625, 125, 5, 0, 0, nullptr),
-        new Checkpoint(29, 540, 653, 5, 125, 0, 0, nullptr),
+        new Checkpoint(23, 1135, 635, 125, 5, 0, 0, nullptr),
+        new Checkpoint(24, 1125, 648, 5, 125, 0.3, 0, nullptr),
+        new Checkpoint(25, 904, 650, 5, 125, 0, 0, nullptr),
+        new Checkpoint(26, 725, 625, 170, 5, 0, 0, nullptr),
+        new Checkpoint(27, 700, 488, 5, 125, 0, 0, nullptr),
+        new Checkpoint(28, 830, 600, 5, 170, -1, 0, nullptr),
+        new Checkpoint(29, 555, 625, 125, 5, 0, 0, nullptr),
+        new Checkpoint(30, 540, 653, 5, 125, 0, 0, nullptr),
 
 
     };
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
+    player.totalCheckpoints = this->checkpoints.size();
 
     for (const auto& checkpoint: checkpoints) {
         contents.push_back(checkpoint);
