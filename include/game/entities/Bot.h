@@ -18,8 +18,11 @@ class Bot : public Car {
             double width = Car::WIDTH,
             double length = Car::LENGTH,
             double angle = 0);
-            Ray checkpointRay;
 
+        double rayLength = 120;
+        double rayMultiplier = 20;
+        double checkpointRayLength = 1000;
+        Ray checkpointRay;
         std::vector<Checkpoint *>& checkpoints;
         std::vector<SceneElement *>& contents;
         Player& player;

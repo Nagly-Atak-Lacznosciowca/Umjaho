@@ -1,24 +1,16 @@
-#include "game/entities/StraightMaster.h"
+#include "game/entities/MiddleLiner.h"
 #include "math/Vec2.h"
 
-void StraightMaster::update() {
+void MiddleLiner::update() {
     updateRays();
-
-//    auto angleToRotate = Game::calculateAngleToPoint(this, checkpoints[this->nextCheckpoint]->center);
-
-//    SDL_Log("angleDiff bot nigga: %f", Game::calculateAngleToPoint(this, checkpoints[this->nextCheckpoint]->center));
 
     for (const auto content : contents) {
         if (dynamic_cast<Obstacle*>(content)) {
             checkRayCollision(rays, content);
         }
     }
-//    for (const auto checkpoint : checkpoints) {
-//        checkRayCollision(rays, checkpoint);
-//    }
-//    for (const auto opponent : opponents) {
-//        checkRayCollision(rays, opponent);
-//    }
+
+    this->maxSpeed = 3.5;
 
     Vec2 vectorRays[7];
     Vec2 collidedVectorRays[7];
@@ -26,7 +18,7 @@ void StraightMaster::update() {
     for (int i = 0; i < 7; i++) {
         vectorRays[i] = {rays[i].direction.x - rays[i].origin.x, rays[i].direction.y - rays[i].origin.y};
     }
-//
+
     if (rays[1].collides || rays[2].collides) {
 //        decelerate();
         angle -= 0.03;
@@ -36,10 +28,7 @@ void StraightMaster::update() {
         angle += 0.03;
         // turnLeft();
     }
-    if (rays[3].collides && speed > 1.5) {
-        decelerate();
-        decelerate();
-        decelerate();
+    if (rays[3].collides && speed > 2) {
         brake();
     }
     if (rays[1].collides && rays[2].collides && rays[3].collides && rays[4].collides && rays[5].collides) {
@@ -48,39 +37,31 @@ void StraightMaster::update() {
     else {
         accelerate();
     }
-//
-//    if (angleToRotate > 0.05) {
-//        this->angle -= 0.03;
-//    }
-//    else if (angleToRotate < -0.05) {
-//        this->angle += 0.03;
-//    }
 
-    accelerate();
     accelerate();
     move();
 }
 
-double StraightMaster::evaluateTurn(double testTurn) {
+double MiddleLiner::evaluateTurn(double testTurn) {
     return SDL_fabs(testTurn - angle);
 }
 
-bool StraightMaster::isFacingCheckpoint() {
+bool MiddleLiner::isFacingCheckpoint() {
     Checkpoint* next = this->getNextCheckpoint();
 
     return false; // todo
 }
 
-double StraightMaster::distanceToNextCheckpoint() {
+double MiddleLiner::distanceToNextCheckpoint() {
 
 }
 
-Checkpoint* StraightMaster::getNextCheckpoint() {
+Checkpoint* MiddleLiner::getNextCheckpoint() {
     return this->checkpoints[this->nextCheckpoint];
 }
 
-StraightMaster::StraightMaster(double x, double y, Player &player, std::vector<Bot *> &opponents,
+MiddleLiner::MiddleLiner(double x, double y, Player &player, std::vector<Bot *> &opponents,
                                std::vector<SceneElement *> &contents, std::vector<Checkpoint *> &checkpoints,
                                double zIndex, SDL_Texture *texture, double width, double length, double angle) : Bot(x, y, player, opponents, contents, checkpoints, zIndex, texture, width, length, angle) {
-
+    this->rayLength = 150;
 }

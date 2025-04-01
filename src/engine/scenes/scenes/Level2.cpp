@@ -12,6 +12,8 @@
 #include "game/entities/obstacles/SpeedBump.h"
 #include "game/entities/obstacles/Water.h"
 #include "game/entities/surfaces/Dirt.h"
+#include "game/entities/MiddleLiner.h"
+#include "game/entities/StraightMaster.h"
 
 Level2::Level2() {
     SDL_Texture *backgroundTexture = Game::textures.at("track2.png");
@@ -182,15 +184,19 @@ Level2::Level2() {
         contents.push_back(checkpoint);
     }
 
-    auto obstacles = std::array<Obstacle*, 7>{
+    auto obstacles = std::array<Obstacle*, 8>{
         new Cone(868, 205),
         new Cone(868, 235),
         new Cone(868, 265),
         new Oil(649, 495),
         new Oil(1151, 101),
         new Water(1400,464, 50, 30, 0.5),
-        new SpeedBump(1080, 676, 60, 15, M_PI/2)
+        new SpeedBump(1080, 676, 60, 15, M_PI/2),
+
+        new Barrier(690, 548, 250, 15, -0.68),
     };
+
+    obstacles[7]->isCollidable = false;
     for (const auto& obstacle: obstacles){
         contents.push_back(obstacle);
     }
@@ -201,7 +207,28 @@ Level2::Level2() {
     contents.push_back(player);
 
 
+    auto bot = new MiddleLiner(333, 657, *this->player, this->opponents, this->contents, this->checkpoints);
+    auto bot2 = new StraightMaster(353, 712, *this->player, this->opponents, this->contents, this->checkpoints);
+    auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints);
 
+    bot->rayLength = 120;
+
+    opponents.push_back(bot);
+    opponents.push_back(bot2);
+//    opponents.push_back(bot3);
+    opponents[0]->texture = Game::textures.at("car-purple-regular.png");
+    opponents[0]->player = *player;
+    opponents[0]->checkpoints = this->checkpoints;
+    opponents[0]->totalCheckpoints = this->checkpoints.size();
+    opponents[0]->isCollidable = true;
+    opponents[0]->angle = SDL_PI_F / -2;
+
+    opponents[1]->texture = Game::textures.at("car-orange-regular.bmp");
+    opponents[1]->player = *player;
+    opponents[1]->checkpoints = this->checkpoints;
+    opponents[1]->totalCheckpoints = this->checkpoints.size();
+    opponents[1]->isCollidable = true;
+    opponents[1]->angle = SDL_PI_F / -2;
 
     // auto opponents = std::array<Opponent*, 4>{
     //     new Opponent(333, 657, 30, 60, M_PI / -2),
