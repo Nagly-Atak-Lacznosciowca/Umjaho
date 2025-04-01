@@ -25,6 +25,13 @@ void Button::render() {
     }
 }
 
+void Button::setText(const std::string &text) const {
+    this->text->setContent(text);
+    this->text->x = this->x + this->width/2 - this->text->width/2;
+    this->text->y = this->y + this->height/2 - this->height/2 * 0.85;
+    this->text->render();
+}
+
 Button::~Button() {
     delete text;
 }

@@ -21,3 +21,15 @@ void Obstacle::passiveAction() {
 void Obstacle::activeAction(Car* car) {
     throw std::runtime_error("Not implemented");
 }
+
+void Obstacle::countdownToDestroy() {
+    if (timeToDestroy > 10) {
+        timeToDestroy -= 10;
+    }
+    else if (timeToDestroy > 0) {
+        timeToDestroy = 0;
+    }
+    if (timeToDestroy == 0) {
+        this->~Obstacle();
+    }
+}

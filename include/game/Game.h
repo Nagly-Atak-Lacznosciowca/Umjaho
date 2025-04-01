@@ -26,12 +26,18 @@ class Game {
 		static SDL_AudioDeviceID audioDeviceID;
 		static TTF_Font* font;
 		static std::string playerColor;
+		static std::vector<std::pair<Uint64, Uint64>> playerTimes[3];
+		static bool showFPS;
 
 		Game();
 		~Game();
-			
+		
 		void init();
-	
+		
+		static void loadFont();
+		static void loadTextures();
+		static void loadSounds();
+		
 		static bool checkSpeedControls();
 		static bool checkTurnControls();
 		static bool getIntersection(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4, SDL_FPoint &intersection);

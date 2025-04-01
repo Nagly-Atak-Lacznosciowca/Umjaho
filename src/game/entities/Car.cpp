@@ -248,8 +248,10 @@ void Car::collide(SceneElement* element) {
             }
             else this->angle += 0.05;
 
+#ifdef DEBUG
             SDL_Log("Colliding height (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
-            return;
+#endif
+			return;
         }
         // Same for width
         if ((this->lastCollidedWall == 1 || this->lastCollidedWall == 3) && inWidthSlideRange) {
@@ -261,8 +263,10 @@ void Car::collide(SceneElement* element) {
             }
             else this->angle -= 0.05;
 
+#ifdef DEBUG
             SDL_Log("Colliding width (slide) at %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
-            return;
+#endif
+			return;
         }
 
 
@@ -300,6 +304,8 @@ void Car::collide(SceneElement* element) {
             while (angleDiff < 0) angleDiff += 2 * M_PI;
         }
 
+#ifdef DEBUG
         SDL_Log("Colliding %s (halt) on %f %f\nAngle1 %f, Angle2 %f\nAngle diff %f", this->lastCollidedWall == 2 || this->lastCollidedWall == 4 ? "height" : "width", intersection->x, intersection->y, this->angle, element->angle, angleDiff);
-    }
+#endif
+	}
 }

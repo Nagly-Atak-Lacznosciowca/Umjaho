@@ -7,7 +7,7 @@ int height;
 
 Credits::Credits()
 {
-	this->background = Game::textures.at("pause-menu.bmp");
+	this->background = Game::textures.at("pause-menu.png");
 	
 	int *windowWidth = new int();
 	int *windowHeight = new int();
@@ -52,14 +52,6 @@ Credits::Credits()
 	for (auto &text : this->contents) {
 		text->y -= creditCount * (headerHeight + headerGap + textHeight + textGap) * scaleY;
 	}
-	
-	this->music = Game::soundManager.playSound("bus.wav", {
-		.looping = true
-	});
-}
-
-Credits::~Credits() {
-	this->music->stop();
 }
 
 void Credits::logic()

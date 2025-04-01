@@ -1,17 +1,23 @@
 #include "engine/scenes/scenes/Level1.h"
+
+#include <math.h>
+
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "game/entities/powerups/PlaceObstacle.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/obstacles/Cone.h"
+#include "game/entities/obstacles/Water.h"
 #include "game/entities/surfaces/Curb.h"
 #include "engine/scenes/scenes/Checkpoint.h"
 #include "game/entities/StraightMaster.h"
+#include "game/entities/surfaces/FinishLine.h"
 
 Level1::Level1() {
 
-    SDL_Texture *backgroundTexture = Game::textures.at("track1.bmp");
+    SDL_Texture *backgroundTexture = Game::textures.at("track1.png");
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
@@ -145,8 +151,45 @@ Level1::Level1() {
     };
     this->contents.insert(contents.end(), surfaces.begin(), surfaces.end());
 
-    auto place = new PlaceObstacle(100, 200, new Barrier(0,0));
-    contents.push_back(place);
+    for (auto surface: surfaces) {
+        contents.push_back(surface);
+    }
+
+    auto obstacles = std::array<Obstacle*, 6>{
+        new Cone(913, 458),
+        new Cone(930, 480),
+        new Cone(953, 618),
+        new Cone(967, 641),
+        new Water(611, 348),
+        new Water(1299, 739)
+    };
+    for (auto obstacle: obstacles) {
+        contents.push_back(obstacle);
+    }
+
+    nitroPositions = {{315, 111}, {852, 403}, {1467, 566}, {904, 640}, {1357, 154}};
+    powerupPositions = {{100, 200}, {1006, 464}, {1186, 624}};
+
+    auto finishLine = new FinishLine(450, 620, 20, 160);
+
+    contents.push_back(finishLine);
+
+
+    player = new Player(808, 622, 40, 80, 0, 1);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+    contents.push_back(player);
+
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(665, 622, 40, 80, M_PI / -2),
+    //     new Opponent(549, 700, 40, 80, M_PI / -2),
+    //     new Opponent(521, 622, 40, 80, M_PI / -2),
+    //     new Opponent(693, 700, 40, 80, M_PI / -2)
+    // };
+    // for (auto opponent: opponents) {
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
+    //     contents.push_back(opponent);
+    // }
 
     player = new Player(550, 685);
     player->angle = SDL_PI_F / -2; // Start facing left

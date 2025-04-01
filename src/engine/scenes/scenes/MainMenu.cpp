@@ -6,6 +6,7 @@
 #include "engine/scenes/scenes/SettingsMenu.h"
 #include "engine/scenes/scenes/Menu.h"
 #include "engine/scenes/scenes/Credits.h"
+#include "game/entities/obstacles/Barrier.h"
 #include "game/Event.h"
 
 void MainMenu::goToLevelMenu() {
@@ -40,8 +41,13 @@ void MainMenu::exitGame(){
 }
 
 MainMenu::MainMenu() {
-    this->background = Game::textures.at("title.bmp");
+  this->background = Game::textures.at("title.png");
 	
+	auto censorshipTexture = Game::textures.at("level-menu.png");
+	auto censorshipElement = new Barrier(965, 208, 316, 40, 0, 0, censorshipTexture);
+	this->contents.push_back(censorshipElement);
+
+
 	int *windowWidth = new int();
 	int *windowHeight = new int();
 
@@ -63,8 +69,13 @@ MainMenu::MainMenu() {
 	
     this->contents.push_back(playButton);
     this->contents.push_back(settingsButton);
-	this->contents.push_back(creditsButton);
+		this->contents.push_back(creditsButton);
     this->contents.push_back(exitButton);
+	
+	Game::soundManager.playSound("main-menu.wav", {
+		.looping = true,
+		.volume = SoundPlayback::MAX_PLAYBACK_VOLUME / 3
+	});
 }
 
 void MainMenu::logic()

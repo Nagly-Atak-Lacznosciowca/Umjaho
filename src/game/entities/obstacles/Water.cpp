@@ -7,13 +7,15 @@ Water::Water(double x, double y, double width, double height, double angle, doub
 
 void Water::activeAction(Car* car) {
     if (SDL_GetTicks() - car->lastWaterTime > 1000) {
-        double random = 0.01 + (std::rand() / (RAND_MAX / (0.025 - 0.01)));
-        if (rand() % 2 == 0) {
-            car->turnAngle = random;
+        if (car->speed > 1) {
+            double random = 0.01 + (std::rand() / (RAND_MAX / (0.025 - 0.01)));
+            if (rand() % 2 == 0) {
+                car->turnAngle = random;
+            }
+            else {
+                car->turnAngle = -random;
+            }
         }
-        else {
-            car->turnAngle = -random;
-        }
-        car->lastOilTime = SDL_GetTicks();
+        car->lastWaterTime = SDL_GetTicks();
     }
 }

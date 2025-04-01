@@ -10,12 +10,16 @@ int AudioControl::getButtonCount(){
 }
 
 void AudioControl::volumeUp() {
-    SDL_Log("Settgfdsgdsfgfdsgdsg");
+#ifdef DEBUG
+    SDL_Log("Volume up");
+#endif
     this->setVolume(volumeButtons[std::min(getVolumeBarIndex()+1, getButtonCount()-1)]->value);
 }
 
 void AudioControl::volumeDown() {
-    SDL_Log("Settgfdsgdsadsasadsadsadsdsadsaddsfgfdsgdsg");
+#ifdef DEBUG
+    SDL_Log("Volume down");
+#endif
     // this->setVolume(volumeButtons[std::max(getVolumeBarIndex()-1, 0)]->value);
     if (getVolumeBarIndex() > 0) this->setVolume(volumeButtons[getVolumeBarIndex() - 1]->value);
     else this->setVolume(0);
@@ -34,24 +38,34 @@ void AudioControl::setVolume(float value) {
         }
     }
     Game::soundManager.setVolume(volume);
-    SDL_Log("Setting volume %f; djsjkabdjas %d", value, getVolumeBarIndex());
+#ifdef DEBUG
+    SDL_Log("Setting volume to %f up to bar at index %d", value, getVolumeBarIndex());
+#endif
 }
 
 AudioControl::AudioControl(double x, double y, double width, double height): Control(x, y, width, height) {
+#ifdef DEBUG
+    SDL_Log("width - height = %f", width-height);
+#endif
 
-    SDL_Log("width- hight %f", width-height);
-
-    this->plusButton = new Button(width - height+x, y, height, height, 0, 1, Game::textures.at("button.bmp"), [this] -> void{this->volumeUp();}, "+");
-    this->minusButton = new Button(x, y, height, height, 0, 1, Game::textures.at("button.bmp"), [this] -> void{this->volumeDown();}, "-");
+    this->plusButton = new Button(width - height+x, y, height, height, 0, 1, Game::textures.at("button.png"), [this] -> void{this->volumeUp();}, "+");
+    this->minusButton = new Button(x, y, height, height, 0, 1, Game::textures.at("button.png"), [this] -> void{this->volumeDown();}, "-");
 
     const int buttonCount = getButtonCount();
     const double gap = 5;
     const double audioButtonWidth = (width - 2*height - (buttonCount+1)*gap)/buttonCount;
-    SDL_Log("szer %f", audioButtonWidth);
-    SDL_Log("buttą %d", buttonCount);
+#ifdef DEBUG
+    SDL_Log("Audio button width: %f", audioButtonWidth);
+    SDL_Log("Button count: %d", buttonCount);
+#endif
     for (int i = 0; i < buttonCount;i++){
         volumeButtons[i] = new AudioButton(height+i*audioButtonWidth+(i+1)*gap+x, y, audioButtonWidth, height, 1, nullptr, (float)(i+1)/(float)buttonCount);
-        volumeButtons[i]->action = [this, i] -> void{SDL_Log("gjgfdsf %f", this->volumeButtons[i]->value); setVolume(this->volumeButtons[i]->value);};
+        volumeButtons[i]->action = [this, i] -> void{
+#ifdef DEBUG
+			SDL_Log("Setting volume to: %f", this->volumeButtons[i]->value);
+#endif
+			setVolume(this->volumeButtons[i]->value);
+		};
     }
     setVolume(Game::soundManager.getVolume());
 }

@@ -6,11 +6,74 @@
 #include "game/entities/surfaces/Dirt.h"
 #include "game/entities/surfaces/Ice.h"
 #include "engine/scenes/Text.h"
+#include "engine/scenes/scenes/Leaderboard.h"
+#include "game/entities/surfaces/FinishLine.h"
+#include <algorithm>
+#include <format>
+
+#include "game/entities/powerups/Nitro.h"
+#include "game/entities/powerups/PlaceObstacle.h"
+
+void Level::lap() {
+    if (!player->onFinishLine) return;
+    SDL_Log("current lap %d", currentLap);
+    if (currentLap == 0) {
+        startTime = ticks;
+        lapStartTime = startTime;
+        currentLap++;
+    }
+    else if (currentLap <= laps) {
+        lapTimes[currentLap-1] = currentLapTime;
+        auto lap = new Text(520 + (currentLap-1)*250, 830, 0, 30, 0,0, std::format("Lap {} Time: {:02}:{:02}:{:02}", currentLap, minutes, seconds, milliseconds));
+        lapLabel->setContent(std::format("{}/3", currentLap));
+        contents.push_back(lap);
+        currentLap++;
+        lapStartTime = ticks;
+    }
+    else {
+        std::sort(lapTimes, lapTimes+3, std::less<Uint64>());
+        auto fastestLap = lapTimes[0];
+        SDL_PushEvent(new SDL_Event{
+            .user = {
+                .type = Event::CUSTOM_EVENT_PUSH_SCENE,
+                .data1 = new Leaderboard(startTime, ticks, this, fastestLap)
+            }
+        });
+    }
+}
 
 Level::Level() {
     // Nitro counter
-    nitroCounter = new Text(200, 815, 0, 50, 0, 0, "Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
+	
+	int *windowWidth = new int();
+	int *windowHeight = new int();
+	
+	SDL_GetWindowSizeInPixels(Game::renderer.SDLWindow, windowWidth, windowHeight);
+	
+	const float batteryScale = 1.0f/3.0f;
+	
+	const auto batteryX = 100;
+	const auto batteryY = -20;
+	
+	const auto batteryWidth = 550;
+	const auto batteryHeight = 200;
+	
+    nitroCounter = new NitroBattery(batteryX, batteryY + (float)*windowHeight - batteryHeight * batteryScale, batteryWidth * batteryScale, batteryHeight * batteryScale, 0, 1, 0);
+
+
+    currentLapLabel = new Text(285, 830, 0, 30, 0, 0, "Current lap:");
+    currentLapText = new Text(425, 830, 0, 30);
+
+    lapLabel = new Text(1375, 830, 0, 30, 0,0, "0/3");
+	
+	delete windowWidth;
+	delete windowHeight;
+	
     contents.push_back(nitroCounter);
+    contents.push_back(currentLapText);
+    contents.push_back(currentLapLabel);
+    contents.push_back(lapLabel);
+    temporaryObstacles.clear();
 }
 
 void Level::logic() {
@@ -58,7 +121,43 @@ void Level::logic() {
         }
     }
 
+    if (nitroPlaceInterval > 0) {
+        nitroPlaceInterval--;
+    }
+    else {
+        nitroPlaceInterval = 1000;
+        if (player->nitroCharges < 3) {
+            auto index = rand()%nitroPositions.size();
+            auto pos = nitroPositions.at(index);
+            contents.push_back(new Nitro(pos.first, pos.second));
+        }
+    }
+
+    if (powerupPlaceInterval > 0) {
+        powerupPlaceInterval--;
+    }
+    else {
+        powerupPlaceInterval = 1000;
+        auto index = rand()%powerupPositions.size();
+        auto pos = powerupPositions.at(index);
+        contents.push_back(new PlaceObstacle(pos.first, pos.second));
+    }
+
     player->move();
+    ticks++;
+    currentLapTime = ticks - lapStartTime;
+
+    minutes = static_cast<int>(currentLapTime) / 6000;
+    seconds = static_cast<int>(currentLapTime) / 100 - minutes * 60;
+    milliseconds = static_cast<int>(currentLapTime) - seconds * 100 - minutes * 6000;
+
+
+    oss << minutes << ':' << seconds << ':' << milliseconds;
+
+    currentLapText->setContent(oss.str());
+
+    oss.str("");
+    oss.clear();
 
     for (const auto& element : contents) {
         if (element != player) {
@@ -97,6 +196,51 @@ void Level::logic() {
             item->collide(player);
         }
     }
+    for (auto& obstacle : temporaryObstacles) {
+        obstacle->countdownToDestroy();
+        SDL_Log("obstacle destroyed in %d", obstacle->timeToDestroy);
+        if (obstacle->timeToDestroy <= 0) {
+            auto iterator = std::find(temporaryObstacles.begin(), temporaryObstacles.end(), obstacle);
+            temporaryObstacles.erase(iterator);
+        }
+    }
+
+    // For each car check if it's on dirt or ice and use the appropriate method
+    for (const auto& element : contents) {
+        if (auto car = dynamic_cast<Car*>(element)) {
+            bool onCurb = false, onDirt = false, onIce = false, onFinishLine = false;
+            for (const auto& surface : contents) {
+                if (auto curb = dynamic_cast<Curb*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, curb)) {
+                        onCurb = true;
+                    }
+                }
+                if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, dirt)) {
+                        onDirt = true;
+                    }
+                }
+                if (auto ice = dynamic_cast<Ice*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, ice)) {
+                        onIce = true;
+                    }
+                }
+                if (auto finishLine = dynamic_cast<FinishLine*>(surface)) {
+                    if (Game::checkSurfaceIntersection(car, finishLine) && dynamic_cast<Player*>(car)) {
+                        onFinishLine = true;
+                    }
+                }
+            }
+            if (!onCurb) car->leaveCurb();
+            if (!onDirt) car->leaveDirt();
+            if (!onIce) car->leaveIce();
+            if (!onFinishLine) {
+                if (!player->onFinishLine) break;
+                lap();
+                player->onFinishLine = false;
+            };
+        }
+    }
 }
 
 void Level::handleEvent(SDL_Event* event) {
@@ -121,12 +265,12 @@ void Level::handleEvent(SDL_Event* event) {
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_COLLECT: {
-            nitroCounter->setContent("Nitro charges: " + std::to_string(player->nitroCharges) + "/" + std::to_string(Car::NEEDED_CHARGES));
+            nitroCounter->setState(this->player->nitroCharges);
             break;
         }
         case Event::CUSTOM_EVENT_CAR_NITRO_USE: {
             if(!player->nitroActive && player->nitroCharges >= Car::NEEDED_CHARGES){
-                nitroCounter->setContent("Nitro charges: 0/" + std::to_string(Car::NEEDED_CHARGES));
+	            nitroCounter->setState(0);
                 player->acceleration *= Car::NITRO_MULTIPLIER;
                 player->maxSpeed *= Car::NITRO_MULTIPLIER;
                 player->nitroTimer = Car::NITRO_TIME;
@@ -145,12 +289,14 @@ void Level::handleEvent(SDL_Event* event) {
 			break;
 
         case Event::CUSTOM_EVENT_CAR_PLACE_OBSTACLE:
-            if(player->holdingObstacle != nullptr){
-                player->holdingObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
-                player->holdingObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
-                player->holdingObstacle->angle = player->angle;
-                this->contents.push_back(player->holdingObstacle);
-                player->holdingObstacle = nullptr;
+            if(player->heldObstacle != nullptr){
+                player->heldObstacle->x = (player->x + player->width/2 * SDL_sin(player->angle)) - 100 * SDL_sin(player->angle);
+                player->heldObstacle->y = (player->y + player->height/2 * SDL_cos(player->angle)) - 100 * SDL_cos(player->angle);
+                player->heldObstacle->angle = player->angle;
+                this->temporaryObstacles.push_back(player->heldObstacle);
+                SDL_Log("obstacle destroyed in %d", player->heldObstacle->timeToDestroy);
+                this->contents.push_back(player->heldObstacle);
+                player->heldObstacle = nullptr;
             }
         default:
             break;

@@ -24,15 +24,17 @@ auto game = new Game();
 
     if (!SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+		
         return SDL_APP_FAILURE;
     }
 
     /// changing width/height in current version will destroy buttons on `Menu`
-    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900,
-        0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
+    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900, 0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+		
         return SDL_APP_FAILURE;
     }
+	
     TTF_Init();
 	
     game->init();
@@ -44,17 +46,16 @@ auto game = new Game();
 [[maybe_unused]] SDL_AppResult SDL_AppIterate(void* appstate) {
     const Uint64 now = SDL_GetTicksNS();
 
-    game->deltaTime = now - game->lastTick;
-    game->lastTick = now;
-
-    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 0, 0, 0, 1);
-    SDL_RenderClear(Game::renderer.SDLRenderer);
-    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 100, 0, 1);
 
     static Uint64 lastActionTime = 0;
     const Uint64 actionInterval = 10000000; // 10ms interval
 
     if (now - lastActionTime > actionInterval) {
+        game->deltaTime = now - game->lastTick;
+        game->lastTick = now;
+        SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 0, 0, 0, 1);
+        SDL_RenderClear(Game::renderer.SDLRenderer);
+        SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 100, 0, 1);
         //current scene game tick
 	    Game::sceneManager.currentScene()->logic();
         for (auto& content : Game::sceneManager.currentScene()->contents) {
@@ -67,20 +68,23 @@ auto game = new Game();
         }
 
         lastActionTime = now;
+        Game::sceneManager.currentScene()->render();
+        if (Game::showFPS) {
+            const float fps = 1000000000.0f / game->deltaTime;
+            SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
+            SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
+            // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
+            // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
+            // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
+            // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
+        }
+        SDL_RenderPresent(Game::renderer.SDLRenderer);
     }
   
     //scene render
-	Game::sceneManager.currentScene()->render();
-	
+
     // draws FPS
-    const float fps = 1000000000.0f / game->deltaTime;
-    SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 255, 255, 255);
-    SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 0, ("FPS: " + std::to_string(fps)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 10, ("Speed: " + std::to_string(player->speed)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 20, ("Angle: " + std::to_string(player->angle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 30, ("Turn radius: " + std::to_string(player->turnAngle)).c_str());
-    // SDL_RenderDebugText(Game::renderer.SDLRenderer, 0, 40, ("Max turn radius: " + std::to_string(player->maxTurnAngle)).c_str());
-    SDL_RenderPresent(Game::renderer.SDLRenderer);
+
 
     return SDL_APP_CONTINUE; /* carry on with the program! */
 }
@@ -91,9 +95,11 @@ auto game = new Game();
     switch (event->type) {
 
         case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+#ifdef DEBUG
             float x, y;
             SDL_GetMouseState(&x, &y);
             SDL_Log("Click position: %f %f", x, y);
+#endif
             break;
         }
 
