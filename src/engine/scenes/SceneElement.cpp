@@ -44,12 +44,12 @@ void SceneElement::render()
 #ifdef DEBUG
     const auto points = getPoints();
     SDL_RenderLines(Game::renderer.SDLRenderer, points, 5);
-    delete points;
+    delete[] points;
 #endif
 }
 
 SceneElement::~SceneElement() {
 }
 
-void SceneElement::collide(SceneElement *element) {
+void SceneElement::	collide(SceneElement *element) {
 }

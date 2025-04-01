@@ -11,6 +11,8 @@
 #include "game/entities/obstacles/Cone.h"
 #include "game/entities/obstacles/Water.h"
 #include "game/entities/surfaces/Curb.h"
+#include "engine/scenes/scenes/Checkpoint.h"
+#include "game/entities/StraightMaster.h"
 #include "game/entities/surfaces/FinishLine.h"
 
 Level1::Level1() {
@@ -19,7 +21,17 @@ Level1::Level1() {
     // SDL_SetTextureScaleMode(backgroundTexture, SDL_SCALEMODE_NEAREST);
     background = backgroundTexture;
 
-    auto walls = std::array {
+    // auto opponents = std::array<Opponent*, 3>{
+    //     new Opponent(300, 100, 150, 50, 0.5),
+    //     new Opponent(1400, 200),
+    //     new Opponent(240, 700, 50, 100, 1.5)
+    // };
+    // for (auto opponent: opponents) {
+    //     opponent->texture = Game::textures.at("car-red-regular.bmp");
+    //     contents.push_back(opponent);
+    // }
+
+    auto walls = {
         new Barrier(20, 276, 13, 400),
         new Barrier(24, 220, 15, 64, -0.23),
         new Barrier(47, 144, 15, 84, -0.45),
@@ -87,11 +99,49 @@ Level1::Level1() {
         // new Barrier(900,200, 300, 300, 0.6),
         // new Barrier(1250,500, 50, 500, -1.2)
     };
-    for (auto wall: walls) {
-        contents.push_back(wall);
-    }
+    this->contents.insert(this->contents.end(), walls.begin(), walls.end());
 
-    auto surfaces = std::array<Surface*, 6>{
+    int width, height;
+
+    SDL_GetWindowSize(Game::renderer.SDLWindow, &width, &height);
+
+    const float scaleX = (float)width / (float)this->background->w;
+    const float scaleY = (float)height / (float)this->background->h;
+
+    auto checkpoints = {
+        new Checkpoint(0, 717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(1, 361 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),
+        new Checkpoint(2, 237 * scaleX, 935 * scaleY, 5 * scaleX, 272 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(3, 180 * scaleX, 785 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(4, 180 * scaleX, 345 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(5, 280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(6, 502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
+        new Checkpoint(7, 700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(9, 849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
+        new Checkpoint(11, 1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(12, 1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(13, 2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(14, 2085 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(15, 2205 * scaleX, 53 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
+        new Checkpoint(16, 2320 * scaleX, 105 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(17, 2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(18, 2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
+        new Checkpoint(19, 2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
+        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr)
+    };
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
+    auto nitros = {
+        new Nitro(315, 111),
+        new Nitro(852, 403),
+        new Nitro(1467, 566),
+    };
+    this->contents.insert(contents.end(), nitros.begin(), nitros.end());
+
+
+    auto surfaces = {
         new Curb(691, 468, 206, 40),
         new Curb(1008, 614, 206, 40),
         new Curb(666, 478, 50, 50, 0.78),
@@ -99,6 +149,8 @@ Level1::Level1() {
         new Curb(984, 593, 50, 50, 0.78),
         new Curb(1189, 594, 50, 50, 0.78),
     };
+    this->contents.insert(contents.end(), surfaces.begin(), surfaces.end());
+
     for (auto surface: surfaces) {
         contents.push_back(surface);
     }
@@ -139,8 +191,38 @@ Level1::Level1() {
     //     contents.push_back(opponent);
     // }
 
-    // auto text = new Text(215, 815);
-    // text->setContent("fhdggfds");
-    // text->width = 1200;
-    // contents.push_back(text);
+    player = new Player(550, 685);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+    contents.push_back(player);
+    player->totalCheckpoints = this->checkpoints.size();
+
+    auto bot = new StraightMaster(750, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+    auto bot2 = new StraightMaster(850, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+    auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+
+    opponents.push_back(bot);
+//    opponents.push_back(bot2);
+//    opponents.push_back(bot3);
+    opponents[0]->texture = Game::textures.at("car-purple-regular.bmp");
+    opponents[0]->player = *player;
+    opponents[0]->checkpoints = this->checkpoints;
+    opponents[0]->totalCheckpoints = this->checkpoints.size();
+    opponents[0]->isCollidable = true;
+    opponents[0]->angle = SDL_PI_F / -2;
+
+//    opponents[1]->texture = Game::textures.at("car-orange-regular.bmp");
+//    opponents[1]->player = *player;
+//    opponents[1]->checkpoints = this->checkpoints;
+//    opponents[1]->totalCheckpoints = this->checkpoints.size();
+//    opponents[1]->isCollidable = true;
+//    opponents[1]->angle = SDL_PI_F / -2;
+//
+//    opponents[2]->texture = Game::textures.at("car-green-regular.bmp");
+//    opponents[2]->player = *player;
+//    opponents[2]->checkpoints = this->checkpoints;
+//    opponents[2]->totalCheckpoints = this->checkpoints.size();
+//    opponents[2]->isCollidable = true;
+//    opponents[2]->angle = SDL_PI_F / -2;
+
 }

@@ -79,7 +79,7 @@ Level::Level() {
 void Level::logic() {
 	
 	const auto keyboardState = SDL_GetKeyboardState(nullptr);
-	
+
     if (keyboardState[SDL_SCANCODE_LEFT] || keyboardState[SDL_SCANCODE_A]) {
         SDL_PushEvent(new SDL_Event{Event::CUSTOM_EVENT_CAR_ROTATE_LEFT});
     }
@@ -109,7 +109,7 @@ void Level::logic() {
     if (!Game::checkTurnControls()) {
         player->straighten();
     }
-    
+
     if(player->nitroTimer > 0){
         player->accelerate();
         player->nitroTimer--;
@@ -166,8 +166,36 @@ void Level::logic() {
                 element->collide(player);
             }
         }
+        for (const auto &bot : opponents) {
+            if (Game::checkElementCollision(element, bot)) {
+                element->collide(bot);
+                bot->collide(element);
+            }
+        }
     }
 
+    for (const auto &checkpoint: checkpoints) {
+        if (Game::checkElementCollision(checkpoint, player)) {
+            checkpoint->collide(player);
+        }
+        for (const auto &element : opponents) {
+            if (Game::checkElementCollision(checkpoint, element)) {
+                checkpoint->collide(element);
+            }
+        }
+    }
+
+    for (const auto& element : contents) {
+        this->sceneElementLogic(element);
+    }
+
+    for (const auto &item: opponents) {
+        item->update();
+        if (Game::checkElementCollision(player, item)) {
+            player->collide(item);
+            item->collide(player);
+        }
+    }
     for (auto& obstacle : temporaryObstacles) {
         obstacle->countdownToDestroy();
         SDL_Log("obstacle destroyed in %d", obstacle->timeToDestroy);
@@ -272,5 +300,41 @@ void Level::handleEvent(SDL_Event* event) {
             }
         default:
             break;
+    }
+}
+
+void Level::render() {
+    Scene::render();
+    for (const auto &item: this->checkpoints) {
+        item->render();
+    }
+    for (const auto &item: this->opponents) {
+        item->render();
+    }
+}
+
+void Level::sceneElementLogic(SceneElement* element) {
+    if (auto car = dynamic_cast<Car*>(element)) {
+        bool onCurb = false, onDirt = false, onIce = false;
+        for (const auto& surface : contents) {
+            if (auto curb = dynamic_cast<Curb*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, curb)) {
+                    onCurb = true;
+                }
+            }
+            if (auto dirt = dynamic_cast<Dirt*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, dirt)) {
+                    onDirt = true;
+                }
+            }
+            if (auto ice = dynamic_cast<Ice*>(surface)) {
+                if (Game::checkSurfaceIntersection(car, ice)) {
+                    onIce = true;
+                }
+            }
+        }
+        if (!onCurb) car->leaveCurb();
+        if (!onDirt) car->leaveDirt();
+        if (!onIce) car->leaveIce();
     }
 }

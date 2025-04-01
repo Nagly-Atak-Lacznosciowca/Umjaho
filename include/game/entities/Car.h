@@ -5,6 +5,7 @@
 
 #include "engine/scenes/SceneElement.h"
 #include "engine/Renderer.h"
+#include "engine/scenes/scenes/Checkpoint.h"
 
 class Car : public SceneElement {
 	public:
@@ -30,6 +31,12 @@ class Car : public SceneElement {
 		double maxTurnAngle = 0.03; // Max angle of the wheels
 	
 		bool canMove = true;
+        int nextCheckpoint;
+        int totalCheckpoints;
+
+	    Car(double x, double y, int next = 0, int totalCheckpoints = -1, double width = Car::WIDTH, double length = Car::LENGTH,
+            double angle = 0,
+            double zIndex = 0, SDL_Texture *texture = nullptr);
 		bool onCurb = false;
 		bool onDirt = false;
 		bool onIce = false;

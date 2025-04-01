@@ -30,7 +30,11 @@ void Car::move() {
     this->y = vector[1];
 }
 
-Car::Car(const double x, const double y, const double width, const double length, const double angle, const double zIndex, SDL_Texture* texture) : SceneElement(x, y, width, length, angle, zIndex, texture) {
+Car::Car(double x, double y, int nextCheckpoint, int totalCheckpoints, double width, double length, double angle, double zIndex,
+         SDL_Texture *texture)
+        : SceneElement(x, y, width, length, angle, zIndex, texture) {
+    this->nextCheckpoint = nextCheckpoint;
+    this->totalCheckpoints = totalCheckpoints;
     isCollidable = true;
 }
 
@@ -54,7 +58,12 @@ void Car::accelerate() {
 }
 
 void Car::brake() {
-    speed -= brakeStrength;
+    if (speed - brakeStrength >= 0) {
+        speed -= brakeStrength;
+    }
+    else if (speed >= 0) {
+        speed = 0;
+    }
 }
 
 void Car::reverse() {
@@ -187,7 +196,7 @@ void Car::collide(SceneElement* element) {
             obstacle->activeAction(this);
         }
     }
-    catch (const std::exception& e) {}
+    catch (const std::exception& e) {} // bruh
 
     if(!element->isCollidable){
         return;

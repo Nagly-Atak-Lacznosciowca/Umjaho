@@ -17,6 +17,7 @@ Level2::Level2() {
     SDL_Texture *backgroundTexture = Game::textures.at("track2.png");
     background = backgroundTexture;
 
+
     auto walls = std::array {
         new Barrier(233, 638, 304, 15), // 304 Wieliczka Miasto!!!!!!!!!!
         new Barrier(200, 778, 1000, 15),
@@ -130,6 +131,50 @@ Level2::Level2() {
     };
     for (const auto& surface: surfaces){
         contents.push_back(surface);
+    }
+
+    auto checkpoints = {
+        new Checkpoint(0, 282, 653, 5, 123, 0, 0, nullptr),
+        new Checkpoint(1, 195, 645, 5, 123, -0.3, 0, nullptr),
+        new Checkpoint(2, 30, 574, 123, 5, 0, 0, nullptr),
+        new Checkpoint(3, 152, 424, 5, 123, 0.2, 0, nullptr),
+        new Checkpoint(4, 241, 410, 5, 123, 0.5, 0, nullptr),
+        new Checkpoint(5, 270, 350, 123, 5, 0, 0, nullptr),
+        new Checkpoint(6, 270, 210, 123, 5, 0, 0, nullptr),
+        new Checkpoint(7, 385, 60, 5, 135, 0.6, 0, nullptr),
+        new Checkpoint(8, 450, 30, 5, 123, 0, 0, nullptr),
+        new Checkpoint(9, 685, 35, 5, 135, 0, 0, nullptr),
+
+        new Checkpoint(10, 725, 223, 170, 5, 0, 0, nullptr),
+        new Checkpoint(11, 727, 475, 170, 5, 0, 0, nullptr),
+        new Checkpoint(12, 904, 485, 5, 125, 0, 0, nullptr),
+        new Checkpoint(13, 1265, 490, 5, 125, 0, 0, nullptr),
+        new Checkpoint(14, 1401, 480, 5, 125, 0.4, 0, nullptr),
+        new Checkpoint(15, 1445, 420, 125, 5, 0, 0, nullptr),
+        new Checkpoint(16, 1443, 275, 125, 5, 0, 0, nullptr),
+        new Checkpoint(17, 1470, 141, 5, 125, -1, 0, nullptr),
+        new Checkpoint(18, 1385, 95, 5, 125, 0, 0, nullptr),
+        new Checkpoint(19, 1145, 96, 5, 125, 0, 0, nullptr),
+        new Checkpoint(20, 1035, 194, 5, 130, 1, 0, nullptr),
+        new Checkpoint(21, 1106, 323, 5, 130, -0.3, 0, nullptr),
+        new Checkpoint(22, 1135, 465, 125, 5, 0, 0, nullptr),
+        new Checkpoint(23, 1135, 635, 125, 5, 0, 0, nullptr),
+        new Checkpoint(24, 1125, 648, 5, 125, 0.3, 0, nullptr),
+        new Checkpoint(25, 904, 650, 5, 125, 0, 0, nullptr),
+        new Checkpoint(26, 725, 625, 170, 5, 0, 0, nullptr),
+        new Checkpoint(27, 700, 488, 5, 125, 0, 0, nullptr),
+        new Checkpoint(28, 830, 600, 5, 170, -1, 0, nullptr),
+        new Checkpoint(29, 555, 625, 125, 5, 0, 0, nullptr),
+        new Checkpoint(30, 540, 653, 5, 125, 0, 0, nullptr),
+
+
+    };
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
+    player->totalCheckpoints = this->checkpoints.size();
+
+    for (const auto& checkpoint: checkpoints) {
+        contents.push_back(checkpoint);
     }
 
     auto obstacles = std::array<Obstacle*, 7>{

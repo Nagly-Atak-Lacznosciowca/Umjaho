@@ -3,6 +3,7 @@
 #include "engine/scenes/scenes/Level1.h"
 #include "engine/scenes/scenes/MainMenu.h"
 #include "game/Event.h"
+#include "engine/scenes/scenes/Level2.h"
 #include <filesystem>
 #include <SDL3_image/SDL_image.h>
 
@@ -83,6 +84,7 @@ void Game::loadSounds() {
 		SDL_Log("Loaded sound: %ls", entry.path().c_str());
 #endif
 	}
+
 }
 
 bool Game::checkSpeedControls()
@@ -114,7 +116,7 @@ bool Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
 	const float x4 = p4.x, y4 = p4.y;
 
 	const float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-	if (denom == 0) return false;
+	if (fabs(denom) < 1e-6	) return false;
 
 	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
 	const float u = -(((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
@@ -150,6 +152,21 @@ int getIntersectedLine(const SceneElement *obstacle, const SDL_FPoint *intersect
 		}
 	}
 	return 0;
+}
+
+
+double Game::calculateAngleToPoint(Car* car, SDL_FPoint* point) {
+    auto carPoints = car->getPoints();
+    SDL_FPoint carCenter = {
+        (carPoints[0].x + carPoints[2].x) / 2,
+        (carPoints[0].y + carPoints[2].y) / 2
+    };
+    SDL_FPoint carFrontMiddle = {
+        (carPoints[2].x + carPoints[3].x) / 2,
+        (carPoints[2].y + carPoints[3].y) / 2
+    };
+
+    return atan2(point->y - carCenter.y, point->x - carCenter.x) - atan2(carFrontMiddle.y - carCenter.y, carFrontMiddle.x - carCenter.x);
 }
 
 

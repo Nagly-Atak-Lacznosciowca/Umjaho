@@ -43,6 +43,8 @@ class Game {
 		static bool getIntersection(SDL_FPoint p1, SDL_FPoint p2, SDL_FPoint p3, SDL_FPoint p4, SDL_FPoint &intersection);
 		static SDL_FPoint* checkElementCollision(SceneElement *elem1, SceneElement *elem2);
 		static bool checkSurfaceIntersection(Car *car, Surface *surface);
+
+    static double calculateAngleToPoint(Car *car, SDL_FPoint* point);
 };
 
 #endif //UMJAHO_GAME_H

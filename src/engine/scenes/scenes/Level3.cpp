@@ -150,6 +150,10 @@ Level3::Level3() {
     player->SetTexture();
     contents.push_back(player);
 
+    // auto opponents = std::array<Bot*, 3>{
+    //     new Bot(300, 100, 150, 50, 0.5),
+    //     new Bot(1400, 200),
+    //     new Bot(240, 700, 50, 100, 1.5)
     currentLapLabel->setColor({0,0,0});
     currentLapText->setColor({0,0,0});
     lapLabel->setColor({0,0,0});
