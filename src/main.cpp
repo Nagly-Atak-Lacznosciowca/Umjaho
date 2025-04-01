@@ -29,7 +29,7 @@ auto game = new Game();
     }
 
     /// changing width/height in current version will destroy buttons on `Menu`
-    if (!SDL_CreateWindowAndRenderer("Umjaho: Racing for True Racists", 1600, 900, 0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
+    if (!SDL_CreateWindowAndRenderer("Umjaho", 1600, 900, 0, &Game::renderer.SDLWindow, &Game::renderer.SDLRenderer)) {
         SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
 		
         return SDL_APP_FAILURE;

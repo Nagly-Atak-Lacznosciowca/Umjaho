@@ -1,21 +1,12 @@
-# Umjaho
+# Umjaho*
 
-## Autorzy:
-Projekt stworzył pięcioosobowy zespół uczniów klasy 3P Technikum Łączności nr 14 w Krakowie, w składzie:
-- Bartosz Kozub (@JDCombat)
-- Oskar Biedroń (@bozgi)
-- Oskar Zdechlik (@SokZKomucha)
-- Patryk Niemiec (@niemiets)
-- Szymon Urbaniak (@HexHyperion)
+###### *czyli "wyścig" w języku zulu :3
 
-## O projekcie:
-lorem ipsum coś tam coś tam wybraliśmy wyścigi i cierpimy
-
-## Technologie:
+## Technologie
 Cały projekt został stworzony w języku C++ z wykorzystaniem biblioteki SDL3. Za budowanie projektu odpowiedzialny jest CMake, a do pisania kodu wykorzystywaliśmy program JetBrains CLion. Do zarządzania wersjami używamy Gita, a do hostowania kodu platformy GitHub (repozytorium znaleźć można pod [tym adresem](https://github.com/Nagly-Atak-Lacznosciowca/Umjaho)).
 
 
-## Obsługa programu:
+## Obsługa programu
 Po uruchomieniu programu użytkownik zostaje przeniesiony do ekranu tytułowego z menu głównym, w którym może wybrać jedną z czterech opcji:
 
 ### `Play` - uruchomienie wyścigu
@@ -73,12 +64,12 @@ Dostępną dla samochodów częścią poziomu jest tor wyścigowy, mający posta
 
 ### Nawierzchnie
 - `Asfalt` - domyślna nawierzchnia toru, zapewniająca dobrą przyczepność i stabilność pojazdu. Samochód porusza się po nim z maksymalną prędkością, może skręcać i hamować bez przeszkód.
-- `Tarka` - charakterystyczny biało-czerwony krawężnik o stosunkowo dobrej przyczepności, lecz znacznie spowalniające samochód.
+- `Tarka` - charakterystyczny biało-czerwony krawężnik o stosunkowo dobrej przyczepności, lecz znacznie spowalniający samochód.
 - `Szuter` - nieutwardzona nawierzchnia o średniej przyczepności, spowalniająca samochód i utrudniająca skręcanie.
 - `Lód` - nawierzchnia o niskiej przyczepności, niewpływająca na prędkość samochodu, lecz skrajnie utrudniająca skręcanie i wydłużająca drogę hamowania.
 
 ### Przeszkody
-- `Bariera` - zapobiega opuszczeniu toru. Po kolizji z nimi samochód wytraca prędkość, lecz nie zostaje zniszczony.
+- `Bariera` - zapobiega opuszczeniu toru. Po kolizji z nią samochód wytraca prędkość, lecz nie zostaje zniszczony.
 - `Pachołek` - po wjechaniu w niego samochód lekko się odbija, tracąc prędkość. Po pierwszej kolizji słupek zostaje zniszczony i znika z toru.
 - `Brama` - otwiera się i zamyka co pewien czas. Zamknięta brama zachowuje się identycznie do barierek, otwarta nie wpływa na pojazd.
 - `Próg zwalniający` - zmniejsza prędkość samochodu po najechaniu. Nie wpływa na kierunek jazdy pojazdu.
@@ -93,4 +84,13 @@ Dostępną dla samochodów częścią poziomu jest tor wyścigowy, mający posta
 Na torze wyznaczone są niewidzialne punkty kontrolne, przez które należy przejechać, by okrążenie zostało zaliczone. Okrążenie nie będzie zaliczone, jeśli gracz ominie jakąkolwiek część toru (np. źle skręci na skrzyżowaniu) lub przejedzie przez linię mety przeciwnie do kierunku wyścigu.
 
 ### Przeciwnicy
-[WIP]
+W wyścigu uczestniczy czterech przeciwników o różnym zachowaniu. Część z nich będzie trzymać się środka toru, inni będą jeździć bardziej skomplikowaną linią i ostro hamować. Konkurenci potrafią omijać przeszkody, zderzają się oni też z graczem, lecz nie robią tego celowo.
+
+
+## Autorzy
+Projekt stworzył "Nagły Atak Łącznościowca" - pięcioosobowy zespół uczniów klasy 3P Technikum Łączności nr 14 w Krakowie, w składzie:
+- Bartosz Kozub (@JDCombat)
+- Oskar Biedroń (@bozgi)
+- Oskar Zdechlik (@SokZKomucha)
+- Patryk Niemiec (@niemiets)
+- Szymon Urbaniak (@HexHyperion)
