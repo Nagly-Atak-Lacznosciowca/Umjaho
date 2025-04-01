@@ -4,7 +4,7 @@
 #include "game/entities/obstacles/Oil.h"
 #include "game/entities/obstacles/Water.h"
 
-PlaceObstacle::PlaceObstacle(double x, double y, Obstacle* obstacle, double width, double height, double angle, double zIndex): PowerUp(x,y,width,height,angle,zIndex), obstacle(obstacle) {
+PlaceObstacle::PlaceObstacle(double x, double y, Obstacle* obstacle, double width, double height, double angle, double zIndex): PowerUp(x,y,width,height,angle,zIndex, Game::textures.at("question_mark.png")), obstacle(obstacle) {
     if (obstacle == nullptr) {
         std::array<Obstacle*, 3> obstacles = {
             new Cone(x, y),
