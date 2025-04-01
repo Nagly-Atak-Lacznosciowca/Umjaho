@@ -107,6 +107,8 @@ Level1::Level1() {
 
     const float scaleX = (float)width / (float)this->background->w;
     const float scaleY = (float)height / (float)this->background->h;
+    // Ten scaleX/scaleY to by się też przy barierkach przydał
+    // Ale mniejsza
 
     auto checkpoints = {
         new Checkpoint(0, 717 * scaleX, 989 * scaleY, 5 * scaleX, 262 * scaleY, 0, 0, nullptr),

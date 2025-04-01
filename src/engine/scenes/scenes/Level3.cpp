@@ -141,6 +141,44 @@ Level3::Level3() {
         contents.push_back(obstacle);
     }
 
+    // NIE bawię się w żadną skalę
+    // Pozdrawiam
+    auto checkpoints = {
+        new Checkpoint(0, 20+284-22, 30+719-116, 5, 200, 0, 0, nullptr),
+        new Checkpoint(1, 20+235-22, 30+716-116, 5, 200, 0, 0, nullptr),
+        new Checkpoint(2, 20+130-22, 30+669-130, 5, 200, -0.78, 0, nullptr),
+        new Checkpoint(3, 20+89-22, 30+583-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(4, 20+89-22, 30+405-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(5, 20+96-22, 30+233-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(6, 112, 112-80, 5, 200, 0.78, 0, nullptr),
+        new Checkpoint(7, 20+202-23, 30+209-353, 5, 600, 0, 0, nullptr),
+        new Checkpoint(8, 20+367-23, 30+209-353, 5, 600, 0, 0, nullptr),
+        new Checkpoint(9, 20+454-21, 30+175-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(10, 20+448-21, 30+389-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(11, 20+495-21, 30+469-130, 5, 200, -0.87, 0, nullptr),
+        new Checkpoint(12, 20+588-21, 30+515-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(13, 20+803-21, 30+515-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(14, 20+948-22, 30+520-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(15, 20+1109-22, 30+509-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(16, 20+1173-22, 30+600-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(17, 20+1238-22, 30+683-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(18, 20+1432-22, 30+681-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(19, 20+1508-22, 30+610-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(20, 20+1520-22, 30+179-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(21, 20+1421-22, 30+84-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(22, 20+1290-22, 30+180-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(23, 20+1341-22, 30+440-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(24, 20+1251-22, 30+500-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(25, 20+1134-22, 30+428-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(26, 20+1163-22, 30+318-130, 5, 200, -1.3, 0, nullptr),
+        new Checkpoint(27, 20+1030-22, 30+228-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(28, 20+884-22, 30+313-130, 5, 200, 1.3, 0, nullptr),
+        new Checkpoint(29, 20+880-22, 30+438-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(30, 20+879-22, 30+604-130, 5, 200, 1.57, 0, nullptr),
+        new Checkpoint(30, 20+769-22, 30+719-130, 5, 200, 0, 0, nullptr),
+    };
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
     nitroPositions = {{249, 305}, {1455, 670}, {1249, 524}, {69, 478}};
     powerupPositions = {{331, 284}, {460, 88}, {1363, 395}, {708, 655}};
 
