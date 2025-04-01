@@ -179,9 +179,10 @@ Level3::Level3() {
         new Checkpoint(28, 20+884-22, 30+313-130, 5, 200, 1.3, 0, nullptr),
         new Checkpoint(29, 20+880-22, 30+438-130, 5, 200, 1.57, 0, nullptr),
         new Checkpoint(30, 20+879-22, 30+604-130, 5, 200, 1.57, 0, nullptr),
-        new Checkpoint(30, 20+769-22, 30+719-130, 5, 200, 0, 0, nullptr),
+        new Checkpoint(31, 20+769-22, 30+719-130, 5, 200, 0, 0, nullptr),
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
 
     nitroPositions = {{249, 305}, {1455, 670}, {1249, 524}, {69, 478}};
     powerupPositions = {{331, 284}, {460, 88}, {1363, 395}, {708, 655}};
@@ -190,6 +191,7 @@ Level3::Level3() {
     player = new Player(536, 657);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
+    player->totalCheckpoints = this->checkpoints.size();
     contents.push_back(player);
 
     // auto opponents = std::array<Bot*, 3>{

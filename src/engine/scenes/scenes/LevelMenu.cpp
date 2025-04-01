@@ -52,9 +52,9 @@ LevelMenu::LevelMenu() {
 	
 	auto returnButton = new Button(100*scaleX, 50*scaleY, 200*scaleX, 55*scaleY, 0, 1, Game::textures.at("button.png"), [] {SDL_PushEvent(new SDL_Event {Event::CUSTOM_EVENT_POP_SCENE});}, "Return");
 
-	auto *level1Button = new LevelButton<Level1>((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 1", Game::textures.at("track1.png"));
-	auto *level2Button = new LevelButton<Level2>((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 2", Game::textures.at("track2.png"));
-	auto *level3Button = new LevelButton<Level3>((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 3", Game::textures.at("track3.png"));
+	auto *level1Button = new LevelButton<Level1>((double)(gapX * 1 + blockWidth * 0) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 1", Game::textures.at("track1.png"), 0);
+	auto *level2Button = new LevelButton<Level2>((double)(gapX * 2 + blockWidth * 1) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 2", Game::textures.at("track2.png"), 1);
+	auto *level3Button = new LevelButton<Level3>((double)(gapX * 3 + blockWidth * 2) * scaleX, (double)gapY * scaleY, blockWidth * scaleX, blockHeight * scaleY, 0, 1, Game::textures.at("level-button.png"), "Level 3", Game::textures.at("track3.png"), 2);
 	
 	this->contents.push_back(returnButton);
 	

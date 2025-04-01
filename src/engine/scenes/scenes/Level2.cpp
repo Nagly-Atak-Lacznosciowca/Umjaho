@@ -163,9 +163,9 @@ Level2::Level2() {
         new Checkpoint(23, 1135, 635, 125, 5, 0, 0, nullptr),
         new Checkpoint(24, 1125, 648, 5, 125, 0.3, 0, nullptr),
         new Checkpoint(25, 904, 650, 5, 125, 0, 0, nullptr),
-        new Checkpoint(26, 725, 625, 170, 5, 0, 0, nullptr),
-        new Checkpoint(27, 700, 488, 5, 125, 0, 0, nullptr),
-        new Checkpoint(28, 830, 600, 5, 170, -1, 0, nullptr),
+        new Checkpoint(26, 830, 600, 5, 170, -1, 0, nullptr),
+        new Checkpoint(27, 725, 625, 170, 5, 0, 0, nullptr),
+        new Checkpoint(28, 700, 488, 5, 125, 0, 0, nullptr),
         new Checkpoint(29, 555, 625, 125, 5, 0, 0, nullptr),
         new Checkpoint(30, 540, 653, 5, 125, 0, 0, nullptr),
 
@@ -176,13 +176,11 @@ Level2::Level2() {
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
 
-    this->checkpoints.insert(this->checkpoints.begin(), checkpoints.begin(), checkpoints.end());
+    this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
+
 
     player->totalCheckpoints = this->checkpoints.size();
 
-    for (const auto& checkpoint: checkpoints) {
-        contents.push_back(checkpoint);
-    }
 
     auto obstacles = std::array<Obstacle*, 8>{
         new Cone(868, 205),

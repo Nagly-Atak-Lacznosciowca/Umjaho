@@ -14,33 +14,7 @@
 #include "game/entities/powerups/Nitro.h"
 #include "game/entities/powerups/PlaceObstacle.h"
 
-void Level::lap() {
-    if (!player->onFinishLine) return;
-    SDL_Log("current lap %d", currentLap);
-    if (currentLap == 0) {
-        startTime = ticks;
-        lapStartTime = startTime;
-        currentLap++;
-    }
-    else if (currentLap <= laps) {
-        lapTimes[currentLap-1] = currentLapTime;
-        auto lap = new Text(520 + (currentLap-1)*250, 830, 0, 30, 0,0, std::format("Lap {} Time: {:02}:{:02}:{:02}", currentLap, minutes, seconds, milliseconds));
-        lapLabel->setContent(std::format("{}/3", currentLap));
-        contents.push_back(lap);
-        currentLap++;
-        lapStartTime = ticks;
-    }
-    else {
-        std::sort(lapTimes, lapTimes+3, std::less<Uint64>());
-        auto fastestLap = lapTimes[0];
-        SDL_PushEvent(new SDL_Event{
-            .user = {
-                .type = Event::CUSTOM_EVENT_PUSH_SCENE,
-                .data1 = new Leaderboard(startTime, ticks, this, fastestLap)
-            }
-        });
-    }
-}
+
 
 Level::Level() {
     // Nitro counter
@@ -208,7 +182,7 @@ void Level::logic() {
     // For each car check if it's on dirt or ice and use the appropriate method
     for (const auto& element : contents) {
         if (auto car = dynamic_cast<Car*>(element)) {
-            bool onCurb = false, onDirt = false, onIce = false, onFinishLine = false;
+            bool onCurb = false, onDirt = false, onIce = false;
             for (const auto& surface : contents) {
                 if (auto curb = dynamic_cast<Curb*>(surface)) {
                     if (Game::checkSurfaceIntersection(car, curb)) {
@@ -225,20 +199,10 @@ void Level::logic() {
                         onIce = true;
                     }
                 }
-                if (auto finishLine = dynamic_cast<FinishLine*>(surface)) {
-                    if (Game::checkSurfaceIntersection(car, finishLine) && dynamic_cast<Player*>(car)) {
-                        onFinishLine = true;
-                    }
-                }
             }
             if (!onCurb) car->leaveCurb();
             if (!onDirt) car->leaveDirt();
             if (!onIce) car->leaveIce();
-            if (!onFinishLine) {
-                if (!player->onFinishLine) break;
-                lap();
-                player->onFinishLine = false;
-            };
         }
     }
 }
@@ -305,9 +269,11 @@ void Level::handleEvent(SDL_Event* event) {
 
 void Level::render() {
     Scene::render();
-    for (const auto &item: this->checkpoints) {
-        item->render();
-    }
+    // for (const auto &item: this->checkpoints) {
+    //     item->render();
+    // }
+    SDL_Log("rendering %d", this->player->nextCheckpoint);
+    checkpoints[player->nextCheckpoint]->render();
     for (const auto &item: this->opponents) {
         item->render();
     }

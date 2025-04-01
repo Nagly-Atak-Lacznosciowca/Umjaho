@@ -120,8 +120,9 @@ Level1::Level1() {
         new Checkpoint(5, 280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(6, 502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
         new Checkpoint(7, 700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(9, 849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
+        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 250 * scaleY, 0, 0, nullptr),
         new Checkpoint(11, 1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
         new Checkpoint(12, 1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(13, 2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
@@ -131,8 +132,7 @@ Level1::Level1() {
         new Checkpoint(17, 2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(18, 2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(19, 2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
-        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr)
+        new Checkpoint(20, 1933 * scaleX, 1002 * scaleY, 5 * scaleX, 250 * scaleY, 0, 0, nullptr)
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
@@ -165,9 +165,6 @@ Level1::Level1() {
     nitroPositions = {{315, 111}, {852, 403}, {1467, 566}, {904, 640}, {1357, 154}};
     powerupPositions = {{100, 200}, {1006, 464}, {1186, 624}};
 
-    auto finishLine = new FinishLine(450, 620, 20, 160);
-
-    contents.push_back(finishLine);
 
 
 
@@ -205,6 +202,7 @@ Level1::Level1() {
     opponents[0]->isCollidable = true;
     opponents[0]->angle = SDL_PI_F / -2;
 
+
     opponents[1]->texture = Game::textures.at("car-orange-regular.png");
     opponents[1]->player = *player;
     opponents[1]->checkpoints = this->checkpoints;
@@ -212,14 +210,14 @@ Level1::Level1() {
     opponents[1]->isCollidable = true;
     opponents[1]->angle = SDL_PI_F / -2;
 
-    opponents[2]->texture = Game::textures.at("car-red-regular.bmp");
+    opponents[2]->texture = Game::textures.at("car-red-regular.png");
     opponents[2]->player = *player;
     opponents[2]->checkpoints = this->checkpoints;
     opponents[2]->totalCheckpoints = this->checkpoints.size();
     opponents[2]->isCollidable = true;
     opponents[2]->angle = SDL_PI_F / -2;
 
-    opponents[3]->texture = Game::textures.at("car-yellow-regular.bmp");
+    opponents[3]->texture = Game::textures.at("car-yellow-regular.png");
     opponents[3]->player = *player;
     opponents[3]->checkpoints = this->checkpoints;
     opponents[3]->totalCheckpoints = this->checkpoints.size();

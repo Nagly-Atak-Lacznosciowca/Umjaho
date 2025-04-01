@@ -16,6 +16,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 add_subdirectory(libs/SDL EXCLUDE_FROM_ALL)
 
+
 set(SDLTTF_VENDORED ON)
 
 set(SDLTTF_FREETYPE ON)
@@ -52,6 +53,25 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32 ${SOURCES} ${HEADERS})
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC SDL3_ttf::SDL3_ttf SDL3_image::SDL3_image SDL3::SDL3)
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC SDL3::SDL3 SDL3_image::SDL3_image SDL3_ttf::SDL3_ttf)
+#target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${SDL_IMAGE_INCLUDE_DIRS})
 
-include(RunTests)
+
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_PACKAGE_NAME "Umjaho")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_GENERATOR "ZIP")
+set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION}")
+
+
+#install(FILES ${SDL3_LIBRARY} DESTINATION libs)
+install(DIRECTORY assets/ DESTINATION assets)
+install(TARGETS Umjaho DESTINATION bin)
+install(FILES $<TARGET_FILE:SDL3::SDL3> DESTINATION bin)
+install(FILES $<TARGET_FILE:SDL3_image::SDL3_image> DESTINATION bin)
+install(FILES $<TARGET_FILE:SDL3_ttf::SDL3_ttf> DESTINATION bin)
+
+include(CPack)
+
+#include(RunTests)
