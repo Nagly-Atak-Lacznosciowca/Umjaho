@@ -191,7 +191,7 @@ void Car::collide(SceneElement* element) {
             obstacle->activeAction(this);
         }
     }
-    catch (const std::exception& e) {}
+    catch (const std::exception& e) {} // bruh
 
     if(!element->isCollidable){
         return;

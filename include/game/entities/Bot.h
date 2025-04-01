@@ -1,10 +1,9 @@
 #ifndef UMJAHO_BOT_H
 #define UMJAHO_BOT_H
 
-#include "engine/Renderer.h"
 #include "game/entities/Car.h"
 #include "Player.h"
-#include "math/Vec2.h"
+#include "math/Ray.h"
 
 class Bot : public Car {
     public:
@@ -24,12 +23,15 @@ class Bot : public Car {
         std::vector<SceneElement *>& contents;
         Player& player;
         std::vector<Bot *> opponents;
-        std::vector<Vec2> rays;
+        std::vector<Ray> rays;
         int rayCount = 7;
         virtual void update();
+        void updateRays();
         virtual double evaluateTurn(double) = 0;
         void render() override;
-
+        static void checkRayCollision(const std::vector<Ray>& rays, const SceneElement* element);
+        void collide(SceneElement* element) override;
+        void logic();
 };
 
 #endif //UMJAHO_BOT_H

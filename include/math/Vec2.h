@@ -8,10 +8,10 @@ struct Vec2 {
 
     inline Vec2 operator+(const Vec2& other) const { return {x + other.x, y + other.y}; }
     inline Vec2 operator-(const Vec2& other) const { return {x - other.x, y - other.y}; }
-    inline Vec2 operator*(float scalar) const { return {x * scalar, y * scalar}; }
+    inline Vec2 operator*(const float scalar) const { return {x * scalar, y * scalar}; }
 
     Vec2 normalize() const {
-        double length = SDL_sqrt(x * x + y * y);
+        const double length = SDL_sqrt(x * x + y * y);
         return (length > 0) ? Vec2 {x / length, y / length} : Vec2{ 0, 0 };
     }
 

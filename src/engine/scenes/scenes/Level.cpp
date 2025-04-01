@@ -85,7 +85,11 @@ void Level::logic() {
             player->collide(item);
             item->collide(player);
         }
+        Bot::checkRayCollision(item->rays, player);
     }
+
+
+
 }
 
 void Level::handleEvent(SDL_Event* event) {

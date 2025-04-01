@@ -44,7 +44,7 @@ void SceneElement::render()
 #ifdef DEBUG
     const auto points = getPoints();
     SDL_RenderLines(Game::renderer.SDLRenderer, points, 5);
-    delete points;
+    delete[] points;
 #endif
 }
 

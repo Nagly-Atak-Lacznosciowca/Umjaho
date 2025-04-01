@@ -93,7 +93,7 @@ bool Game::getIntersection(const SDL_FPoint p1, const SDL_FPoint p2,
 	const float x4 = p4.x, y4 = p4.y;
 
 	const float denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-	if (denom == 0) return false;
+	if (fabs(denom) < 1e-6	) return false;
 
 	const float t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
 	const float u = -(((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom);
