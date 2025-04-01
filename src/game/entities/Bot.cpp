@@ -77,8 +77,9 @@ void Bot::render() {
         } else {
             SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 100, 0, 1);
         }
-
+#ifdef DEBUG
         SDL_RenderLines(Game::renderer.SDLRenderer, line, 2);
+#endif
     }
     delete[] points;
 }

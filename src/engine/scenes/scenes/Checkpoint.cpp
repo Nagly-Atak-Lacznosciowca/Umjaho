@@ -71,7 +71,6 @@ void Checkpoint::collide(SceneElement *element) {
             car->nextCheckpoint = (this->id + 1) % car->totalCheckpoints;
             if (car->nextCheckpoint == 1) {
                 if (auto *player = dynamic_cast<Player*>(car)) {
-                    SDL_Log("chujh");
                     lap(player);
                 }
             }
