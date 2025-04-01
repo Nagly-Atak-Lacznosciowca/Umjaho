@@ -172,7 +172,7 @@ Level2::Level2() {
 
     };
 
-    player = new Player(534, 657, 30, 60, 0, 1);
+    player = new Player(534, 657);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
 

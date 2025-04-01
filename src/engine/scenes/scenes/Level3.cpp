@@ -187,7 +187,7 @@ Level3::Level3() {
     powerupPositions = {{331, 284}, {460, 88}, {1363, 395}, {708, 655}};
 
 
-    player = new Player(536, 657, 30, 60, 0, 1);
+    player = new Player(536, 657);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
@@ -207,6 +207,8 @@ Level3::Level3() {
     bot->rayLength = 120;
     bot2->rayLength = 120;
     bot2->checkpointRayLength = 1500;
+    bot->bounce = true;
+    bot2->bounce = true;
 
     opponents.push_back(bot);
     opponents.push_back(bot2);

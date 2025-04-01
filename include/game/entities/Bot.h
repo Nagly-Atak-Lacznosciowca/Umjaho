@@ -22,6 +22,7 @@ class Bot : public Car {
         double rayLength = 120;
         double rayMultiplier = 20;
         double checkpointRayLength = 1000;
+        bool bounce = false;
         Ray checkpointRay;
         std::vector<Checkpoint *>& checkpoints;
         std::vector<SceneElement *>& contents;

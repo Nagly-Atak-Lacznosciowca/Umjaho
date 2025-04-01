@@ -31,7 +31,7 @@ void MiddleLiner::update() {
     if (rays[3].collides && speed > 2) {
         brake();
     }
-    if (rays[1].collides && rays[2].collides && rays[3].collides && rays[4].collides && rays[5].collides) {
+    if (bounce && rays[1].collides && rays[2].collides && rays[3].collides && rays[4].collides && rays[5].collides) {
         speed = -speed;
     }
     else {

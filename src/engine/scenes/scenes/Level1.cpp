@@ -182,15 +182,15 @@ Level1::Level1() {
     //     contents.push_back(opponent);
     // }
 
-    player = new Player(550, 685);
+    player = new Player(665, 622, 30, 60, M_PI/-2, 1);
     player->angle = SDL_PI_F / -2; // Start facing left
     player->SetTexture();
     contents.push_back(player);
     player->totalCheckpoints = this->checkpoints.size();
 
-    auto bot = new MiddleLiner(750, 685, *this->player, this->opponents, this->contents, this->checkpoints);
-    auto bot2 = new StraightMaster(850, 685, *this->player, this->opponents, this->contents, this->checkpoints);
-    auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+    auto bot = new MiddleLiner(521, 622, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
+    auto bot2 = new StraightMaster(549, 700, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
+    auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints, 1, nullptr, 30, 60, M_PI/-2);
 
     opponents.push_back(bot);
     opponents.push_back(bot2);

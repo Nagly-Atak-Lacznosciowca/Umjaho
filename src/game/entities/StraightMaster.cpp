@@ -16,9 +16,6 @@ void StraightMaster::update() {
 //    for (const auto checkpoint : checkpoints) {
 //        checkRayCollision(rays, checkpoint);
 //    }
-//    for (const auto opponent : opponents) {
-//        checkRayCollision(rays, opponent);
-//    }
 
     Vec2 vectorRays[7];
     Vec2 collidedVectorRays[7];
@@ -42,7 +39,7 @@ void StraightMaster::update() {
         decelerate();
         brake();
     }
-    if (rays[1].collides && rays[2].collides && rays[3].collides && rays[4].collides && rays[5].collides) {
+    if (bounce && rays[1].collides && rays[2].collides && rays[3].collides && rays[4].collides && rays[5].collides) {
         speed = -speed;
     }
     else {
