@@ -73,11 +73,10 @@ void Bot::checkRayCollision(const std::vector<Ray>& rays, const SceneElement* el
 
     // Check intersection with all 4 edges of the obstacle
     for (const auto& ray : rays) {
+        ray.collides = false;
         for (int i = 0; i < 4; i++) {
             if (Game::getIntersection(ray.origin, ray.direction, points[i], points[(i + 1) % 4], _)) {
                 ray.collides = true;
-            } else {
-                ray.collides = false;
             }
         }
     }
