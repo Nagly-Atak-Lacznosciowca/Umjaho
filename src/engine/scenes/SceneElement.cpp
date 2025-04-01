@@ -51,5 +51,5 @@ void SceneElement::render()
 SceneElement::~SceneElement() {
 }
 
-void SceneElement::collide(SceneElement *element) {
+void SceneElement::	collide(SceneElement *element) {
 }

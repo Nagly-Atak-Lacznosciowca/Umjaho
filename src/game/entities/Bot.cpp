@@ -2,6 +2,7 @@
 #include "SDL3/SDL.h"
 #include <cmath>
 #include "game/Game.h"
+#include "math/Vec2.h"
 
 Bot::Bot(double x, double y, Player &player, std::vector<Bot *> &opponents, std::vector<SceneElement *> &contents, std::vector<Checkpoint *> &checkpoints,
          double zIndex,SDL_Texture *texture, double width, double length, double angle) : Car( x, y, 0, -1, width, length, angle, zIndex, texture), checkpoints(checkpoints), contents(contents), player(player), opponents(opponents) {
@@ -9,12 +10,44 @@ Bot::Bot(double x, double y, Player &player, std::vector<Bot *> &opponents, std:
 }
 
 void Bot::update() {
-    // speed = 1;
-    // angle += 0.05;
     updateRays();
+
+    for (const auto content : contents) {
+        checkRayCollision(rays, content);
+    }
+    for (const auto checkpoint : checkpoints) {
+        checkRayCollision(rays, checkpoint);
+    }
+    for (const auto opponent : opponents) {
+        checkRayCollision(rays, opponent);
+    }
+
+    Vec2 vectorRays[7];
+    Vec2 collidedVectorRays[7];
+
+    for (int i = 0; i < 7; i++) {
+        vectorRays[i] = {rays[i].direction.x - rays[i].origin.x, rays[i].direction.y - rays[i].origin.y};
+
+    }
+
+    if (rays[0].collides || rays[1].collides || rays[2].collides) {
+        decelerate();
+        angle += 0.02;
+    } else if (rays[4].collides || rays[5].collides || rays[6].collides) {
+        decelerate();
+        angle -= 0.0;
+        // turnLeft();
+    } else if (rays[3].collides) {
+        decelerate();
+        // turnRight();
+    } else {
+        accelerate();
+    }
+
     move();
 
 }
+
 
 void Bot::updateRays() {
     rays.clear();
@@ -27,9 +60,9 @@ void Bot::updateRays() {
     };
 
     for (int i = 0; i < rayCount; i++) {
-        constexpr float c = 0.35; // steepness
+        // constexpr float c = 0.5; // steepness
         // const double scale = exp(-c * pow(i - (rayCount / 2), 2)); // modified normal distribution
-        const double scale = 1;
+        constexpr double scale = 1;
 
         const float rayAngle = static_cast<float>(-angle) + angleStep * i;
         Ray ray = {
@@ -73,7 +106,9 @@ void Bot::checkRayCollision(const std::vector<Ray>& rays, const SceneElement* el
 
     // Check intersection with all 4 edges of the obstacle
     for (const auto& ray : rays) {
-        ray.collides = false;
+        if (ray.collides) {
+            continue;
+        }
         for (int i = 0; i < 4; i++) {
             if (Game::getIntersection(ray.origin, ray.direction, points[i], points[(i + 1) % 4], _)) {
                 ray.collides = true;

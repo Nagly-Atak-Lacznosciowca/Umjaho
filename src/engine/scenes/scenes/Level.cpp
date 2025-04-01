@@ -67,11 +67,22 @@ void Level::logic() {
                 element->collide(player);
             }
         }
+        for (const auto &bot : opponents) {
+            if (Game::checkElementCollision(element, bot)) {
+                element->collide(bot);
+                bot->collide(element);
+            }
+        }
     }
 
     for (const auto &checkpoint: checkpoints) {
         if (Game::checkElementCollision(checkpoint, player)) {
             checkpoint->collide(player);
+        }
+        for (const auto &element : opponents) {
+            if (Game::checkElementCollision(checkpoint, element)) {
+                checkpoint->collide(element);
+            }
         }
     }
 
@@ -85,11 +96,7 @@ void Level::logic() {
             player->collide(item);
             item->collide(player);
         }
-        Bot::checkRayCollision(item->rays, player);
     }
-
-
-
 }
 
 void Level::handleEvent(SDL_Event* event) {

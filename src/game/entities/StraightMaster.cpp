@@ -2,11 +2,7 @@
 
 void StraightMaster::update() {
     Bot::update();
-    // if (isFacingCheckpoint()) {
-        // SDL_Log("Facing checkpoint!");
-        // accelerate();
-        // move();
-    // }
+    accelerate();
 }
 
 double StraightMaster::evaluateTurn(double testTurn) {
