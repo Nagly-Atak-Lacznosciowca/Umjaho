@@ -117,6 +117,7 @@ Level1::Level1() {
         new Checkpoint(5, 280 * scaleX, 110 * scaleY, 5 * scaleX, 285 * scaleY, SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(6, 502 * scaleX, 50 * scaleY, 5 * scaleX, 278 * scaleY, 0, 0, nullptr),
         new Checkpoint(7, 700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
+        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(9, 849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
         new Checkpoint(11, 1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
@@ -128,8 +129,7 @@ Level1::Level1() {
         new Checkpoint(17, 2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(18, 2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(19, 2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr),
-        new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr)
+        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr)
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
@@ -162,9 +162,6 @@ Level1::Level1() {
     nitroPositions = {{315, 111}, {852, 403}, {1467, 566}, {904, 640}, {1357, 154}};
     powerupPositions = {{100, 200}, {1006, 464}, {1186, 624}};
 
-    auto finishLine = new FinishLine(450, 620, 20, 160);
-
-    contents.push_back(finishLine);
 
 
 
@@ -185,19 +182,20 @@ Level1::Level1() {
     contents.push_back(player);
     player->totalCheckpoints = this->checkpoints.size();
 
-    auto bot = new StraightMaster(750, 685, *this->player, this->opponents, this->contents, this->checkpoints);
+    // auto bot = new StraightMaster(750, 685, *this->player, this->opponents, this->contents, this->checkpoints);
     auto bot2 = new StraightMaster(850, 685, *this->player, this->opponents, this->contents, this->checkpoints);
     auto bot3 = new StraightMaster(950, 685, *this->player, this->opponents, this->contents, this->checkpoints);
 
-    opponents.push_back(bot);
+    // opponents.push_back(bot);
 //    opponents.push_back(bot2);
 //    opponents.push_back(bot3);
-    opponents[0]->texture = Game::textures.at("car-purple-regular.png");
-    opponents[0]->player = *player;
-    opponents[0]->checkpoints = this->checkpoints;
-    opponents[0]->totalCheckpoints = this->checkpoints.size();
-    opponents[0]->isCollidable = true;
-    opponents[0]->angle = SDL_PI_F / -2;
+
+    // opponents[0]->texture = Game::textures.at("car-purple-regular.png");
+    // opponents[0]->player = *player;
+    // opponents[0]->checkpoints = this->checkpoints;
+    // opponents[0]->totalCheckpoints = this->checkpoints.size();
+    // opponents[0]->isCollidable = true;
+    // opponents[0]->angle = SDL_PI_F / -2;
 
 //    opponents[1]->texture = Game::textures.at("car-orange-regular.bmp");
 //    opponents[1]->player = *player;
