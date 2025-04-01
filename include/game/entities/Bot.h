@@ -18,6 +18,7 @@ class Bot : public Car {
             double width = Car::WIDTH,
             double length = Car::LENGTH,
             double angle = 0);
+            Ray checkpointRay;
 
         std::vector<Checkpoint *>& checkpoints;
         std::vector<SceneElement *>& contents;
@@ -32,6 +33,8 @@ class Bot : public Car {
         static void checkRayCollision(const std::vector<Ray>& rays, const SceneElement* element);
         void collide(SceneElement* element) override;
         void logic();
+
+    bool checkRayCollisionWithCheckpoint(const std::vector<Ray> &rays);
 };
 
 #endif //UMJAHO_BOT_H

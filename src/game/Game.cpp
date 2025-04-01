@@ -3,6 +3,7 @@
 #include "engine/scenes/scenes/Level1.h"
 #include "engine/scenes/scenes/MainMenu.h"
 #include "game/Event.h"
+#include "engine/scenes/scenes/Level2.h"
 #include <filesystem>
 
 Renderer Game::renderer;
@@ -129,6 +130,21 @@ int getIntersectedLine(const SceneElement *obstacle, const SDL_FPoint *intersect
 		}
 	}
 	return 0;
+}
+
+
+double Game::calculateAngleToPoint(Car* car, SDL_FPoint* point) {
+    auto carPoints = car->getPoints();
+    SDL_FPoint carCenter = {
+        (carPoints[0].x + carPoints[2].x) / 2,
+        (carPoints[0].y + carPoints[2].y) / 2
+    };
+    SDL_FPoint carFrontMiddle = {
+        (carPoints[2].x + carPoints[3].x) / 2,
+        (carPoints[2].y + carPoints[3].y) / 2
+    };
+
+    return atan2(point->y - carCenter.y, point->x - carCenter.x) - atan2(carFrontMiddle.y - carCenter.y, carFrontMiddle.x - carCenter.x);
 }
 
 

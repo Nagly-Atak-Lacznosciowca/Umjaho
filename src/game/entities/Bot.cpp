@@ -12,38 +12,56 @@ Bot::Bot(double x, double y, Player &player, std::vector<Bot *> &opponents, std:
 void Bot::update() {
     updateRays();
 
+//    auto angleToRotate = Game::calculateAngleToPoint(this, checkpoints[this->nextCheckpoint]->center);
+
+//    SDL_Log("angleDiff bot nigga: %f", Game::calculateAngleToPoint(this, checkpoints[this->nextCheckpoint]->center));
+
     for (const auto content : contents) {
-        checkRayCollision(rays, content);
+        if (dynamic_cast<Obstacle*>(content)) {
+            checkRayCollision(rays, content);
+        }
     }
-    for (const auto checkpoint : checkpoints) {
-        checkRayCollision(rays, checkpoint);
-    }
-    for (const auto opponent : opponents) {
-        checkRayCollision(rays, opponent);
-    }
+//    for (const auto checkpoint : checkpoints) {
+//        checkRayCollision(rays, checkpoint);
+//    }
+//    for (const auto opponent : opponents) {
+//        checkRayCollision(rays, opponent);
+//    }
 
     Vec2 vectorRays[7];
     Vec2 collidedVectorRays[7];
 
     for (int i = 0; i < 7; i++) {
         vectorRays[i] = {rays[i].direction.x - rays[i].origin.x, rays[i].direction.y - rays[i].origin.y};
-
     }
-
-    if (rays[0].collides || rays[1].collides || rays[2].collides) {
-        decelerate();
-        angle += 0.02;
-    } else if (rays[4].collides || rays[5].collides || rays[6].collides) {
-        decelerate();
-        angle -= 0.0;
+//
+    if (rays[1].collides || rays[2].collides) {
+//        decelerate();
+        angle -= 0.03;
+    }
+    if (rays[4].collides || rays[5].collides) {
+//        decelerate();
+        angle += 0.03;
         // turnLeft();
-    } else if (rays[3].collides) {
+    }
+    if (rays[3].collides && speed > 1.5) {
         decelerate();
-        // turnRight();
-    } else {
+        decelerate();
+        decelerate();
+        brake();
+    }
+    else {
         accelerate();
     }
+//
+//    if (angleToRotate > 0.05) {
+//        this->angle -= 0.03;
+//    }
+//    else if (angleToRotate < -0.05) {
+//        this->angle += 0.03;
+//    }
 
+    accelerate();
     move();
 
 }
@@ -52,6 +70,8 @@ void Bot::update() {
 void Bot::updateRays() {
     rays.clear();
     const float angleStep = M_PI / (rayCount - 1);
+
+    this->maxSpeed = Car::MAX_SPEED;
 
     const auto points = this->getPoints();
     const SDL_FPoint center = {
@@ -66,16 +86,31 @@ void Bot::updateRays() {
 
         const float rayAngle = static_cast<float>(-angle) + angleStep * i;
         Ray ray = {
-            {
+                {
                 static_cast<float>(center.x + 20 * cos(rayAngle)),
                 static_cast<float>(center.y + 20 * sin(rayAngle))
             },
-            {
-                static_cast<float>(center.x + (75 * scale) * cos(rayAngle)),
-                static_cast<float>(center.y + (75 * scale) * sin(rayAngle))
+        {
+                static_cast<float>(center.x +
+                                   ((120 - 20 * SDL_fabs((rayCount - 1) / 2.0 - i)) * scale) * cos(rayAngle)),
+                static_cast<float>(center.y +
+                                   ((120 - 20 * SDL_fabs((rayCount - 1) / 2.0 - i)) * scale) * sin(rayAngle))
             },
         };
+
+        if (i == 3) {
+            ray.direction = {
+                static_cast<float>(center.x + 190 * cos(rayAngle)),
+                static_cast<float>(center.y + 190 * sin(rayAngle))
+            };
+            checkpointRay = ray;
+            checkpointRay.direction = {
+                static_cast<float>(center.x + 1000 * cos(rayAngle)),
+                static_cast<float>(center.y + 1000 * sin(rayAngle))
+            };
+        }
         rays.push_back(ray);
+
     }
 
     delete[] points;
@@ -89,7 +124,7 @@ void Bot::render() {
         const SDL_FPoint line[2] = {origin, direction};
 
         if (collides) {
-            SDL_Log("collides");
+//            SDL_Log("collides");
             SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 0, 0, 255);
         } else {
             SDL_SetRenderDrawColor(Game::renderer.SDLRenderer, 255, 100, 0, 1);
@@ -118,6 +153,7 @@ void Bot::checkRayCollision(const std::vector<Ray>& rays, const SceneElement* el
 
     delete[] points;
 }
+
 
 void Bot::collide(SceneElement* element) {
     Car::collide(element);

@@ -7,6 +7,7 @@ class Checkpoint : public SceneElement {
 
 public:
     int id;
+    SDL_FPoint* center;
     Checkpoint(int id, double x, double y, double width, double height, double angle, double zIndex,
                SDL_Texture *texture);
 
