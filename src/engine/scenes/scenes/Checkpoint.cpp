@@ -6,6 +6,8 @@
 Checkpoint::Checkpoint(int id, double x, double y, double width, double height, double angle, double zIndex,
                        SDL_Texture *texture) : SceneElement(x, y, width, height, angle, zIndex, texture) {
     this->id = id;
+    auto points = this->getPoints();
+    this->center = new SDL_FPoint{(points[0].x + points[2].x) / 2, (points[0].y + points[2].y) / 2};
 }
 
 void Checkpoint::collide(SceneElement *element) {

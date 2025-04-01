@@ -58,7 +58,12 @@ void Car::accelerate() {
 }
 
 void Car::brake() {
-    speed -= brakeStrength;
+    if (speed - brakeStrength >= 0) {
+        speed -= brakeStrength;
+    }
+    else if (speed >= 0) {
+        speed = 0;
+    }
 }
 
 void Car::reverse() {
