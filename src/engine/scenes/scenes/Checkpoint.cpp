@@ -5,6 +5,7 @@
 #include "engine/scenes/Text.h"
 #include "engine/scenes/scenes/Leaderboard.h"
 #include "engine/scenes/scenes/Level.h"
+#include "engine/scenes/scenes/Level3.h"
 #include "game/Event.h"
 #include "game/Game.h"
 #include "game/entities/Car.h"
@@ -40,6 +41,9 @@ void lap(Player* player) {
     else if (currentLap <= laps) {
         lapTimes[currentLap-1] = currentLapTime;
         auto lap = new Text(520 + (currentLap-1)*250, 830, 0, 30, 0,0, std::format("Lap {} Time: {:02}:{:02}:{:02}", currentLap, minutes, seconds, milliseconds));
+        if (dynamic_cast<Level3*>(level)) {
+            lap->setColor({0,0,0});
+        }
         lapLabel->setContent(std::format("{}/3", currentLap));
         level->contents.push_back(lap);
         currentLap++;

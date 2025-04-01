@@ -121,7 +121,7 @@ Level1::Level1() {
         new Checkpoint(7, 700 * scaleX, 115 * scaleY, 5 * scaleX, 285 * scaleY, -SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(8, 806 * scaleX, 294 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(9, 849 * scaleX, 480 * scaleY, 5 * scaleX, 279 * scaleY, -SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 217 * scaleY, 0, 0, nullptr),
+        new Checkpoint(10, 1112 * scaleX, 538 * scaleY, 5 * scaleX, 250 * scaleY, 0, 0, nullptr),
         new Checkpoint(11, 1730 * scaleX, 538 * scaleY, 5 * scaleX, 270 * scaleY, 0, 0, nullptr),
         new Checkpoint(12, 1935 * scaleX, 450 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
         new Checkpoint(13, 2025 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
@@ -131,7 +131,7 @@ Level1::Level1() {
         new Checkpoint(17, 2365 * scaleX, 209 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(18, 2365 * scaleX, 669 * scaleY, 5 * scaleX, 272 * scaleY, SDL_PI_F / 2, 0, nullptr),
         new Checkpoint(19, 2302 * scaleX, 875 * scaleY, 5 * scaleX, 279 * scaleY, SDL_PI_F / 4, 0, nullptr),
-        new Checkpoint(20, 1933 * scaleX, 1042 * scaleY, 5 * scaleX, 210 * scaleY, 0, 0, nullptr)
+        new Checkpoint(20, 1933 * scaleX, 1002 * scaleY, 5 * scaleX, 250 * scaleY, 0, 0, nullptr)
     };
     this->checkpoints.insert(this->checkpoints.begin(), checkpoints);
 
