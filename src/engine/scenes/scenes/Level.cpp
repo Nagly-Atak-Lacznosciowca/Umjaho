@@ -12,6 +12,7 @@
 #include <format>
 
 #include "game/entities/powerups/Nitro.h"
+#include "game/entities/powerups/PlaceObstacle.h"
 
 void Level::lap() {
     if (!player->onFinishLine) return;
@@ -122,13 +123,24 @@ void Level::logic() {
 
     if (nitroPlaceInterval > 0) {
         nitroPlaceInterval--;
-    }else {
+    }
+    else {
         nitroPlaceInterval = 1000;
         if (player->nitroCharges < 3) {
             auto index = rand()%nitroPositions.size();
             auto pos = nitroPositions.at(index);
             contents.push_back(new Nitro(pos.first, pos.second));
         }
+    }
+
+    if (powerupPlaceInterval > 0) {
+        powerupPlaceInterval--;
+    }
+    else {
+        powerupPlaceInterval = 1000;
+        auto index = rand()%powerupPositions.size();
+        auto pos = powerupPositions.at(index);
+        contents.push_back(new PlaceObstacle(pos.first, pos.second));
     }
 
     player->move();

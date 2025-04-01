@@ -7,33 +7,17 @@
 #include "game/entities/obstacles/Barrier.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/obstacles/Cone.h"
+#include "game/entities/obstacles/Oil.h"
+#include "game/entities/obstacles/SpeedBump.h"
+#include "game/entities/obstacles/Water.h"
 #include "game/entities/surfaces/Dirt.h"
 
 Level2::Level2() {
-
     SDL_Texture *backgroundTexture = Game::textures.at("track2.png");
     background = backgroundTexture;
 
-//    auto dirt = new Dirt(200, 276, 400, 400, 0, 0, Game::textures.at("dirt.png"));
-//    contents.push_back(dirt);
-
-    player = new Player(534, 657, 30, 60, 0, 1);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->SetTexture();
-    contents.push_back(player);
-
-    // auto opponents = std::array<Opponent*, 4>{
-    //     new Opponent(333, 657, 30, 60, M_PI / -2),
-    //     new Opponent(353, 712, 30, 60, M_PI / -2),
-    //     new Opponent(433, 657, 30, 60, M_PI / -2),
-    //     new Opponent(453, 712, 30, 60, M_PI / -2)
-    // };
-    // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.png");
-    //     contents.push_back(opponent);
-    // }
-
-    auto walls = std::array<Barrier*, 89>{
+    auto walls = std::array {
         new Barrier(233, 638, 304, 15), // 304 Wieliczka Miasto!!!!!!!!!!
         new Barrier(200, 778, 1000, 15),
         new Barrier(918, 613, 200, 40),
@@ -128,7 +112,7 @@ Level2::Level2() {
         contents.push_back(wall);
     }
 
-    Dirt* surfaces[] = {
+    auto surfaces = std::array<Surface*, 12>{
             new Dirt(35, 500, 120, 100),
             new Dirt(50, 575, 120, 100, 0.2),
             new Dirt(83, 450, 120, 100, -1),
@@ -143,12 +127,42 @@ Level2::Level2() {
             new Dirt(730, 180, 170, 350),
             new Dirt(780, 480, 150, 100, 1),
             new Dirt(890, 485, 200, 130),
-
-
     };
     for (const auto& surface: surfaces){
         contents.push_back(surface);
     }
 
+    auto obstacles = std::array<Obstacle*, 7>{
+        new Cone(868, 205),
+        new Cone(868, 235),
+        new Cone(868, 265),
+        new Oil(649, 495),
+        new Oil(1151, 101),
+        new Water(1400,464, 50, 30, 0.5),
+        new SpeedBump(1080, 676, 60, 15, M_PI/2)
+    };
+    for (const auto& obstacle: obstacles){
+        contents.push_back(obstacle);
+    }
+
     nitroPositions = {{1100, 395}, {778, 521}, {532, 38}, {69, 478}};
+    powerupPositions = {{275, 317}, {1080, 566}, {1106, 328}, {610, 507}};
+
+
+    player = new Player(534, 657, 30, 60, 0, 1);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+    contents.push_back(player);
+
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(333, 657, 30, 60, M_PI / -2),
+    //     new Opponent(353, 712, 30, 60, M_PI / -2),
+    //     new Opponent(433, 657, 30, 60, M_PI / -2),
+    //     new Opponent(453, 712, 30, 60, M_PI / -2)
+    // };
+    // for (auto opponent: opponents) {
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
+    //     contents.push_back(opponent);
+    // }
+
 }

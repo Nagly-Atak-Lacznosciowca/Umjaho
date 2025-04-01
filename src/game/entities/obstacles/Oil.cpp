@@ -8,12 +8,14 @@ Oil::Oil(double x, double y, double width, double height, double angle, double z
 
 void Oil::activeAction(Car* car) {
     if (SDL_GetTicks() - car->lastOilTime > 1000) {
-        double random = 0.02 + (std::rand() / (RAND_MAX / (0.05 - 0.02)));
-        if (rand() % 2 == 0) {
-            car->turnAngle = random;
-        }
-        else {
-            car->turnAngle = -random;
+        if (car->speed > 1) {
+            double random = 0.02 + (std::rand() / (RAND_MAX / (0.05 - 0.02)));
+            if (rand() % 2 == 0) {
+                car->turnAngle = random;
+            }
+            else {
+                car->turnAngle = -random;
+            }
         }
         car->lastOilTime = SDL_GetTicks();
     }

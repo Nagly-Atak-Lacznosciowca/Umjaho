@@ -6,7 +6,7 @@
 
 class Oil : public Obstacle {
     public:
-        Oil(double x, double y, double width = 40, double height = 40, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("oil.png"));
+        Oil(double x, double y, double width = 50, double height = 30, double angle = 0, double zIndex = 0, SDL_Texture* texture = Game::textures.at("oil.png"));
 
         void activeAction(Car* car) override;
 };

@@ -10,6 +10,7 @@
 #include "game/entities/obstacles/Gate.h"
 #include "game/entities/powerups/Nitro.h"
 #include "engine/scenes/Text.h"
+#include "game/entities/surfaces/Curb.h"
 #include "game/entities/surfaces/Ice.h"
 
 Level3::Level3() {
@@ -20,30 +21,7 @@ Level3::Level3() {
     SDL_Color textColor = SDL_Color { 0, 0, 0 };
     // nitroCounter->setColor(textColor);
 
-    // auto ice = new Ice(200, 276, 400, 400, 0, 0, Game::textures.at("ice.png"));
-    // contents.push_back(ice);
-
-    player = new Player(536, 657, 30, 60, 0, 1);
-    player->angle = SDL_PI_F / -2; // Start facing left
-    player->SetTexture();
-    contents.push_back(player);
-
-    currentLapLabel->setColor({0,0,0});
-    currentLapText->setColor({0,0,0});
-    lapLabel->setColor({0,0,0});
-
-    // auto opponents = std::array<Opponent*, 4>{
-    //     new Opponent(335, 657, 30, 60, M_PI / -2),
-    //     new Opponent(355, 712, 30, 60, M_PI / -2),
-    //     new Opponent(435, 657, 30, 60, M_PI / -2),
-    //     new Opponent(455, 712, 30, 60, M_PI / -2)
-    // };
-    // for (auto opponent: opponents) {
-    //     opponent->texture = Game::textures.at("car-red-regular.png");
-    //     contents.push_back(opponent);
-    // }
-
-    auto walls = std::array<Barrier*, 74>{
+    auto walls = std::array {
         new Barrier(233, 638, 570, 15),
         new Barrier(203, 777, 700, 15),
         new Barrier(1216, 743, 1502-1216, 15),
@@ -123,32 +101,67 @@ Level3::Level3() {
         contents.push_back(wall);
     }
 
-    auto cone = new Cone(1000, 500, 25, 25, 0, 0, Game::textures.at("cone.png"));
-    auto cone2 = new Cone(1200, 500, 25, 25, 0, 0, Game::textures.at("cone.png"));
-    auto speedbump = new SpeedBump(800, 300, 65, 18, 0, 0, Game::textures.at("speedbump.png"));
-    auto water = new Water(600, 700, 100, 25, 0, 0, Game::textures.at("water.png"));
-    auto oil = new Oil(1000, 700, 100, 25, 0, 0, Game::textures.at("oil.png"));
-    auto gate = new Gate(180, 283, 7, 90, 0, 0, Game::textures.at("gate-closed.png"));
-
-    Ice* surfaces[] = {
+    auto surfaces = std::array<Surface*, 17>{
         new Ice(685, 455, 415, 125),
         new Ice(1080, 470, 120, 135, -0.3),
         new Ice(1113, 572, 454, 177),
         new Ice(1440, 400, 130, 171),
-        new Ice(1192, 529, 43, 43)
+        new Ice(1192, 529, 43, 43),
+        new Ice(1302, 30, 400, 70, -0.2),
+        new Ice (1198, 500, 250, 50, 0.6),
+        new Ice (188, 280, 180, 20, 0),
+        new Ice (188, 350, 200, 20, 0),
+        new Ice (957, 285, 100, 100, 0.7),
+        new Ice (1000, 285, 100, 100, -0.7),
+        new Ice(820, 343, 40, 130, 0),
+        new Ice(1439, 193, 40, 150, 0),
+        new Curb(1439, 343, 30, 60, 0),
+        new Curb(1540, 343, 30, 60, 0),
+        new Curb(647, 651, 100, 30, 0),
+        new Ice(378, 64, 250, 50, -0.8)
     };
-
     for (const auto& surface : surfaces) {
         contents.push_back(surface);
     }
 
-    contents.push_back(gate);
-    contents.push_back(cone);
-    contents.push_back(cone2);
-    contents.push_back(speedbump);
-    contents.push_back(water);
-    contents.push_back(oil);
+    auto obstacles = std::array<Obstacle*, 11>{
+        new Cone(774, 657),
+        new Cone(387, 34),
+        new Cone(414, 58),
+        new Cone(1243, 554),
+        new Cone(1119, 431),
+        new Cone(1545, 311),
+        new Gate(180, 283, 7, 90),
+        new Oil(1318, 78),
+        new Oil(336, 31),
+        new SpeedBump(355, 300, 50, 13, M_PI/2),
+        new Water(24, 248, 50, 30, M_PI/2),
+    };
+    for (auto obstacle : obstacles) {
+        contents.push_back(obstacle);
+    }
 
     nitroPositions = {{249, 305}, {1455, 670}, {1249, 524}, {69, 478}};
+    powerupPositions = {{331, 284}, {460, 88}, {1363, 395}, {708, 655}};
 
+
+    player = new Player(536, 657, 30, 60, 0, 1);
+    player->angle = SDL_PI_F / -2; // Start facing left
+    player->SetTexture();
+    contents.push_back(player);
+
+    currentLapLabel->setColor({0,0,0});
+    currentLapText->setColor({0,0,0});
+    lapLabel->setColor({0,0,0});
+
+    // auto opponents = std::array<Opponent*, 4>{
+    //     new Opponent(335, 657, 30, 60, M_PI / -2),
+    //     new Opponent(355, 712, 30, 60, M_PI / -2),
+    //     new Opponent(435, 657, 30, 60, M_PI / -2),
+    //     new Opponent(455, 712, 30, 60, M_PI / -2)
+    // };
+    // for (auto opponent: opponents) {
+    //     opponent->texture = Game::textures.at("car-red-regular.png");
+    //     contents.push_back(opponent);
+    // }
 }

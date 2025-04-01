@@ -27,9 +27,11 @@ class Level: public Scene{
 		int minutes = 0;
 		int milliseconds = 0;
 		std::vector<std::pair<int, int>> nitroPositions = {};
+		std::vector<std::pair<int, int>> powerupPositions = {};
 		Text* lapLabel;
 		Text* currentLapLabel;
 		int nitroPlaceInterval = 1000;
+		int powerupPlaceInterval = 1000;
 		std::vector<Obstacle*> temporaryObstacles = {};
 
 		Level();
