@@ -272,6 +272,7 @@ void Level::render() {
     // for (const auto &item: this->checkpoints) {
     //     item->render();
     // }
+    SDL_Log("rendering %d", this->player->nextCheckpoint);
     checkpoints[player->nextCheckpoint]->render();
     for (const auto &item: this->opponents) {
         item->render();

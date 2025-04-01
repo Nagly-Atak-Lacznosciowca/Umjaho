@@ -179,9 +179,6 @@ Level2::Level2() {
 
     player->totalCheckpoints = this->checkpoints.size();
 
-    for (const auto& checkpoint: checkpoints) {
-        contents.push_back(checkpoint);
-    }
 
     auto obstacles = std::array<Obstacle*, 7>{
         new Cone(868, 205),
