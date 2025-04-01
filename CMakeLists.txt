@@ -74,4 +74,4 @@ install(FILES $<TARGET_FILE:SDL3_ttf::SDL3_ttf> DESTINATION bin)
 
 include(CPack)
 
-#include(RunTests)
+include(RunTests)
